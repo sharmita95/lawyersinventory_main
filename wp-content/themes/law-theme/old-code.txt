@@ -1,0 +1,160 @@
+<?php
+// Add an admin menu for CSV import
+add_action('admin_menu', 'custom_csv_import_menu');
+
+function custom_csv_import_menu() {
+    if (current_user_can('manage_options') || current_user_can('seo_manage')) { //condition not working
+        add_menu_page('CSV Import', 'CSV Import', 'manage_options', 'custom-csv-import', 'custom_csv_import_page');
+    }
+}
+
+function custom_csv_import_page() {
+    ?>
+    <div class="wrap">
+        <h1>Import CSV File</h1>
+        <form method="post" enctype="multipart/form-data">
+            <select name="type" required>
+                <option value="lawyers">Lawyers</option>
+                <option value="law-firms">Law Firms</option>
+            </select>    
+            <input type="file" name="csv_file" accept=".csv" required>
+            <input type="submit" name="import_csv" class="button button-primary" value="Import CSV">
+        </form>
+    </div>
+    <?php
+
+    if (isset($_POST['import_csv'])) {
+        custom_csv_import_handler();
+    }
+}
+
+function custom_csv_import_handler() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    if (isset($_FILES['csv_file']) && !empty($_FILES['csv_file']['tmp_name'])) {
+        $csv_file = $_FILES['csv_file']['tmp_name'];
+        $csv_data = array();
+
+        $post_type = $_POST['type'];
+
+        if (($handle = fopen($csv_file, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+                $csv_data[] = $row;
+            }                      
+
+            array_shift($csv_data);
+            foreach ($csv_data as $row) {
+                
+                $upload_id = $row[0];
+                $business_name = $row[1];
+                $address = preg_replace('/[^\p{L}\p{N}\s]/u', '', $row[2]);
+                $website = $row[3];
+                $email_list = strtolower($row[4]);
+                $phone = preg_replace('/[^\p{L}\p{N}\s]/u', '', $row[5]);
+                $business_description = clean($row[6]); 
+                
+                if(!empty($email_list)) {
+
+                    $email_list = str_replace( array( '[', ']', '"' ), '', $email_list);
+                    $email_list = explode(",",$email_list);
+
+                    $i = 0;                    
+                    if(!empty($email_list) && sizeof($email_list) > 0) {
+                                                  
+                        $primary_email = array_shift($email_list); //get the mail email
+
+                        $exists = email_exists($primary_email);
+                        if ( $exists ) { //Email exists 
+                            echo "<p style='color:red;'>That E-mail is registered to user number " . $exists."</p>";
+                        } else { //User add & Post add                    
+
+                            $email_part = strstr($primary_email, '@', true);
+                            $name_part = strtolower(str_replace(' ', '_', $business_name));
+                            $login_name = $name_part . '_' . $email_part;
+
+                            $userdata = array(
+                                'user_login' =>  $login_name,
+                                'user_email' =>  $primary_email,
+                                'first_name' => $business_name,
+                                'user_pass'  =>  wp_generate_password( 12, true, true ),
+                                'role' => 'basic' //For now
+                            );                            
+
+                            $user_id = wp_insert_user( $userdata ) ;
+                    
+                            if ( ! is_wp_error( $user_id ) ) {
+                    
+                                $new_post = array(
+                                    'post_title' => $business_name,
+                                    'post_content' => wp_filter_post_kses($business_description),
+                                    'post_status' => 'publish',
+                                    'post_date' => date('Y-m-d H:i:s'),
+                                    'post_author' => $user_id,
+                                    'post_type' => $post_type,
+                                );
+
+                                $post_id = wp_insert_post($new_post);
+
+                                if(!is_wp_error($post_id)){
+                                    
+                                    add_post_meta( $post_id, 'address', $address, true );
+                                    add_post_meta( $post_id, 'phone', $phone, true );
+                                    add_post_meta( $post_id, 'website', $website, true );
+                                    // add_post_meta( $post_id, 'gmb_link', $gmb_link, true );
+                                    
+                                    // wp_set_post_terms( $post_id, $city, 'lawyers-location' );                
+                        
+                                    if(!empty($email_list) && sizeof($email_list) > 0) { //get the mail email
+                                        update_post_meta($post_id, 'other_email', implode(',', $email_list)); 
+                                    }   
+                                    
+                                    echo "<p>User id: ".$user_id." , Post id: ".$post_id."</p>";
+                                    echo "<p style='color:green;'>Uploaded id (from sheet): ".$upload_id."</p>";
+                                    
+                                } else {
+                                    //there was an error in the post insertion, 
+                                    echo $post_id->get_error_message();
+                                    echo "<p style='color:red;'>Error on adding post. Upload id: ".$upload_id."</p>";
+                                }                                            
+
+                                
+                            
+                            } else {
+
+                                echo "<p style='color:red;'>Error on adding User. Upload id: ".$upload_id."</p><br>";
+
+                            } 
+                            
+                        }
+                          
+                    }
+                }
+
+                echo "<br>--------------<br>";
+
+            }
+            
+            fclose($handle);  
+
+            // Save the CSV data to the options table
+            update_option('last_csv_import_time', date('Y-m-d H:i:s'));
+
+            echo '<div class="updated"><p>CSV imported successfully!</p></div>';
+        } else {
+            echo '<div class="error"><p>Failed to open the CSV file.</p></div>';
+        }
+    } else {
+        echo '<div class="error"><p>Please upload a CSV file.</p></div>';
+    }
+
+}
+
+
+function clean($string) {
+    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+    $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+ 
+    return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+}
