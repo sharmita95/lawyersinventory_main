@@ -1,0 +1,74 @@
+<?php
+$category_issue_slug = 'lawyers-category';
+      
+$phone_no = get_post_meta($id,'phone',true);
+$contact_web = get_post_meta($id,'contact_web',true);
+$address = get_post_meta($id,'address',true);
+$content = strip_tags(get_the_content());
+$content = substr($content,0, 200);
+
+$thumbnail_img = get_the_post_thumbnail($id, 'thumbnail', array( 'class' => '' ) );
+?>
+
+<div class="col-md-12 lawyers-card">
+    <div class="row">
+        
+        <div class="col-md-2 col-xs-12">
+            <div class="image-container">
+			    <?php if(!empty($thumbnail_img)) {
+			        echo get_the_post_thumbnail($id, 'thumbnail', array( 'class' => '' ) );
+			    } else { ?>
+			        <img src="<?php echo get_template_directory_uri(); ?>/framework/falcons-profile/assets/images/default-lawyer.png" alt="image">
+			    <?php } ?>
+			</div>
+        </div>
+        <div class="col-md-7 col-xs-12">
+            <div class="cbp-l-caption-body">
+				<a href="<?php echo get_the_permalink($id); ?>">
+				    <div class="cbp-l-caption-title">
+				        <h2>
+				            <?php echo $post->post_title; ?>
+				            <!--<div class="premium-profile-tag">Premium</div>-->
+				        </h2>
+				        
+				    </div>
+				</a>
+				<ul class="isuues-list">
+                    <?php foreach ( get_the_terms( $id, $category_issue_slug ) as $term ) {
+                        $term_link = get_term_link( $term );
+                        if ( is_wp_error( $term_link ) ) {
+                            continue;
+                        }
+                        echo '<li><a href="' . esc_url( $term_link ) . '">' . $term->name . '</a></li>';
+                    } ?>
+				</ul>
+				<p><?php echo $content; ?></p>
+			</div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+            
+            <div class="listing-ctas">
+                <div class="result_contact_info">
+                    <?php if(!empty($phone_no)) { ?>
+                    <a rel="sponsored" class="serp_result_phone listing-desc-phone directory_phone" href="tel:<?php echo $phone_no; ?>">
+                        <i class="fa fa-phone" aria-hidden="true"></i><?php echo $phone_no; ?>
+                    </a>
+                    <?php } ?>
+                    <a class="listing-desc-phone directory_profile" href="<?php echo get_the_permalink($id); ?>">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        Visit Profile
+                    </a>
+                    <a class="listing-desc-contact directory_contact">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> <?php echo $address; ?>
+                    </a>
+                    <p class="listing-free-consult"><i class="fa fa-check" aria-hidden="true"></i>Free Consultation</p>
+                </div>
+                <a class="directory_website" href="<?php echo $contact_web; ?>">
+                    <div class="button">Visit Website</div>
+                </a>
+            </div>
+            
+        </div>
+        
+	</div>
+</div>
