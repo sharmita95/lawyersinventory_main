@@ -1,24 +1,4 @@
 <?php 
-add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
-function lyi_enqueue_files() {
-
-    $ver = '1.0.8';
-
-    wp_enqueue_script( 'jquery' );    
-    wp_enqueue_script('custom-js', LYI_URI. '/js/custom.js', array('jquery'), $ver, true);
-	$jsData = [
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'test' => '123',
-        'test1' => 'world',
-    ];
-
-    wp_localize_script('custom-js', 'Front', $jsData);
-    
-}
-
-
-
-
 
 add_action('init', 'add_custom_user_role');
 function add_custom_user_role() {

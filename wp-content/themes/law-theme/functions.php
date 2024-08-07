@@ -14,6 +14,83 @@ if (file_exists(get_template_directory() . '/data-import.php')) {
 	require_once(get_template_directory() . '/data-import.php');
 }
 
+add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
+function lyi_enqueue_files()
+{
+    $ver = rand(10,100);
+    wp_enqueue_script('jquery.min', get_template_directory_uri() . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
+    // wp_enqueue_script('owl.carousel.min', get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), $ver, true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/ThemeScript.js', array('jquery'), $ver, true);
+    // wp_enqueue_script('swiper-bundle.js.min', get_template_directory_uri() . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
+
+    // wp_enqueue_style('owl.carousel.min', get_template_directory_uri() . '/css/owl.carousel.min.css', $ver, 'all');
+    // wp_enqueue_style('swiper-bundle.css.min', get_template_directory_uri() . '/css/swiper-bundle.min.css', $ver, 'all');
+    wp_enqueue_style('style', get_stylesheet_uri(), false, '', 'all');
+
+    wp_enqueue_script( 'jquery' );    
+    wp_enqueue_script('custom-js', LYI_URI. '/js/custom.js', array('jquery'), $ver, true);
+	$jsData = [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'test' => '123',
+        'test1' => 'world',
+    ];
+
+    wp_localize_script('custom-js', 'Front', $jsData);
+    
+}
+
+add_action( 'after_setup_theme', 'custom_theme_setup' );
+if(!function_exists('custom_theme_setup'))
+{
+	function custom_theme_setup()
+	{
+		load_theme_textdomain( 'custom_theme' );
+		add_theme_support( 'automatic-feed-links' );		
+		add_theme_support( 'title-tag' );		
+		add_theme_support( 'custom-logo');		
+		add_theme_support( 'post-thumbnails');
+		add_theme_support('html5', array('comment-form','comment-list','script', 'style') );
+
+		$GLOBALS['content_width'] = 900;
+		
+		set_post_thumbnail_size( 1200, 9999 );
+
+        //Add Image Size
+		add_image_size('breed-hero-thumbnail', 830, 503, true);
+
+        //Add Role
+		// if (!(wp_roles()->is_role('pet-vet'))){
+		// 	add_role( 'pet-vet', 'Veterinarians', get_role( 'author' )->capabilities);
+		// }
+		// if (!(wp_roles()->is_role('pet-parent'))){
+		// 	add_role( 'pet-parent', 'Parents', get_role( 'author' )->capabilities);
+		// }
+		// if (!(wp_roles()->is_role('pet-groomer'))){
+		// 	add_role( 'pet-groomer', 'Groomers', get_role( 'author' )->capabilities);
+		// }
+		// if (!(wp_roles()->is_role('pet-trainer'))){
+		// 	add_role( 'pet-trainer', 'Trainers', get_role( 'author' )->capabilities);
+		// }
+		// if (!(wp_roles()->is_role('pet-shop'))){
+		// 	add_role( 'pet-shop', 'Shops', get_role( 'author' )->capabilities);
+		// }
+		// if (!(wp_roles()->is_role('pet-clinic'))){
+		// 	add_role( 'pet-clinic', 'Clinic/Labs', get_role( 'author' )->capabilities);
+		// }
+
+
+
+        //Show Admin bar on Login as per Role
+		$allowed_roles = array('administrator', 'editor', 'author');
+		if(!count(array_intersect($allowed_roles, wp_get_current_user()->roles))) {
+			show_admin_bar(false);
+		} else {
+			show_admin_bar(true);
+		}
+	}
+}
+
+
 /*
 * Creating a function to create our CPT
 */
@@ -22,7 +99,7 @@ add_action( 'init', 'custom_post_type', 0 );
 function custom_post_type() {
   
     // Lawyers
-    $labels = array(
+    $labels_lawyers = array(
         'name'                => _x( 'Lawyers', 'Post Type General Name', 'lyi' ),
         'singular_name'       => _x( 'Lawyers', 'Post Type Singular Name', 'lyi' ),
         'menu_name'           => __( 'Lawyers', 'lyi' ),
@@ -38,11 +115,11 @@ function custom_post_type() {
         'not_found_in_trash'  => __( 'Not found in Trash', 'lyi' ),
     );
         
-    $args = array(
+    $args_lawyers = array(
         'label'               => __( 'lawyers', 'lyi' ),
         'description'         => __( 'Movie news and reviews', 'lyi' ),
-        'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields', ),
+        'labels'              => $labels_lawyers,
+        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields' ),
         // 'taxonomies'          => array( 'genres' ),
         'hierarchical'        => false,
         'public'              => true,
@@ -59,10 +136,10 @@ function custom_post_type() {
         'show_in_rest' => true,
     
     );
-    register_post_type( 'lawyers', $args );
+    register_post_type( 'lawyers', $args_lawyers );
 
     //Law Firms
-    $labels = array(
+    $labels_firms = array(
         'name'                => _x( 'Law Firms', 'Post Type General Name', 'lyi' ),
         'singular_name'       => _x( 'Law Firms', 'Post Type Singular Name', 'lyi' ),
         'menu_name'           => __( 'Law Firms', 'lyi' ),
@@ -78,10 +155,10 @@ function custom_post_type() {
         'not_found_in_trash'  => __( 'Not found in Trash', 'lyi' ),
     );
         
-    $args = array(
+    $args_firms = array(
         'label'               => __( 'law-firms', 'lyi' ),
-        'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields', ),
+        'labels'              => $labels_firms,
+        'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'custom-fields', ),
         // 'taxonomies'          => array( 'genres' ),
         'hierarchical'        => false,
         'public'              => true,
@@ -98,7 +175,7 @@ function custom_post_type() {
         'show_in_rest' => true,
     
     );
-    register_post_type( 'law-firms', $args );
+    register_post_type( 'law-firms', $args_firms );
     
 }
 

@@ -13,13 +13,13 @@ $countryList = get_terms(array(
 ?>
 
 
-<form id="find-lawyers-by-location" action="" method="POST">
+<!-- <form id="find-lawyers-by-location" action="" method="POST">
 
     <select name="country" id="country">
         <option value="">Choose Country</option>
-        <?php foreach($countryList as $country) { ?>
+        <?php /*foreach($countryList as $country) { ?>
             <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
-        <?php } ?>
+        <?php }*/ ?>
     </select>
 
     <select name="state" id="state">
@@ -28,7 +28,7 @@ $countryList = get_terms(array(
 
     <select name="city" id="city">
         <option value="">Choose City</option>
-    </select>
+    </select> -->
 
     <?php 
     /*if ( !empty($taxonomies) ) :
@@ -49,19 +49,20 @@ $countryList = get_terms(array(
         echo $output;
     endif; */ ?>
 
-    <input type="submit" value="Submit"/>
+    <!-- <input type="submit" value="Submit"/>
 
-</form>
-
-
+</form> -->
 
 
-<!--------------------------- HTML ------------------------------->$_COOKIE<section class="lawyers-common-banner-sec">
+
+
+<!--------------------------- HTML ------------------------------->
+<section class="lawyers-common-banner-sec">
     <div class="container mx-auto">
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers In US
+                    Best Lawyers
                 </h2>
             </div>
         </div>
@@ -80,45 +81,35 @@ $countryList = get_terms(array(
         </div>
 
         <div class="lawyers-filter-submit-from-whapper">
-            <form action="/action_page.php" class="lawyers-filter-submit-from">
+            <form id="find-lawyers-by-location" action="" method="POST" class="lawyers-filter-submit-from">
                 <div class="lawyers-filter-left-sec">
                     <div class="lawyers-filter-select-option-wrapper">
-                        <!-- <label for="cars">Choose a car:</label> -->
-                        <select x class="lawyers-filter-select-option" name="lawyers Type" id="cars">
-                            <option value="volvo" selected>lawyers Type</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select x class="lawyers-filter-select-option" name="issue" id="issue">
+                            <option value="" selected>lawyers Type</option>
+                            <option value="1" slug="family">Family</option>
+                            <option value="2" slug="criminal">Criminal</option>
+                            <option value="3" slug="business">Business</option>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <!-- <label for="cars">Choose a car:</label> -->
-                        <select x class="lawyers-filter-select-option" name="choose a country" id="cars">
-                            <option value="volvo" selected>choose a country</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="country" id="country" x class="lawyers-filter-select-option">
+                            <option value="">Choose Country</option>
+                            <?php foreach($countryList as $country) { ?>
+                                <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
+                            <?php } ?>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <!-- <label for="cars">Choose a car:</label> -->
-                        <select x class="lawyers-filter-select-option" name="choose a state" id="cars">
-                            <option value="volvo" selected>choose a state</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="state" id="state" x class="lawyers-filter-select-option">
+                            <option value="">Choose State</option>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <!-- <label for="cars">Choose a car:</label> -->
-                        <select x class="lawyers-filter-select-option" name="choose a city" id="cars">
-                            <option value="volvo" selected>choose a city</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="city" id="city" x class="lawyers-filter-select-option">
+                            <option value="">Choose City</option>
                         </select>
                     </div>
 
@@ -135,461 +126,14 @@ $countryList = get_terms(array(
 
         <div class="lawyers-card-grid-wrapper">
             <div class="lawyers-card-grid">
-
-                <div class="lawyers-card">
-
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-5.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-6.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-7.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-8.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-9.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-10.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-4.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-3.png'; ?>" alt="lawyers image">
-                    </figure>
-
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-2.png'; ?>" alt="lawyers image">
-                    </figure>
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-2.png'; ?>" alt="lawyers image">
-                    </figure>
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-6.png'; ?>" alt="lawyers image">
-                    </figure>
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lawyers-card">
-                    <figure class="lawyers-card-figure">
-                        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-10.png'; ?>" alt="lawyers image">
-                    </figure>
-                    <div class="lawyers-card-content">
-                        <div class="lawyers-card-title-button-wrapper">
-                            <div class="lawyers-card-title-wrapper">
-                                <h2 class="lawyers-card-title">Joe Stephens</h2>
-                                <p class="lawyers-card-subtitle">
-                                    Car Accidents
-                                </p>
-                            </div>
-                            <button class="lawyers-card-button">
-                                <span class="icon-arrow-right2"></span>
-                            </button>
-                        </div>
-                        <div class="lawyers-card-social-wrapper">
-
-                            <div class="lawyers-card-social-inner-wrapper">
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-instarm"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-fb"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-linked-in"></span>
-                                </a>
-                                <a class="lawyers-card-social-icon" href="">
-                                    <span class="icon-Vector"></span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+                <?php 
+                if (have_posts()) :
+                    while (have_posts()) : the_post();
+                        get_template_part('template-parts/lawyers', 'card');
+                    endwhile; ?>
+                <?php else : ?>
+                    <p>No data available</p>
+                <?php endif; ?>
             </div>
         </div>
 

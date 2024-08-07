@@ -162,8 +162,7 @@ function custom_csv_import_handler() {
                 $phone = clean($row[5]);
                 $business_description = clean($row[6]); 
                 $gmb_link = str_replace('"', '', $row[7]).'<br>'; 
-                $rating_count = $row[8];
-                $total_rating = $row[9];
+                $reviews_count = $row[8];
                 
                 if(!empty($email_list)) {
 
@@ -216,8 +215,7 @@ function custom_csv_import_handler() {
                                     add_post_meta( $post_id, 'phone', $phone, true );
                                     add_post_meta( $post_id, 'website', $website, true );
                                     add_post_meta( $post_id, 'gmb_link', $gmb_link, true );
-                                    add_post_meta( $post_id, 'rating_count', $rating_count, true );
-                                    add_post_meta( $post_id, 'total_rating', $total_rating, true );
+                                    add_post_meta( $post_id, 'reviews_count', $reviews_count, true );
                                     
                                     //Adding city depending on the post type(taxonomy)
                                     wp_set_post_terms( $post_id, $city_id, $taxonomy );                
@@ -232,7 +230,7 @@ function custom_csv_import_handler() {
                                 } else {
                                     //there was an error in the post insertion, 
                                     echo $post_id->get_error_message();
-                                    echo "<p style='color:red;'>Error on adding post. Sheet row id: ".$upload_id."</p>";
+                                    echo "<p style='color:red;'>Error on adding post. Upload id: ".$upload_id."</p>";
                                 }    
                             
                             } else {
@@ -241,7 +239,7 @@ function custom_csv_import_handler() {
                                     echo $user_id->get_error_message();
                                 echo '</div>';
 
-                                echo "<p style='color:red;'>Error on creating User. Sheet row id: ".$upload_id."</p>";
+                                echo "<p style='color:red;'>Error on creating User. Upload id: ".$upload_id."</p>";
 
                             } 
                             

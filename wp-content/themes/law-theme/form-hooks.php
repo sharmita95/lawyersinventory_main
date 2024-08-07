@@ -13,7 +13,7 @@ function LYI_registration_func() {
     ));
     ?>
     <div class="contactpage-form">
-        <form name="lyi_registration_form" method="post" id="ft_contact_form" action="">
+        <form name="lyi_registration_form" method="post" id="lyi_registration_form" action="">
             <input type="hidden" name="action" value="lyi_registration_process" />
 
             <input type="radio" id="lyr" name="user_type" value="lawyers" checked="checked"><label for="lyr">Lawyers</label>            

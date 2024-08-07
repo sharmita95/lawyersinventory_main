@@ -19,7 +19,12 @@ if(empty($grand_parent_id) && empty($parent_id)) { //Country
 } else {
     echo "It's a city</br>";
     echo get_term($grand_parent_id)->name . ' > ' . get_term( $parent_id )->name . '>' .get_queried_object()->name;
-}
+} ?>
 
 
+
+
+
+
+<?php
 get_footer();
