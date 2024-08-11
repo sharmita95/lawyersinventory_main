@@ -2,6 +2,12 @@
 get_header(); ?>
 
 <div>
+    <h3>Free</h3>
+    <p>Nothing, only can login (can do nothing)</p>
+    <span>Price: N/A (If subscription expires)</span>
+</div>
+
+<div>
     <h3>Basic</h3>
     <p>Profile Listing</p>
     <span>Price: Free</span>
