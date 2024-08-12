@@ -1,14 +1,76 @@
 <?php get_header(); ?>
 
 <?php while (have_posts()) : the_post();
-    $post_id = get_queried_object_id(); ?>
+    
+        $post_id = get_queried_object_id();
+        $title = get_the_title();
+        $myvals = get_post_meta($post_id);
+
+        foreach($myvals as $key=>$val)
+        {
+            // echo $key . ' : ' . $val[0] . '<br/>';
+            if($key == 'associated_email') $email = $val[0];
+            if($key == 'phone_number') $phone = $val[0];
+            if($key == 'address') $address = $val[0];
+            if($key == 'profile_description') $profile_description  = $val[0];
+            if($key == 'cost') $cost  = $val[0];
+            if($key == 'availability') $availability  = $val[0];
+            if($key == 'gmb_link') $gmb_link  = $val[0];
+            if($key == 'rating') $rating  = $val[0];
+            if($key == 'total_rating') $total_rating  = $val[0];
+            if($key == 'fb_link') $fb_link  = $val[0];
+            if($key == 'insta_link') $insta_link  = $val[0];
+            if($key == 'linkedin_url') $linkedin_url  = $val[0];
+            if($key == 'twitter_url') $twitter_url  = $val[0];
+
+            // if($key == 'latitude') $lat  = !empty($val[0]) ? '70.999956':'';
+            // if($key == 'longitude') $lon  = !empty($val[0]) ? '70.999956':'';
+            if($key == 'latitude') $lat  = $val[0];
+            if($key == 'longitude') $lon  = $val[0];
+        }
+
+        $img_url = get_the_post_thumbnail_url($post_id,'lawyers-list-thumbnail'); 
+        if(!$img_url) $img_url= get_template_directory_uri() . '/images/lawyer-details-image.jpg';
+
+        
+        //Generating Lat and Lon
+        $api_key = '66a802526abcd459524436has4fc924';
+        if (!empty($address)) {
+            $original_address = get_the_author_meta('first_name', $post_id).', '.$address;
+
+            //Checking if it exists on the DB. If not generate lat, lon
+            if (empty($lat) && empty($lon)) { 
+                $new_address = str_replace(" ", "+", $original_address);
+                $json = file_get_contents("https://geocode.maps.co/search?q=$new_address&api_key=$api_key");
+                $json = json_decode($json);
+                if (!empty($json)) {
+                    $lat = $json[0]->lat;
+                    $lon = $json[0]->lon;
+                    update_post_meta($post_id, 'latitude', $lat);
+                    update_post_meta($post_id, 'longitude', $lon);
+                } else {
+
+                    $new_address = str_replace(" ", "+", $address);
+                    $json = file_get_contents("https://geocode.maps.co/search?q=$new_address&api_key=$api_key");
+                    $json = json_decode($json);
+                    if (!empty($json)) {
+                        $lat = $json[0]->lat;
+                        $lon = $json[0]->lon;
+                        update_post_meta($post_id, 'latitude', $lat);
+                        update_post_meta($post_id, 'longitude', $lon);
+                    }
+
+                }
+            }
+        }
+        ?>
 
     <section class="lawyers-common-banner-sec">
         <div class="container mx-auto">
             <div class="lawyers-c-b-inner">
                 <div class="l-c-b-title-wrapper">
                     <h2 class="l-c-b-title">
-                        Law firm
+                        Best Law firm
                     </h2>
                 </div>
             </div>
@@ -27,6 +89,30 @@
                             alt="lawyers image"> -->
                             <?php echo get_the_post_thumbnail( $post_id, 'full', array( 'class' => 'image-responsive' ) ); ?>
                         </figure>
+                        <div class="lawyers-d-f-c-content-card">
+                            <div class="lawyers-d-f-c-content-card-left-icon-bar">
+                                <span class="left-icon-bar-separator-line"></span>
+                                <span class="left-icon-bar-separator-line"></span>
+                            </div>
+
+                            <div class="lawyers-d-f-c-content-card-content-sec">
+                                <?php if(!empty($email)) { ?>
+                                    <h4 class="lawyers-d-f-c-content-card-common-text lawyers-d-f-c-content-card-email ">
+                                        <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+                                    </h4>
+                                <?php }
+                                if(!empty($phone)) { ?>
+                                    <h4 class="lawyers-d-f-c-content-card-common-text lawyers-d-f-c-content-card-phone">
+                                        <span><?php echo $phone; ?></span>
+                                    </h4>
+                                <?php }
+                                if(!empty($address)) { ?>
+                                    <h4 class="lawyers-d-f-c-content-card-common-text lawyers-d-f-c-content-card-location">
+                                        <?php echo $address; ?>
+                                    </h4>
+                                <?php } ?>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -34,47 +120,77 @@
                     <div class="lawyers-d-c-title-sec">
                         <div class="lawyers-d-f-c-title-content">
                             <h3 class="lawyers-d-f-c-title">
-                                <?php the_title(); ?>
+                                <?php echo $title; ?>
                             </h3>
                         </div>
 
                         <div class="lawyers-d-c-rating-sec">
-                            <div class="lawyers-d-c-rating-wrapper">
+                            <div class="lawyers-d-c-rating-wrapper"> 
+                                <div class="lawyers-d-c-rating-card">
+                                    <span class="icon-ster"></span>
+                                </div>
+
+                                <div class="lawyers-d-c-rating-card">
+                                    <span class="icon-ster"></span>
+                                </div>
+
+                                <div class="lawyers-d-c-rating-card">
+                                    <span class="icon-ster"></span>
+                                </div>
+
+                                <div class="lawyers-d-c-rating-card">
+                                    <span class="icon-ster"></span>
+                                </div>
+
+                                <div class="lawyers-d-c-rating-card">
+                                    <span class="icon-hulf-ster"></span>
+                                </div>
                             </div>
-                            <p class="lawyers-d-c-rating-date">
-                                4.5/5
-                            </p>
+                            <?php if(!empty($rating)) { ?>
+                                <p class="lawyers-d-c-rating-date">
+                                    <?php echo $rating; ?>/5
+                                </p>
+                            <?php } ?>
                         </div>
                     </div>
 
                     <div class="lawyers-d-c-social-media-sec">
                         <div class="l-d-c-social-media">
-                            <a href="" class="l-d-c-social-media-card">
-                                <span class="icon-fb"></span>
-                            </a>
-                            <a href="" class="l-d-c-social-media-card">
-                                <span class="icon-instarm"></span>
-                            </a>
-                            <a href="" class="l-d-c-social-media-card">
-                                <span class="icon-linked-in"></span>
-                            </a>
-                            <a href="" class="l-d-c-social-media-card">
-                                <span class="icon-Vector"></span>
-                            </a>
+                            <?php if(!empty($fb_link)) { ?>
+                                <a href="<?php echo $fb_link; ?>" target="_blank" rel="noopener nofollow noreferrer" class="l-d-c-social-media-card">
+                                    <span class="icon-facebook"></span>
+                                </a>
+                            <?php }
+                            if(!empty($insta_link)) { ?>
+                                <a href="<?php echo $insta_link; ?>" target="_blank" rel="noopener nofollow noreferrer" class="l-d-c-social-media-card">
+                                    <span class="icon-instagram"></span>
+                                </a>
+                            <?php }
+                            if(!empty($linkedin_url)) { ?>
+                                <a href="<?php echo $linkedin_url; ?>" target="_blank" rel="noopener nofollow noreferrer" class="l-d-c-social-media-card">
+                                    <span class="icon-linkedin"></span>
+                                </a>
+                            <?php }
+                            if(!empty($twitter_link)) { ?>
+                                <a href="<?php echo $twitter_link; ?>" target="_blank" rel="noopener nofollow noreferrer" class="l-d-c-social-media-card">
+                                    <span class="icon-Twitter-x"></span>
+                                </a>
+                            <?php } ?>
                         </div>
                     </div>
 
 
                     <div class="join join-vertical w-full">
-                        <div class="collapse collapse-arrow join-item border-t !rounded-0">
-                            <input type="radio" name="my-accordion-4" checked="checked" />
-                            <div class="collapse-title text-xl font-medium">About Us</div>
-                            <div class="collapse-content">
-                                <p>
-                                    Crary Buchanan, Attorneys At Law, in Stuart, FL, serves clients in a number of ways from personal injury to business transactions. The firm is dedicated to helping clients no matter what their legal issues are. Founded in 1927, the firm has a history and reputation for being strong for the community and clients. Our Services
-                                </p>
+                        <?php if(!empty($profile_description)) { ?>
+                            <div class="collapse collapse-arrow join-item border-t !rounded-0">
+                                <input type="radio" name="my-accordion-4" checked="checked" />
+                                <div class="collapse-title text-xl font-medium">About Us</div>
+                                <div class="collapse-content">
+                                    <p><?php echo $profile_description; ?></p>
+                                </div>
                             </div>
-                        </div>
+                        <?php }
+                        ?>
                         <div class="collapse collapse-arrow join-item border-t rounded-0">
                             <input type="radio" name="my-accordion-4" />
                             <div class="collapse-title text-xl font-medium">Legal Issues</div>
@@ -82,46 +198,49 @@
                                 <p>Crary Buchanan, Attorneys At Law, in Stuart, FL, serves clients in a number of ways from personal injury to business transactions. The firm is dedicated to helping clients no matter what their legal issues are. Founded in 1927, the firm has a history and reputation for being strong for the community and clients. Our Services</p>
                             </div>
                         </div>
-                        <div class="collapse collapse-arrow join-item border-t rounded-0">
-                            <input type="radio" name="my-accordion-4" />
-                            <div class="collapse-title text-xl font-medium">Cost & Availability</div>
-                            <div class="collapse-content">
-                                <p>Crary Buchanan, Attorneys At Law, in Stuart, FL, serves clients in a number of ways from personal injury to business transactions. The firm is dedicated to helping clients no matter what their legal issues are. Founded in 1927, the firm has a history and reputation for being strong for the community and clients. Our Services</p>
+                        <?php 
+                        if(!empty($cost) || !empty($availability)) { ?>
+                            <div class="collapse collapse-arrow join-item border-y rounded-0">
+                                <input type="radio" name="my-accordion-4" />
+                                <div class="collapse-title text-xl font-medium">Cost & Availability</div>
+                                <div class="collapse-content">
+                                    <?php if(!empty($cost)) { 
+                                        echo '<p>'.$cost.'</p>';
+                                    } 
+                                    if(!empty($availability)) { 
+                                        echo '<p>'.$availability.'</p>';
+                                    } ?>
+                                    
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        <?php }
+                        
+                        if(!empty($lan) || !empty($lon)) { ?>
+                            <div class="collapse collapse-arrow join-item border-y rounded-0">
+                                <input type="radio" name="my-accordion-4" />
+                                <div class="collapse-title text-xl font-medium">Map</div>
+                                <div class="collapse-content">
+                                
+                                    <iframe 
+                                    width="100%" 
+                                    height="200" 
+                                    frameborder="0" 
+                                    scrolling="no" 
+                                    marginheight="0" 
+                                    marginwidth="0" 
+                                    src="https://maps.google.com/maps?q=<?php echo $lat; ?>,<?php echo $lon; ?>&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
 
-            <div class="lawyers-d-c-register-sec">
-                <div class="l-d-register-content-side">
-                    <h2 class="">
-                        Get A Consultation!
-                    </h2>
-                    <p class="">
-                        Register with us to schedule a free consultation
-                    </p>
-                </div>
-
-                <div class="l-d-register-from">
-
-                </div>
-
-            </div>
-
-            <div class="review-rating-sec">
-                <div class="r-r-sec-title-wrapper">
-                    <h2 class="r-r-sec-title">
-                        Review
-                    </h2>
-                </div>
-                <div class="review-rating-card-grid-wrapper">
-                    <div class="review-rating-card">
-
+                                </div>
+                            </div>
+                        <?php } ?>
 
                     </div>
                 </div>
             </div>
+
+            
+
+            
         </div>
     </section>
 

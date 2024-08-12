@@ -56,8 +56,7 @@ function custom_csv_import_instruction() { ?>
                     <td>phone </td>
                     <td>address </td>
                     <td>image_url</td>
-                    <td>profile_description </td>
-                    <td>qualifications </td>
+                    <td>profile_description </td>                    
                     <td>practice area</td>
                     <td>cost </td>
                     <td>availability</td>
@@ -67,6 +66,7 @@ function custom_csv_import_instruction() { ?>
                     <td>FB link</td>
                     <td>Insta Link</td>
                     <td>Linkedin link</td>
+                    <td>qualifications </td>
                 </tr>
             </table>
             <p>Download a dummy CSV for your reference For Lawyers
@@ -307,18 +307,19 @@ function custom_csv_import_handler() {
                 $phone = clean($row[3]);
                 $address = clean($row[4]);
                 $image = $row[5];
-                $profile_description = clean($row[6]);
-                $qualification = clean($row[7]);
-                $practice_area = $row[8];
-                $cost = clean($row[9]);
-                $availability = clean($row[10]);
-                $gmb_link = $row[11];
-                $rating = $row[12];
-                $total_rating = $row[13];
-                $fb_link = $row[14];
-                $insta_link = $row[15];
-                $linkedin_url = $row[16];
-                $twitter_url = $row[17];
+                $profile_description = clean($row[6]);                
+                $practice_area = $row[7];
+                $cost = clean($row[8]);
+                $availability = clean($row[9]);
+                $gmb_link = $row[10];
+                $rating = $row[11];
+                $total_rating = $row[12];
+                $fb_link = $row[13];
+                $insta_link = $row[14];
+                $linkedin_url = $row[15];
+                $twitter_url = $row[16];
+                if($post_type == 'lawyers')
+                $qualification = clean($row[17]);
 
                 if (!empty($email_list)) {
 
@@ -396,18 +397,19 @@ function importing_post_data($user_id, $email_list, $primary_email, $row, $post_
     $phone = clean($row[3]);
     $address = clean($row[4]);
     $image = $row[5];
-    $profile_description = clean($row[6]);
-    $qualification = clean($row[7]);
-    $practice_area = $row[8];
-    $cost = clean($row[9]);
-    $availability = clean($row[10]);
-    $gmb_link = $row[11];
-    $rating = $row[12];
-    $total_rating = $row[13];
-    $fb_link = $row[14];
-    $insta_link = $row[15];
-    $linkedin_url = $row[16];
-    $twitter_url = $row[17];
+    $profile_description = clean($row[6]);                
+    $practice_area = $row[7];
+    $cost = clean($row[8]);
+    $availability = clean($row[9]);
+    $gmb_link = $row[10];
+    $rating = $row[11];
+    $total_rating = $row[12];
+    $fb_link = $row[13];
+    $insta_link = $row[14];
+    $linkedin_url = $row[15];
+    $twitter_url = $row[16];
+    if($post_type == 'lawyers')
+    $qualification = clean($row[17]);
 
     $myquery = new WP_Query( array(
         'post_type' => $post_type,
@@ -449,7 +451,7 @@ function importing_post_data($user_id, $email_list, $primary_email, $row, $post_
             //image pending;
             if(!empty($image)) update_post_meta($post_id, 'image', $image);
             if(!empty($profile_description)) update_post_meta($post_id, 'profile_description', $profile_description);
-            if(!empty($qualification)) update_post_meta($post_id, 'image', $qualification);
+            if(!empty($qualification)) update_post_meta($post_id, 'qualification', $qualification);
             //practice area pending
             if(!empty($practice_area)) update_post_meta($post_id, 'practice_area', $practice_area);
             if(!empty($cost)) update_post_meta($post_id, 'cost', $cost);

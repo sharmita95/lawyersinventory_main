@@ -8,7 +8,7 @@
 
         foreach($myvals as $key=>$val)
         {
-            echo $key . ' : ' . $val[0] . '<br/>';
+            // echo $key . ' : ' . $val[0] . '<br/>';
             if($key == 'associated_email') $email = $val[0];
             if($key == 'phone_number') $phone = $val[0];
             if($key == 'address') $address = $val[0];
@@ -33,8 +33,8 @@
         $img_url = get_the_post_thumbnail_url($post_id,'lawyers-list-thumbnail'); 
         if(!$img_url) $img_url= get_template_directory_uri() . '/images/lawyer-details-image.jpg';
 
-        $api_key = '66a802526abcd459524436has4fc924';
         //Generating Lat and Lon
+        $api_key = '66a802526abcd459524436has4fc924';
         if (!empty($address)) {
             $original_address = get_the_author_meta('first_name', $post_id).', '.$address;
 
@@ -72,7 +72,7 @@
                 <div class="lawyers-c-b-inner">
                     <div class="l-c-b-title-wrapper">
                         <h2 class="l-c-b-title">
-                            Best Lawyers In US
+                            Best Lawyer
                         </h2>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                                     scrolling="no" 
                                     marginheight="0" 
                                     marginwidth="0" 
-                                    src="https://maps.google.com/maps?q=<?php echo $lat; ?>,<?php echo $lon; ?>&t=&z=15&ie=UTF8&iwloc=&output=embed" />
+                                    src="https://maps.google.com/maps?q=<?php echo $lat; ?>,<?php echo $lon; ?>&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
 
                                 </div>
                             </div>
