@@ -25,6 +25,14 @@ function custom_csv_import_menu()
         'lawyers-import',     // Submenu slug
         'lawyers_import_callback' // Function to display the content
     );
+    add_submenu_page(
+        'custom-csv-import',        // Parent slug
+        'Firms Data Import',         // Page title
+        'Firms Data Import',                    // Menu title
+        'view_custom_menu',             // Capability required
+        'firms-import',     // Submenu slug
+        'firms_import_callback' // Function to display the content
+    );
     
 }
 
@@ -138,8 +146,87 @@ function lawyers_import_callback() {
                         <label for="custom_field">Choose Data Type</label>
                     </th>
                     <td>
-                        <input type="text" name="type" readonly value="<?php echo $type; ?>">
-                        <input type="text" name="tax_name" readonly value="<?php echo $data_taxonomy; ?>">
+                        <!-- <input type="text" name="type" readonly value="<?php //echo $type; ?>">
+                        <input type="text"  readonly value="<?php //echo $data_taxonomy; ?>"> -->
+                        <input type="text" name="type" value="<?php echo $type?>" id="type" readonly/>
+                        <input type="text" name="tax_name" value="<?php echo $data_taxonomy?>" id="tax-type" readonly/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="custom_field">Choose City</label>
+                    </th>
+                    <td class="location">
+
+                        <select id="country">
+                            <option>Choose Country</option>
+                            <?php foreach ($countryList as $pet_country) {
+                                echo '<option value="' . $pet_country->term_id . '">' . $pet_country->name . '</option>';
+                            } ?>
+                        </select>
+
+                        <select id="state">
+                            <option>Choose State</option>
+                        </select>
+
+                        <select name="location" id="city">
+                            <option>Choose City</option>
+                        </select>
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="custom_textarea">Upload</label>
+                    </th>
+                    <td>
+                        <input type="file" class="regular-text" name="csv_file" accept=".csv" required>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" name="import_csv" class="button button-primary" value="Import CSV">
+        </form>
+
+
+        <?php
+        if (isset($_POST['import_csv'])) {
+            custom_csv_import_handler();
+        } ?>
+
+    </div>
+
+    <?php
+}
+
+function firms_import_callback() {
+    ?>
+    <div class="wrap">
+        <h1>Import Firms Data</h1>
+        <p></p>
+
+        <?php $type = 'law-firms';
+        
+        $data_taxonomy = 'lawfirms-location';
+        $countryList = get_terms(array( //Get countries
+            'taxonomy' => $data_taxonomy,
+            'parent' => 0,
+            'hide_empty' => false
+        )); ?>        
+
+        <form method="post" enctype="multipart/form-data">
+            <?php wp_nonce_field('custom_form_nonce_action', 'custom_form_nonce'); ?>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <label for="custom_field">Choose Data Type</label>
+                    </th>
+                    <td>
+                        <input type="text" name="type" value="<?php echo $type?>" id="type" readonly/>
+                        <input type="text" name="tax_name" value="<?php echo $data_taxonomy?>" id="tax-type" readonly/>
                     </td>
                 </tr>
 
@@ -361,7 +448,7 @@ function importing_post_data($user_id, $email_list, $primary_email, $row, $post_
             if(!empty($address)) update_post_meta($post_id, 'address', $address);
             //image pending;
             if(!empty($image)) update_post_meta($post_id, 'image', $image);
-            if(!empty($profile_description)) update_post_meta($post_id, 'image', $profile_description);
+            if(!empty($profile_description)) update_post_meta($post_id, 'profile_description', $profile_description);
             if(!empty($qualification)) update_post_meta($post_id, 'image', $qualification);
             //practice area pending
             if(!empty($practice_area)) update_post_meta($post_id, 'practice_area', $practice_area);

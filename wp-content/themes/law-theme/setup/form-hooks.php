@@ -142,11 +142,12 @@ add_action('wp_ajax_nopriv_registration_get_state', 'ajax_registration_get_state
 function ajax_registration_get_state_func() {
     $response_arr = ['flag' => FALSE, 'data' => NULL];
     $country_id = $_POST['country'];
+    $tax_type = $_POST['type'];
     $gen_state_html = '<option value="" label="">Choose State</option>';
 
     if(!empty($country_id)) {
 
-        $stateList = get_terms( 'lawyers-location', 
+        $stateList = get_terms( $tax_type, 
         array(
             'parent' => $country_id,
             'hide_empty' => false,                        
@@ -170,11 +171,12 @@ add_action('wp_ajax_nopriv_registration_get_city', 'ajax_registration_get_city_f
 function ajax_registration_get_city_func() {
     $response_arr = ['flag' => FALSE, 'data' => NULL];
     $state_id = $_POST['state'];
+    $tax_type = $_POST['type'];
     $gen_city_html = '<option value="" label="">Choose City</option>';
 
     if(!empty($state_id)) {
 
-        $cityList = get_terms( 'lawyers-location', 
+        $cityList = get_terms( $tax_type, 
         array(
             'parent' => $state_id,
             'hide_empty' => false,                        

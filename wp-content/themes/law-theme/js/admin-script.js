@@ -1,6 +1,5 @@
 jQuery(document).ready(function ($) {
 
-
     $("#country").on('change', function() {
         var url = this.value;
         //window.open(url);
@@ -11,8 +10,7 @@ jQuery(document).ready(function ($) {
             country: $(this).val(),
             type: $('#tax-type').val()
         };
-
-        console.log(data)
+        // console.log(data);
 
         $.post(myAjax.ajaxurl, data, function (resp) {
             if(resp.flag === true) {
@@ -61,9 +59,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();    
         
         var currentVal = $(this).val();
-
         // $('#'+currentVal+'-location').toggle();
-
         $('.location select').hide();
         $('#'+currentVal+'-location').show();
         
