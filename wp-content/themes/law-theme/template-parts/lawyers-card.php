@@ -1,6 +1,10 @@
+<?php $postid = get_the_ID(); ?>
+
 <div class="lawyers-card">
     <figure class="lawyers-card-figure">
-        <img class="image-responsive" src="<?php echo get_template_directory_uri() . '/images/Lawyers-5.png'; ?>" alt="lawyers image">
+        <?php $img_url = get_the_post_thumbnail_url($postid,'lawyers-list-thumbnail'); 
+        if(!$img_url) $img_url= get_template_directory_uri() . '/images/Lawyers-5.png'; ?>
+        <img class="image-responsive" src="<?php echo $img_url; ?>" alt="lawyers image">
     </figure>
 
     <div class="lawyers-card-content">
@@ -12,11 +16,12 @@
                 </p>
             </div>
             <button class="lawyers-card-button">
-                <span class="icon-arrow-right2"></span>
+                <a href="<?php echo get_the_permalink($postid); ?>">
+                    <span class="icon-arrow-right2"></span>
+                </a>
             </button>
         </div>
-        <div class="lawyers-card-social-wrapper">
-
+        <!-- <div class="lawyers-card-social-wrapper">
             <div class="lawyers-card-social-inner-wrapper">
                 <a class="lawyers-card-social-icon" href="">
                     <span class="icon-instagram"></span>
@@ -31,7 +36,6 @@
                     <span class="icon-Twitter-x"></span>
                 </a>
             </div>
-
-        </div>
+        </div> -->
     </div>
 </div>

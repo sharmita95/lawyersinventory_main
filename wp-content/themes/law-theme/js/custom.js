@@ -151,5 +151,35 @@ jQuery(document).ready(function ($) {
          el.setAttribute("alt", filename);
          console.log("added alt: " + filename);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //For designing
+    $('.custom-pagination a.page-numbers').addClass('pagination-btn');
+    $('.custom-pagination a.page-numbers.current').addClass('pagination-btn p-b-active');
 	
 });
+
+
+
+
+
+
+
+
+
+

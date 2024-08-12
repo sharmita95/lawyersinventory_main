@@ -16,12 +16,16 @@ $url_taxonomy = get_queried_object();
 $services = array('lawyers', 'law-firms');
 $my_service = "lawyers";
 // $form_service = (!isset($_POST['lawyers-filter-from'])) ? str_replace('find', 'pet', $url_taxonomy->post_name) : esc_sql($_POST['service']);
-$form_country = (!isset($_POST['lawyers-filter-from'])) ? '' : esc_sql($_POST['country']);
-$form_state = (!isset($_POST['lawyers-filter-from'])) ? '' : esc_sql($_POST['state']);
-$form_city = (!isset($_POST['lawyers-filter-from'])) ? '' : esc_sql($_POST['city']);
-$countries = get_country($my_service);
-$states = (!empty($form_state)) ? get_state($form_state, 'state') : '';
-$cities = (!empty($form_city)) ? get_city($form_city, 'city') : '';
+$form_country = (!isset($_POST['lawyers-filter-from'])) ? '' : $_POST['country'];
+$form_state = (!isset($_POST['lawyers-filter-from'])) ? '' : $_POST['state'];
+$form_city = (!isset($_POST['lawyers-filter-from'])) ? '' : $_POST['city'];
+$countriesArr = get_country($my_service);
+if(!empty($form_state)) {
+    $category = get_term_by('name', $form_state, $my_service);
+    print_r($category);
+    // get_state($form_state, '') : '';
+} 
+// $cities = (!empty($form_city)) ? get_city($form_city, 'city') : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 // $post_per_page = get_option('posts_per_page');
 $post_per_page = 4;
@@ -65,12 +69,6 @@ if(empty($grand_parent_id) && empty($parent_id)) { //Country
     echo get_term($grand_parent_id)->name . ' > ' . get_term( $parent_id )->name . '>' .get_queried_object()->name;
 }
 
-
-$countryList = get_terms(array(
-    'taxonomy' => 'lawyers-location',
-    'parent' => 0,
-    'hide_empty' => false
-));
 
 $issuesArr = array(
    array('term_id' => 2, 'slug' => 'family', 'name' => 'Family'),
@@ -119,7 +117,7 @@ $issuesArr = array(
                     <div class="lawyers-filter-select-option-wrapper">
                         <select name="country" id="country" x class="lawyers-filter-select-option">
                             <option value="">Choose Country</option>
-                            <?php foreach($countryList as $country) { ?>
+                            <?php foreach($countriesArr as $country) { ?>
                                 <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
                             <?php } ?>
                         </select>

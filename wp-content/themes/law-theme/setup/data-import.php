@@ -1,8 +1,10 @@
 <?php
 // Add an admin menu for CSV import
+// Add an admin menu for CSV import
 add_action('admin_menu', 'custom_csv_import_menu');
 
-function custom_csv_import_menu() {
+function custom_csv_import_menu()
+{
     global $wp_roles; 
     $wp_roles->add_cap( 'administrator', 'view_custom_menu' ); 
     $wp_roles->add_cap( 'editor', 'view_custom_menu' );
@@ -13,144 +15,86 @@ function custom_csv_import_menu() {
         'CSV Import Panel', 
         'view_custom_menu', 
         'custom-csv-import', 
-        'custom_csv_import_page'
+        'custom_csv_import_instruction'
     );
+    add_submenu_page(
+        'custom-csv-import',        // Parent slug
+        'Lawyers Data Import',         // Page title
+        'Lawyers Data Import',                    // Menu title
+        'view_custom_menu',             // Capability required
+        'lawyers-import',     // Submenu slug
+        'lawyers_import_callback' // Function to display the content
+    );
+    
 }
 
-function custom_csv_import_page() {
-    ?>
+function custom_csv_import_instruction() { ?>
+
     <div class="wrap">
         <h1>Import CSV File</h1>
-        <form method="post" enctype="multipart/form-data">
-            <?php wp_nonce_field('custom_form_nonce_action', 'custom_form_nonce'); ?>
-
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="custom_field">Choose Data Type</label>
-                    </th>
-                    <td>
-                        <select name="type" id="csv_type" required>
-                            <option value="lawyers" selected>Lawyers</option>
-                            <option value="law-firms">Law Firms</option>
-                        </select>
-                    </td>
-                </tr>                
-
-                <tr>
-                    <th scope="row">
-                        <label for="custom_field">Choose City</label>
-                    </th>
-                    <td>
-                        <!-- <input type="text" class="regular-text" name="city" required > -->
-                        <select name="location" id="lawyersLocation">
-                            <?php //For Lawyers
-                            $lawyers_location_taxonomy = 'lawyers-location';
-                            $lawyers_countryList = get_terms(array( //Get countries
-                                'taxonomy' => $lawyers_location_taxonomy,
-                                'parent' => 0,
-                                'hide_empty' => false
-                            ));
-                            foreach($lawyers_countryList as $lyrs_country) {
-                                echo '<optgroup label="'. $lyrs_country->name .'">'. $lyrs_country->name .'</optgroup>';
-
-                                $lyrs_statesList = get_terms(  $lawyers_location_taxonomy, array(
-                                    'parent' => $lyrs_country->term_id,
-                                    'orderby' => 'slug',
-                                    'hide_empty' => false
-                                    )
-                                );
-                                foreach ( $lyrs_statesList as $lyrs_state ) {
-                                    echo '<optgroup class="main"label="'. $lyrs_state->name .'">'. $lyrs_state->name .'</optgroup>';
-                                    $lyrs_cityList = get_terms(  $lawyers_location_taxonomy, array(
-                                            'parent' => $lyrs_state->term_id,
-                                            'orderby' => 'slug',
-                                            'hide_empty' => false
-                                        )
-                                    );
-                                    foreach ( $lyrs_cityList as $lyrs_city ) {
-                                        echo '<option class="sub" value="'. $lyrs_city->term_id . '">'. $lyrs_city->name .'</option>';
-                                    }
-                                }
-
-                            }
-                            ?>
-                        </select>
-
-                        <select name="location" id="lawfirmsLocation">
-                            <?php //For firms
-                            $firms_location_taxonomy = 'lawfirms-location';
-                            $firms_countryList = get_terms(array( //Get countries
-                                'taxonomy' => $firms_location_taxonomy,
-                                'parent' => 0,
-                                'hide_empty' => false
-                            ));
-                            foreach($firms_countryList as $firms_country) {
-                                echo '<optgroup label="'. $firms_country->name .'">'. $firms_country->name .'</optgroup>';
-
-                                $firms_statesList = get_terms(  $firms_location_taxonomy, array(
-                                    'parent' => $firms_country->term_id,
-                                    'orderby' => 'slug',
-                                    'hide_empty' => false
-                                    )
-                                );
-                                foreach ( $firms_statesList as $firms_state ) {
-                                    echo '<optgroup class="main"label="'. $firms_state->name .'">'. $firms_state->name .'</optgroup>';
-                                    $firms_cityList = get_terms(  $firms_location_taxonomy, array(
-                                            'parent' => $firms_state->term_id,
-                                            'orderby' => 'slug',
-                                            'hide_empty' => false
-                                        )
-                                    );
-                                    foreach ( $firms_cityList as $firms_city ) {
-                                        echo '<option class="sub" value="'. $firms_city->term_id . '">'. $firms_city->name .'</option>';
-                                    }
-                                }
-
-                            }
-                            ?>
-                        </select>
-
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="custom_textarea">Upload</label>
-                    </th>
-                    <td>
-                        <input type="file"  class="regular-text" name="csv_file" accept=".csv" required >
-                    </td>
-                </tr>
-            </table>
-
-            <input type="submit" name="import_csv" class="button button-primary" value="Import CSV">
-        </form>
 
         <p><b>Note:</b>
             Please ensure that you include all of the fields listed below in the correct order when uploading a CSV file. Do not upload any CSV file that is missing these fields or has them in a different order.
             <br>If you have any questions, please contact the development team before importing the data.
         </p>
-        <table id="sample-table">
-            <tr>
-                <td>id</td>
-                <td>name </td>
-                <td>address </td>
-                <td>website </td>
-                <td>emails </td>
-                <td>phone </td>
-                <td>about </td>
-                <td>googleMapUrl </td>
-                <td>rating </td>
-                <td>total_rating</td>
-                <td>gmb_description</td>
-            </tr>
-        </table>
 
-        <p>Download a dummy CSV for your reference
-            <a href="<?php echo get_template_directory_uri().'/dummy-service-data-import.csv'; ?>" download="import-csv">
-                <img src="<?php echo get_template_directory_uri().'/images/downloadIcon.svg'; ?>" alt="import-csv" >
-            </a>
-        </p>
+        <div>
+            <h3>Lawyers</h3>
+            <table id="sample-table">
+                <tr>                   
+                    <td>id</td>
+                    <td>name </td>
+                    <td>emails </td>
+                    <td>phone </td>
+                    <td>address </td>
+                    <td>image_url</td>
+                    <td>profile_description </td>
+                    <td>qualifications </td>
+                    <td>practice area</td>
+                    <td>cost </td>
+                    <td>availability</td>
+                    <td>googleMapUrl </td>
+                    <td>rating </td>
+                    <td>total_rating</td>
+                    <td>FB link</td>
+                    <td>Insta Link</td>
+                    <td>Linkedin link</td>
+                </tr>
+            </table>
+            <p>Download a dummy CSV for your reference For Lawyers
+                <a href="<?php echo get_template_directory_uri().'/import-csv-lawyers.csv'; ?>" download="import-csv">
+                    <img src="<?php echo get_template_directory_uri().'/images/downloadIcon.svg'; ?>" alt="import-csv" >
+                </a>
+            </p>
+        </div>
+        <div>
+            <h3>Law Firms</h3>
+            <table id="sample-table">
+                <tr>                   
+                    <td>id</td>
+                    <td>name </td>
+                    <td>emails </td>
+                    <td>phone </td>
+                    <td>address </td>
+                    <td>image_url</td>
+                    <td>About us</td>
+                    <td>practice area</td>
+                    <td>cost </td>
+                    <td>availability</td>
+                    <td>googleMapUrl </td>
+                    <td>rating </td>
+                    <td>total_rating</td>
+                    <td>FB link</td>
+                    <td>Insta Link</td>
+                    <td>Linkedin link</td>
+                </tr>
+            </table>
+            <p>Download a dummy CSV for your reference For Law firm
+                <a href="<?php echo get_template_directory_uri().'/import-csv-lawfirm.csv'; ?>" download="import-csv">
+                    <img src="<?php echo get_template_directory_uri().'/images/downloadIcon.svg'; ?>" alt="import-csv" >
+                </a>
+            </p>
+        </div>
 
         <style>
             #sample-table {
@@ -165,11 +109,88 @@ function custom_csv_import_page() {
         </style>
 
     </div>
-    <?php
 
-    if (isset($_POST['import_csv'])) {
-        custom_csv_import_handler();
-    }
+
+<?php
+}
+
+function lawyers_import_callback() {
+    ?>
+    <div class="wrap">
+        <h1>Import Lawyers Data</h1>
+        <p></p>
+
+        <?php $type = 'lawyers';
+        
+        $data_taxonomy = $type.'-location';
+        $countryList = get_terms(array( //Get countries
+            'taxonomy' => $data_taxonomy,
+            'parent' => 0,
+            'hide_empty' => false
+        )); ?>        
+
+        <form method="post" enctype="multipart/form-data">
+            <?php wp_nonce_field('custom_form_nonce_action', 'custom_form_nonce'); ?>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <label for="custom_field">Choose Data Type</label>
+                    </th>
+                    <td>
+                        <input type="text" name="type" readonly value="<?php echo $type; ?>">
+                        <input type="text" name="tax_name" readonly value="<?php echo $data_taxonomy; ?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="custom_field">Choose City</label>
+                    </th>
+                    <td class="location">
+                        
+                        <input type="hidden" value="<?php echo $data_taxonomy?>" id="tax-type"/>
+
+                        <select id="country">
+                            <option>Choose Country</option>
+                            <?php foreach ($countryList as $pet_country) {
+                                echo '<option value="' . $pet_country->term_id . '">' . $pet_country->name . '</option>';
+                            } ?>
+                        </select>
+
+                        <select id="state">
+                            <option>Choose State</option>
+                        </select>
+
+                        <select name="location" id="city">
+                            <option>Choose City</option>
+                        </select>
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="custom_textarea">Upload</label>
+                    </th>
+                    <td>
+                        <input type="file" class="regular-text" name="csv_file" accept=".csv" required>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" name="import_csv" class="button button-primary" value="Import CSV">
+        </form>
+
+
+        <?php
+        if (isset($_POST['import_csv'])) {
+            custom_csv_import_handler();
+        } ?>
+
+    </div>
+
+    <?php
 }
 
 function custom_csv_import_handler() {
@@ -183,12 +204,7 @@ function custom_csv_import_handler() {
 
         $post_type = $_POST['type']; // Lawyers/Lawfirms
         $city_id = $_POST['location'];
-        // $city_slug = $_POST['city'];
-        if($post_type == 'lawyers') { $taxonomy = 'lawyers-location';
-        } else { $taxonomy = 'lawfirms-location'; }
-        // $term_object = get_term_by( 'slug', $city_slug, $taxonomy );
-        // $city_id = $term_object->term_id;
-
+        $taxonomy = $_POST['tax_name'];
 
         if (($handle = fopen($csv_file, 'r')) !== false) {
             while (($row = fgetcsv($handle, 1000, ',')) !== false) {
@@ -198,37 +214,37 @@ function custom_csv_import_handler() {
             array_shift($csv_data);
             foreach ($csv_data as $row) {
 
-                // echo '<pre>';
-                // print_r($row);
-                // echo '<pre>';
-                
                 $upload_id = $row[0];
-                $business_name = $row[1];
-                $address = clean($row[2]);
-                $website = $row[3];
-                $email_list = strtolower($row[4]);
-                $phone = clean($row[5]);
-                $business_description = clean($row[6]); 
-                $gmb_link = str_replace('"', '', $row[7]).'<br>'; 
-                $rating_count = $row[8];
-                $total_rating = $row[9];
-                
-                if(!empty($email_list)) {
+                $business_name = __( stripslashes($row[1]) );
+                $email_list = strtolower($row[2]);
+                $phone = clean($row[3]);
+                $address = clean($row[4]);
+                $image = $row[5];
+                $profile_description = clean($row[6]);
+                $qualification = clean($row[7]);
+                $practice_area = $row[8];
+                $cost = clean($row[9]);
+                $availability = clean($row[10]);
+                $gmb_link = $row[11];
+                $rating = $row[12];
+                $total_rating = $row[13];
+                $fb_link = $row[14];
+                $insta_link = $row[15];
+                $linkedin_url = $row[16];
+                $twitter_url = $row[17];
 
-                    $email_list = str_replace( array( '[', ']', '"' ), '', $email_list);
-                    $email_list = explode(",",$email_list);
+                if (!empty($email_list)) {
 
-                    $i = 0;                    
-                    if(!empty($email_list) && sizeof($email_list) > 0) {
-                                                  
+                    $email_list = str_replace(array('[', ']', '"'), '', $email_list);
+                    $email_list = explode(",", $email_list);
+
+                    $i = 0;
+                    if (!empty($email_list) && sizeof($email_list) > 0) {
+
                         $primary_email = array_shift($email_list); //get the mail email
 
                         $exists = email_exists($primary_email);
-                        if ( $exists ) { //Email exists 
-                            $user_id = $exists;
-
-                            echo "<p style='color:blue;'>That E-mail is registered to user Id: " . $user_id."</p>";
-                        } else { //User add
+                        if (!$exists) { //Email exists 
 
                             $email_part = strstr($primary_email, '@', true);
                             $name_part = strtolower(str_replace(' ', '_', $business_name));
@@ -242,65 +258,30 @@ function custom_csv_import_handler() {
                                 'user_email' =>  $primary_email,
                                 'first_name' =>  $business_name,
                                 'user_pass'  =>  wp_generate_password(12, true, true),
-                                'role' => 'basic'
+                                'role' => $post_type
                             );
 
-                            $user_id = wp_insert_user($userdata);      
-                            if (is_wp_error($user_id)) {
+                            $user_id = wp_insert_user($userdata);
+                            if (!is_wp_error($user_id)) {
 
-                                echo '<div class="alert alert-danger" role="alert">';
-                                echo $user_id->get_error_message();
-                                echo '</div>';
+                                importing_post_data($user_id, $email_list, $primary_email, $row, $post_type, $city_id, $taxonomy);
+
+                            } else {
                                 echo "<p style='color:red;'>Error on creating User. Upload id: " . $upload_id . "</p>";
                             }
                             
-                        }
-
-                        $new_post = array(
-                            'post_title' => $business_name,
-                            'post_content' => 'About us coming soon....',
-                            'post_status' => 'publish',
-                            'post_date' => date('Y-m-d H:i:s'),
-                            'post_author' => $user_id,
-                            'post_type' => $post_type,
-                        );
-
-                        $post_id = wp_insert_post($new_post);
-
-                        if (!is_wp_error($post_id)) {
-
-                            //Adding city depending on the post type(taxonomy)
-                            wp_set_post_terms($post_id, $city_id, $taxonomy);
-
-                            if (!empty($email_list) && sizeof($email_list) > 0) { //get the mail email
-                                add_post_meta($post_id, 'other_email', implode(',', $email_list), true);
-                            }
-
-                            // add_user_meta($user_id, 'post_id', $post_id);
-
-                            if(!empty($address)) add_post_meta($user_id, 'address', $address, true);
-                            if(!empty($phone)) add_post_meta($user_id, 'phone_number', $phone, true);
-                            if(!empty($gmb_link)) add_post_meta($user_id, 'gmb_link', $gmb_link, true);
-                            if(!empty($gmb_description)) add_post_meta($user_id, 'gmb_description', $gmb_description, true);
-                            if(!empty($rating_count)) add_post_meta($user_id, 'rating_count', $rating_count, true);
-                            if(!empty($total_ratings)) add_post_meta($user_id, 'total_rating', $total_ratings, true);
-                            if(!empty($website)) add_post_meta($user_id, 'user_url', $website, true);
-                            if(!empty($city_name)) add_post_meta($user_id, 'city', $city_name, true);
-                            if(!empty($business_description)) add_post_meta($user_id, 'description', wp_filter_post_kses($business_description), true);
-
-                            echo "<p>User id: " . $user_id . " , Post id: " . $post_id . "</p>";
-                            echo "<p style='color:green;'>Uploaded id (from sheet): " . $upload_id . "</p>";
-
                         } else {
-                            //there was an error in the post insertion, 
-                            echo $post_id->get_error_message();
-                            echo "<p style='color:red;'>Error on adding post. Upload id: " . $upload_id . "</p>";
-                        }
-                          
-                    }
-                }
+                            $user_id = $exists;
+                            echo "<p style='color:blue;'><b>That E-mail is registered to user Id: " . $exists . "</b>, so here only the post will be added.</p>";
+                        
+                            importing_post_data($user_id, $email_list, $primary_email, $row, $post_type, $city_id, $taxonomy);
 
-                echo "------- Done. Waiting for the next. -------<br>";
+                        }
+                    }
+
+                    echo "------- Done. Waiting for the next. -------<br>";
+
+                }
 
             }
             
@@ -320,6 +301,93 @@ function custom_csv_import_handler() {
 }
 
 
+function importing_post_data($user_id, $email_list, $primary_email, $row, $post_type, $city_id, $taxonomy) {
+
+    $upload_id = $row[0];
+    $business_name = __( stripslashes($row[1]) );
+    // $email_list = strtolower($row[2]);
+    $phone = clean($row[3]);
+    $address = clean($row[4]);
+    $image = $row[5];
+    $profile_description = clean($row[6]);
+    $qualification = clean($row[7]);
+    $practice_area = $row[8];
+    $cost = clean($row[9]);
+    $availability = clean($row[10]);
+    $gmb_link = $row[11];
+    $rating = $row[12];
+    $total_rating = $row[13];
+    $fb_link = $row[14];
+    $insta_link = $row[15];
+    $linkedin_url = $row[16];
+    $twitter_url = $row[17];
+
+    $myquery = new WP_Query( array(
+        'post_type' => $post_type,
+        'meta_key' => 'associated_email',
+        'meta_value' => $primary_email,
+        'order' => 'ASC',
+    ));
+
+    if (!empty($myquery->posts) && sizeof($myquery->posts) > 0) {
+
+        echo "<p style='color:red;'>The post already exists. Post ID: " . $myquery->posts[0]->ID . ", Sheet ID: " . $upload_id . "</p>";
+
+    } else {
+
+        //If the post not exists
+        $new_post = array(
+            'post_title' => $business_name,
+            'post_content' => 'About us coming soon....',
+            'post_status' => 'publish',
+            'post_date' => date('Y-m-d H:i:s'),
+            'post_author' => $user_id,
+            'post_type' => $post_type,
+        );
+
+        $post_id = wp_insert_post($new_post);
+
+        if (!is_wp_error($post_id)) {
+
+            //Adding city depending on the post type(taxonomy)
+            wp_set_post_terms($post_id, $city_id, $taxonomy);
+
+            if (!empty($email_list) && sizeof($email_list) > 0) { //get the mail email
+                update_post_meta($post_id, 'other_email', implode(',', $email_list));
+            }
+
+            if(!empty($primary_email)) update_post_meta($post_id, 'associated_email', $primary_email);
+            if(!empty($phone)) update_post_meta($post_id, 'phone_number', $phone);
+            if(!empty($address)) update_post_meta($post_id, 'address', $address);
+            //image pending;
+            if(!empty($image)) update_post_meta($post_id, 'image', $image);
+            if(!empty($profile_description)) update_post_meta($post_id, 'image', $profile_description);
+            if(!empty($qualification)) update_post_meta($post_id, 'image', $qualification);
+            //practice area pending
+            if(!empty($practice_area)) update_post_meta($post_id, 'practice_area', $practice_area);
+            if(!empty($cost)) update_post_meta($post_id, 'cost', $cost);
+            if(!empty($availability)) update_post_meta($post_id, 'availability', $availability);
+            if(!empty($gmb_link)) update_post_meta($post_id, 'gmb_link', $gmb_link);
+            if(!empty($rating)) update_post_meta($post_id, 'rating', $rating);
+            if(!empty($total_rating)) update_post_meta($post_id, 'total_rating', $total_rating);
+            if(!empty($fb_link)) update_post_meta($post_id, 'image', $fb_link);
+            if(!empty($insta_link)) update_post_meta($post_id, 'image', $insta_link);
+            if(!empty($linkedin_url)) update_post_meta($post_id, 'image', $linkedin_url);
+            if(!empty($twitter_url)) update_post_meta($post_id, 'image', $twitter_url);
+
+            echo "<p>User id: " . $user_id . " , Post id: " . $post_id . "</p>";
+            echo "<p style='color:green;'>Uploaded id (from sheet): " . $upload_id . "</p>";
+        } else {
+            //there was an error in the post insertion, 
+            echo $post_id->get_error_message();
+            echo "<p style='color:red;'>Error on adding post. Upload id: " . $upload_id . "</p>";
+        }
+
+    }
+
+}
+
+
 function clean($string) {
     // $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
     $string = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string); // Removes special chars.
@@ -330,45 +398,24 @@ function clean($string) {
 
 
 
+
+
+
+
+
+
+
+
 //Admin 
-add_action( 'admin_enqueue_scripts', 'lyi_admin_enqueue_files' );
+add_action('admin_enqueue_scripts', 'lyi_admin_enqueue_files');
 
 function lyi_admin_enqueue_files() {
-    $admin_ver = '1.0.8';
-    
-    // wp_enqueue_script('lyi-admin-script', get_template_directory_uri() . '/js/admin-script.js', array('jquery'), null, true);
-    // wp_localize_script('lyi-admin-script', 'custom_ajax_object', array(
-    //     'ajax_url' => admin_url('admin-ajax.php'),
-    //     'nonce'    => wp_create_nonce('custom_ajax_form_nonce_action')
-    // ));
-	wp_enqueue_script( 'lyi-admin-script', get_template_directory_uri() . '/js/admin-script.js', array(), $admin_ver, true );
+
+    $admin_ver = rand(10,100);
+    wp_enqueue_script('tpm-admin-script', get_template_directory_uri() . '/js/admin-script.js', array(), $admin_ver, true);
+
+    wp_localize_script('tpm-admin-script', 'myAjax', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('my_nonce')
+    ));
 }
-
-// function handle_custom_ajax_form() {
-//     check_ajax_referer('custom_ajax_form_nonce_action', 'custom_ajax_form_nonce');
-
-//     if (isset($_POST['userType'])) {
-
-//         if($_POST['userType'] == 'lawyers') {
-//             $taxonomy = 'lawyers-location';
-//         } else {
-//             $taxonomy = 'lawfirms-location';
-//         }
-//         $gen_country_html = '<option value="" label="">Choose Country</option>';
-
-//         $countryList = get_terms(array(
-//             'taxonomy' => $taxonomy,
-//             'parent' => 0,
-//             'hide_empty' => false
-//         ));
-
-//         foreach($countryList as $country) {
-//             $gen_country_html .= '<option value="'.$country->term_id.'" slug="'.$country->slug.'">'.$country->name.'</option>';
-//         }        
-
-//         wp_send_json_success(array('flag' => 'Got', 'html' => $gen_country_html));
-//     } else {
-//         wp_send_json_error(array('message' => 'Error.'));
-//     }
-// }
-// add_action('wp_ajax_get_country_for_import', 'handle_custom_ajax_form');
