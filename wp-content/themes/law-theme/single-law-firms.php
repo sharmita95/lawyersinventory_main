@@ -29,8 +29,8 @@
             if($key == 'longitude') $lon  = $val[0];
         }
 
-        $img_url = get_the_post_thumbnail_url($post_id,'lawyers-list-thumbnail'); 
-        if(!$img_url) $img_url= get_template_directory_uri() . '/images/lawyer-details-image.jpg';
+        $img_url = get_the_post_thumbnail_url($post_id,'large'); 
+        if(!$img_url) $img_url= get_template_directory_uri() . '/images/featured-law-firm-banner-image.png';
 
         
         //Generating Lat and Lon
@@ -84,10 +84,9 @@
 
                     <div class="lawyers-d-f-c-image-card">
                         <figure class="l-d-f-c-image-c-figure">
-                            <!-- <img class="image-responsive" 
-                            src="<?php //echo get_template_directory_uri() . '/images/featured-law-firm-banner-image.png'; ?>" 
-                            alt="lawyers image"> -->
-                            <?php echo get_the_post_thumbnail( $post_id, 'full', array( 'class' => 'image-responsive' ) ); ?>
+                            <img class="image-responsive" 
+                            src="<?php echo $img_url; ?>" 
+                            alt="lawyers image">
                         </figure>
                         <div class="lawyers-d-f-c-content-card">
                             <div class="lawyers-d-f-c-content-card-left-icon-bar">

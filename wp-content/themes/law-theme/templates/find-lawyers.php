@@ -2,22 +2,39 @@
 get_header();
 
 $my_service = "lawyers";
+$tax = "lawyers-location";
 $countriesArr = get_country($my_service);
 
+$choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 // $post_per_page = get_option('posts_per_page');
 $post_per_page = 9;
-$lawyers_posts = new WP_Query(array(
-    'post_type'        => 'lawyers',
+$args= array(
+    'post_type'         => $my_service,
     'post_status'       => 'publish',
     'orderby'           => 'date',
     'paged'             => $paged,
     'order'             => 'DESC',
-    'posts_per_page'    => $post_per_page,
-));
+    'posts_per_page'    => $post_per_page
+);
+if(!empty($choosed_issue)) { //Not working
+    $args['tax_query'] = array(
+        'taxonomy' => 'lawyers-category',
+        'field' => 'slug',
+        'terms' => $choosed_issue
+    );
+}
+
+$lawyers_posts = new WP_Query($args);
 $page_count = $lawyers_posts->max_num_pages;
 $post_count = $lawyers_posts->found_posts;
 
+// echo '<pre>';
+// print_r($args);
+// print_r($issuesArr);
+// echo '</pre>';
+
+$issuesArr = get_practice_area();
 ?>
 
 <section class="lawyers-common-banner-sec">
@@ -44,14 +61,21 @@ $post_count = $lawyers_posts->found_posts;
         </div>
 
         <div class="lawyers-filter-submit-from-whapper">
-            <form id="find-lawyers-by-location" action="" method="POST" class="lawyers-filter-submit-from">
+            <form id="find-lawyers-by-location" action="" method="POST" class="lawyers-filter-submit-from" name="lawyers-filter-from">
+                
+                <input type="hidden" name="type" value="<?php echo $my_service; ?>" id="type"/>
+                <input type="hidden" name="tax_name" value="<?php echo $tax; ?>" id="tax-type"/>
+
                 <div class="lawyers-filter-left-sec">
                     <div class="lawyers-filter-select-option-wrapper">
                         <select x class="lawyers-filter-select-option" name="issue" id="issue">
-                            <option value="" selected>lawyers Type</option>
-                            <option value="1" slug="family">Family</option>
-                            <option value="2" slug="criminal">Criminal</option>
-                            <option value="3" slug="business">Business</option>
+                            <option value="" selected>lawyers Type</option >
+                            <?php foreach($issuesArr as $issueData) { ?>
+                                <option value="<?php echo $issueData->term_id; ?>" 
+                                    <?php if($issueData->slug === $choosed_issue) { echo "selected"; } ?> 
+                                    slug="<?php echo $issueData->slug; ?>"><?php echo $issueData->name; ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
 
@@ -142,10 +166,6 @@ $post_count = $lawyers_posts->found_posts;
 
     </div>
 </section>
-
-
-
-
 
 <?php
 get_footer();

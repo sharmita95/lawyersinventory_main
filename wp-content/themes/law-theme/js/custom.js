@@ -37,7 +37,9 @@ jQuery(document).ready(function ($) {
         var data = {
             action: 'registration_get_state', // This is the PHP function to call - note it must be hooked to AJAX
             country: $(this).val(),
+            type: $('#tax-type').val()
         };
+        console.log(data);
         $.post(Front.ajaxurl, data, function (resp) {
             $('button[type="submit"]').removeClass('disabled');
             if(resp.flag === true) {
@@ -59,6 +61,7 @@ jQuery(document).ready(function ($) {
         var data = {
             action: 'registration_get_city', // This is the PHP function to call - note it must be hooked to AJAX
             state: $(this).val(),
+            type: $('#tax-type').val(),
         };
         $.post(Front.ajaxurl, data, function (resp) {
             $('button[type="submit"]').removeClass('disabled');
@@ -112,6 +115,33 @@ jQuery(document).ready(function ($) {
         }
 
         window.location = 'http://localhost/lawyersinventory_main/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
+        
+    });
+
+
+
+    //Practice/issue page form
+    $("#find-by-issue").submit(function(e) {
+        e.preventDefault();
+
+        var _data = $(this).serialize();
+        console.log(_data);        
+
+        var issue_slug = $(this).find('#issue option:selected').attr('slug');
+        if(!issue_slug || issue_slug === 'undefined') {
+            issue_slug = '';            
+        } else {
+            issue_slug = '/'+issue_slug;  
+        }   
+        
+        var type_slug = $(this).find('#type option:selected').attr('slug');
+        if(!type_slug || type_slug === 'undefined') {
+            type_slug = '';            
+        } else {
+            type_slug = '?type='+type_slug;  
+        }
+
+        // window.location = 'http://localhost/lawyersinventory_main/practice'+issue_slug+type_slug;
         
     });
 

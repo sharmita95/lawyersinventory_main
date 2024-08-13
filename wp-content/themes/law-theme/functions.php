@@ -21,7 +21,7 @@ if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
 add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
 function lyi_enqueue_files()
 {
-    $ver = rand(10,100);
+    $ver = '5.8.4';
     wp_enqueue_script('jquery.min', get_template_directory_uri() . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
     // wp_enqueue_script('owl.carousel.min', get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), $ver, true);
     wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/ThemeScript.js', array('jquery'), $ver, true);
@@ -62,6 +62,9 @@ if(!function_exists('custom_theme_setup'))
         //Add Image Size
 		add_image_size('breed-hero-thumbnail', 830, 503, true);
 		add_image_size('lawyers-list-thumbnail', 475, 643, true);
+
+		add_image_size('single-page-thumbnail', 1920, 600, true);
+		add_image_size('related-posts-thumbnail', 475, 404, true);
 
         //Add Role
 		// if (!(wp_roles()->is_role('pet-vet'))){

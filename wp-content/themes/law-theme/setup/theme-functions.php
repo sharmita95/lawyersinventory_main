@@ -1,4 +1,13 @@
 <?php
+function get_practice_area() {
+
+    $issuesList = get_terms(array(
+        'taxonomy' => 'lawyers-category',
+        'hide_empty' => false
+    ));
+    return $issuesList;
+}
+
 function get_country($service) {
 
     if($service == 'lawyers'):
