@@ -12,22 +12,54 @@ $choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 $post_per_page = 9;
 
-if(empty($grand_parent_id) && empty($parent_id)) { //Country
+//When Country is available
+if(empty($grand_parent_id) && empty($parent_id)) { 
+
     // echo get_queried_object()->slug;
+    $from_country = get_queried_object()->slug;
+
     $desired_slug = get_queried_object()->slug;
-} elseif(empty($grand_parent_id) && (!empty($parent_id))) { //State
+
+    // $states_html = get_state($my_service, get_queried_object()->term_id); //get states
+
+    // print_r($states_html);
+
+} 
+//When State is available
+elseif(empty($grand_parent_id) && (!empty($parent_id))) {
+
     // echo get_term( $parent_id )->slug . ' > ' .get_queried_object()->slug;
+    $from_country = get_term( $parent_id )->slug;
+    $from_state = get_queried_object()->slug;
+
     $desired_slug = get_queried_object()->slug;
-} else { //City
+
+    // $cities_html = get_city($my_service, get_queried_object()->term_id); //get cities
+
+} 
+//When City is available
+else { 
+
     // echo get_term($grand_parent_id)->slug . ' > ' . get_term( $parent_id )->slug . '>' .get_queried_object()->slug;
+    $from_country = get_term($grand_parent_id)->slug;
+    $from_state = get_term( $parent_id )->slug;
+    $from_city = get_queried_object()->slug;
+
     $desired_slug = get_queried_object()->slug;
 }
+// $from_country = (!empty($from_country)) ? $from_country : '';
+// $from_state = (!empty($form_state)) ? $form_state : '';
+// $from_city = (!empty($from_city)) ? $from_city : '';
 
 $issuesArr = get_practice_area();
+// $countryList = get_country($my_service);
+// $stateList = get_state($my_service);
 
 
+// print_r($stateList);
 
-
+$statesList = (!empty($from_country)) ? get_state($my_service, $from_country) : '';
+$citiesList = (!empty($from_state)) ? get_city($my_service, $from_state) : '';
 
 
 if(!empty($desired_slug)) {
@@ -67,11 +99,12 @@ $post_count = $lawyers_posts->found_posts;
 
 
 $countriesArr = get_country($my_service);
-if(!empty($form_state)) {
-    $category = get_term_by('name', $form_state, $tax);
-    print_r($category);
-    // get_state($form_state, '') : '';
-}
+// if(!empty($form_state)) {
+//     $category = get_term_by('name', $form_state, $tax);
+//     print_r($category);
+//     // get_state($form_state, '') : '';
+// }
+
 ?>
 
 <section class="lawyers-common-banner-sec">
@@ -100,7 +133,12 @@ if(!empty($form_state)) {
 
         <div class="lawyers-filter-submit-from-whapper">
             <form id="find-lawyers-by-location" action="" method="POST" class="lawyers-filter-submit-from" name="lawyers-filter-from"> 
+                
+                <input type="hidden" name="type" value="<?php echo $my_service; ?>" id="type"/>
+                <input type="hidden" name="tax_name" value="<?php echo $tax; ?>" id="tax-type"/>
+            
                 <div class="lawyers-filter-left-sec">
+                    
                     <div class="lawyers-filter-select-option-wrapper">
                         <select x class="lawyers-filter-select-option" name="issue" id="issue">
                             <option value="" selected>lawyers Type</option >
@@ -117,20 +155,47 @@ if(!empty($form_state)) {
                         <select name="country" id="country" x class="lawyers-filter-select-option">
                             <option value="">Choose Country</option>
                             <?php foreach($countriesArr as $country) { ?>
-                                <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
+                                <option value="<?php echo $country->term_id; ?>" 
+                                slug="<?php echo $country->slug; ?>" 
+                                <?php if(!empty($from_country) && $from_country === $country->slug) {
+                                    echo "selected"; } ?>>
+                                    <?php echo $country->name; ?>
+                                </option>
                             <?php } ?>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
                         <select name="state" id="state" x class="lawyers-filter-select-option">
-                            <option value="">Choose State</option>
+                            <?php
+                             if (!empty($statesList)) {
+                                echo '<option value="">Pick State</option>';
+                                foreach ($statesList as $state) {
+                                    
+                                    echo $selected = ($state->slug === $from_state) ? 'selected' : '';
+                                    echo '<option slug="'.$state->slug.'" value="' . $state->term_id . '" ' . $selected . '>' . $state->name . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Pick State</option>';
+                            } 
+                            ?>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
                         <select name="city" id="city" x class="lawyers-filter-select-option">
-                            <option value="">Choose City</option>
+                        <?php 
+                             if (!empty($citiesList)) {
+                                echo '<option value="">Pick City</option>';
+                                foreach ($citiesList as $city) {
+                                    
+                                    echo $selected = ($city->slug === $from_city) ? 'selected' : '';
+                                    echo '<option slug="'.$city->slug.'" value="' . $city->term_id . '" ' . $selected . '>' . $city->name . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Pick City</option>';
+                            } 
+                            ?>
                         </select>
                     </div>
 

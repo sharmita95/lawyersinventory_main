@@ -8,9 +8,9 @@ function get_practice_area() {
     return $issuesList;
 }
 
-function get_country($service) {
+function get_country($service_slug) {
 
-    if($service == 'lawyers'):
+    if($service_slug == 'lawyers'):
         $tax = 'lawyers-location';
     else:
         $tax = "lawfirms-location";
@@ -20,56 +20,54 @@ function get_country($service) {
         'taxonomy' => $tax,
         'parent' => 0,
         'hide_empty' => false
-    ));
+    ));	
     return $countryList;
 }
-function get_state($service, $country_id){
+function get_state($service_slug, $country_slug) {
 
-    if($service == 'lawyers'):
+	// $gen_state_html = '<option value="" label="">Choose States</option>';
+
+    if($service_slug == 'lawyers'):
         $tax = 'lawyers-location';
     else:
         $tax = "lawfirms-location";
     endif;
+
+	$countryData = get_term_by( 'slug', $country_slug, $tax );
 	
     $stateList = get_terms( $tax, array(
-        'parent' => $country_id,
+        'parent' => $countryData->term_id,
         'hide_empty' => false,                        
     ));
+	
+	// foreach($stateList as $state) {
+	// 	$gen_state_html .= '<option value="'.$state->term_id.'" slug="'.$state->slug.'">'.$state->name.'</option>';
+	// }
+	return $stateList;
 }
-function get_city($search='',$search_table=''){
-	global $wpdb;
-	$table = $wpdb->prefix . 'location_city';
+function get_city($service_slug, $state_slug){
 
-	if(is_numeric($search)){
-		if($search_table == 'city'){
-			$data = $wpdb->get_results( "SELECT * FROM $table  WHERE id = {$search}");
-		}elseif($search_table == 'country'){
-			$data = $wpdb->get_results( "SELECT * FROM $table  WHERE country_id = {$search}");
-		}else{
-			$data = $wpdb->get_results("SELECT * FROM $table WHERE state_id = {$search}");
-		}
-	}else{
-		if($search_table == 'city'){
-			$data = $wpdb->get_results( "SELECT * FROM $table  WHERE name LIKE '%$search%'");
-		}elseif($search_table == 'country'){
-			$data = $wpdb->get_results( "SELECT * FROM $table  WHERE (country_name LIKE '%$search%' OR country_code LIKE '%$search%')");
-		}else{
-			$data = $wpdb->get_results("SELECT * FROM $table WHERE (state_name LIKE '%$search%' OR state_code LIKE '%$search%')");
-		}
-	}
-	if(!empty($data)){
-		foreach($data as $row){
-			$output[] = (object) [
-				'id' => $row->id,
-				'name' => $row->name,
-				'state_id' => $row->state_id,
-				'state_name' => $row->state_name,
-				'state_code' => $row->state_code,
-				'country_id' => $row->country_id,
-				'country_name' => $row->country_name,
-				'country_code' => $row->country_code
-			];
-		}
-		return $output;
-	}
+	// $gen_city_html = '<option value="" label="">Choose City</option>';
+
+	if($service_slug == 'lawyers'):
+        $tax = 'lawyers-location';
+    else:
+        $tax = "lawfirms-location";
+    endif;
+
+	$stateData = get_term_by( 'slug', $state_slug, $tax );
+	
+	$cityList = get_terms( $tax, 
+		array(
+			'parent' => $stateData->term_id,
+			'hide_empty' => false,                        
+		)
+	);
+				
+	// foreach($cityList as $city) {
+	// 	$gen_city_html .= '<option value="'.$city->term_id.'" slug="'.$city->slug.'">'.$city->name.'</option>';
+	// }
+
+	return $cityList;
+	
 }

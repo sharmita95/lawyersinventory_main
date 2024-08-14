@@ -66,6 +66,9 @@ if(!function_exists('custom_theme_setup'))
 		add_image_size('single-page-thumbnail', 1920, 600, true);
 		add_image_size('related-posts-thumbnail', 475, 404, true);
 
+		add_image_size('about-us-thumbnail', 1390, 647, true);
+        add_image_size('write-for-us-thumbnail', 1412, 538, true);
+
         //Add Role
 		// if (!(wp_roles()->is_role('pet-vet'))){
 		// 	add_role( 'pet-vet', 'Veterinarians', get_role( 'author' )->capabilities);
