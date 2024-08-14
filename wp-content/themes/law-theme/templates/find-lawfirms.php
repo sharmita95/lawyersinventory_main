@@ -1,5 +1,41 @@
 <?php /* Template Name: Find Law Firms */
-get_header(); ?>
+get_header();
+
+$my_service = "law-firms";
+$tax = "lawfirms-location";
+$countriesArr = get_country($my_service);
+
+$choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
+$paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
+// $post_per_page = get_option('posts_per_page');
+$post_per_page = 9;
+$args= array(
+    'post_type'         => $my_service,
+    'post_status'       => 'publish',
+    'orderby'           => 'date',
+    'paged'             => $paged,
+    'order'             => 'DESC',
+    'posts_per_page'    => $post_per_page
+);
+if(!empty($choosed_issue)) { //Not working
+    $args['tax_query'] = array(
+        'taxonomy' => 'lawyers-category',
+        'field' => 'slug',
+        'terms' => $choosed_issue
+    );
+}
+
+$lawyers_posts = new WP_Query($args);
+$page_count = $lawyers_posts->max_num_pages;
+$post_count = $lawyers_posts->found_posts;
+
+// echo '<pre>';
+// print_r($args);
+// print_r($issuesArr);
+// echo '</pre>';
+
+$issuesArr = get_practice_area();
+?>
 
 <section class="lawyers-common-banner-sec">
     <div class="container mx-auto">
@@ -25,43 +61,45 @@ get_header(); ?>
         </div>
 
         <div class="lawyers-filter-submit-from-whapper">
-            <form action="/action_page.php" class="lawyers-filter-submit-from">
+        <form id="find-firms-by-location" action="" method="POST" class="lawyers-filter-submit-from" name="lawyers-filter-from">
+                
+                <input type="hidden" name="type" value="<?php echo $my_service; ?>" id="type"/>
+                <input type="hidden" name="tax_name" value="<?php echo $tax; ?>" id="tax-type"/>
+
                 <div class="lawyers-filter-left-sec">
                     <div class="lawyers-filter-select-option-wrapper">
-                        <select x class="lawyers-filter-select-option" name="lawyers Type" id="cars">
-                            <option value="volvo" selected>lawyers Type</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select x class="lawyers-filter-select-option" name="issue" id="issue">
+                            <option value="" selected>lawyers Type</option >
+                            <?php foreach($issuesArr as $issueData) { ?>
+                                <option value="<?php echo $issueData->term_id; ?>" 
+                                    <?php if($issueData->slug === $choosed_issue) { echo "selected"; } ?> 
+                                    slug="<?php echo $issueData->slug; ?>"><?php echo $issueData->name; ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <select x class="lawyers-filter-select-option" name="choose a country" id="cars">
-                            <option value="volvo" selected>choose a country</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="country" id="country" x class="lawyers-filter-select-option">
+                            <option value="">Choose Country</option>
+                            <?php foreach($countriesArr as $country) { ?>
+                                <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
+                            <?php } ?>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <select x class="lawyers-filter-select-option" name="choose a state" id="cars">
-                            <option value="volvo" selected>choose a state</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="state" id="state" x class="lawyers-filter-select-option">
+                            <option value="">Choose State</option>
                         </select>
                     </div>
 
                     <div class="lawyers-filter-select-option-wrapper">
-                        <select x class="lawyers-filter-select-option" name="choose a city" id="cars">
-                            <option value="volvo" selected>choose a city</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <select name="city" id="city" x class="lawyers-filter-select-option">
+                            <option value="">Choose City</option>
                         </select>
                     </div>
+
                 </div>
 
                 <div class="lawyers-filter-right-sec">
@@ -76,24 +114,43 @@ get_header(); ?>
         <div class="lawyers-firm-card-grid-wrapper">
             <div class="lawyers-firm-card-grid">
                 <?php
-                    for ($lawyers_card = 0; $lawyers_card <= 11; $lawyers_card++) {
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                    }
+                    if ($lawyers_posts->have_posts()) :
+                        while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
+                            get_template_part('template-parts/lawyers', 'card');
+                        endwhile; ?>
+                    <?php else : ?>
+                        <p>No data available</p>
+                    <?php endif; ?>
                 ?>
             </div>
         </div>
 
         <div class="pagination-wrapper">
             <div class="pagination">
-                <a class="pagination-btn p-b-active" href="#">1</a>
-                <a class="pagination-btn" href="#">2</a>
-                <a class="pagination-btn" href="#">3</a>
-                <a class="pagination-btn" href="#">4</a>
-                <a class="pagination-btn" href="#">5</a>
-                <a class="pagination-btn" href="#">6</a>
-                <a class="pagination-btn-next" href="#">Next</a>
-            </div>
+                <?php 
+                $big = 999999999;
 
+                $pagination_args = array(
+                    'base' => add_query_arg('pagination', '%#%'),
+                    'format' => '',
+                    'current' => max(1, $paged),
+                    'total' => $lawyers_posts->max_num_pages,
+                    'prev_text' => __('« Prev'),
+                    'next_text' => __('Next »'),
+                );
+
+                // Add additional query parameters to pagination
+                if ($paged) {
+                    $pagination_args['add_args'] = array('pagination' => $paged);
+                }
+            
+                $pagination = paginate_links($pagination_args);
+            
+                if ($pagination) {
+                    echo '<div>' . $pagination . '</div>';
+                }
+                ?>
+            </div>
         </div>
 
     </div>

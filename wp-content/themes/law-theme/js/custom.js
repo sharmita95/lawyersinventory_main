@@ -146,6 +146,44 @@ jQuery(document).ready(function ($) {
     });
 
 
+    ////////////////// Firms Listing Form /////////////////////////
+    $("#find-firms-by-location").submit(function(e) {
+        e.preventDefault();
+
+        var _data = $(this).serialize();
+        console.log(_data);        
+
+        var co_slug = $(this).find('#country option:selected').attr('slug');
+        if(!co_slug || co_slug === 'undefined') {
+            co_slug = '';            
+        } else {
+            co_slug = '/'+co_slug;  
+        }
+        var s_slug = $(this).find('#state option:selected').attr('slug');
+        if(!s_slug || s_slug === 'undefined') {
+            s_slug = '';            
+        } else {
+            s_slug = '/'+s_slug;  
+        }
+        var ct_slug = $(this).find('#city option:selected').attr('slug');
+        if(!ct_slug || ct_slug === 'undefined') {
+            ct_slug = '';            
+        } else {
+            ct_slug = '/'+ct_slug;  
+        }   
+        
+        var issue_slug = $(this).find('#issue option:selected').attr('slug');
+        if(!issue_slug || issue_slug === 'undefined') {
+            issue_slug = '';            
+        } else {
+            issue_slug = '?issue='+issue_slug;  
+        }
+
+        window.location = 'http://localhost/lawyersinventory_main/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
+        
+    });
+
+
     ///////////////////////////////////////////
     ///////////////////////////////////////////
     ///////////////////////////////////////////
