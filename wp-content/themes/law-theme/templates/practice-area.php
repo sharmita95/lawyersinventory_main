@@ -1,4 +1,4 @@
-<?php /* Template Name: Practice Area */
+<?php /* Template Name: Practice Area Page */
 get_header();
 
 // echo do_shortcode('[LYI_practice_area_form]');
@@ -11,7 +11,7 @@ $post_per_page = 3;
 
 
 $lawyers_posts = new WP_Query(array(
-    'post_type'         => $my_service,
+    'post_type'         => array('lawyers', 'law-firms'),
     'post_status'       => 'publish',
     'orderby'           => 'date',
     'paged'             => $paged,
@@ -30,7 +30,7 @@ $post_count = $lawyers_posts->found_posts;
 
 
 $taxonomies = get_terms( array(
-    'taxonomy' => 'lawyers-category',
+    'taxonomy' => $tax,
     'hide_empty' => false
 ) );
 
@@ -149,5 +149,6 @@ $taxonomies = get_terms( array(
     </div>
 </section>
 
+<?php
 get_footer();
 ?>

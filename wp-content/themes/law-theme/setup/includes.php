@@ -227,84 +227,86 @@ function create_lawyers_location() {
 
 
 
-// Theme Settings
-function social() {  
-	add_settings_section(  
-		'social_links', // Section ID 
-		'Social Links', // Section Title
-		'social_callback', // Callback
-		'general' // What Page?  This makes the section show up on the General Settings Page
-	);
-		
+/////////////////// CUSTOM THEME SETTINGS ////////////////////
+add_action('admin_menu', 'custom_menu_page');
+function custom_menu_page() {
+    add_menu_page(
+        'Theme Settings', // Page title
+        'Theme Settings',           // Menu title
+        'manage_options',         // Capability required to see this menu
+        'theme-settings',  // Menu slug
+        'theme_settings_func', // Function to display page content
+        'dashicons-share',        // Icon URL or Dashicon class
+        25                        // Position in the menu order
+    );
+}
 
-    $socials = array('facebook', 'twitter', 'linkedin', 'instagram');
+
+function theme_settings_func() {
+    ?>
+    <div class="wrap">
+        <h1>Theme Settings</h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('social_media_settings_group');
+            do_settings_sections('social-media-settings');
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+add_action('admin_init', 'custom_settings_init');
+function custom_settings_init() {
+
+    $socials = array('facebook', 'linkedin', 'twitter', 'instagram');
+
+    // Register a new setting for "social-media-settings" page
+    foreach($socials as $social) {
+        register_setting('social_media_settings_group', $social.'_url');
+    }
+
+    // Add a new section to the "social-media-settings" page
+    add_settings_section(
+        'social_media_section',
+        'Social Media Links',
+        null,
+        'social-media-settings'
+    );    
+
+     
 
     foreach($socials as $social) {
         add_settings_field(
-            $social,
-            ucwords(str_replace('_',' ',$social)), 
-            'url_callback', 
-            'general', 
-            'social_links', 
-            array(
-                $social
-            )  
-        ); 
+            $social.'_link',
+            ucwords(str_replace('_',' ',$social)).' URL',
+            $social.'_url_callback',
+            'social-media-settings',
+            'social_media_section'
+        );
     }
     
-	foreach($socials as $social){
-		add_settings_field($social, ucwords(str_replace('_',' ',$social)).' Link', 'social_content_callback', 'theme_menu', 'footer_settings',$social);
-		register_setting('general',$social, 'esc_attr');
-	}
-
-    add_settings_field('footer_text', 'Footer Text', 'footer_text_callback', 'theme_menu', 'footer_settings','footer_text');
-	register_setting('theme_menu','footer_text', 'esc_attr');
-		
-}
-add_action('admin_init', 'social'); //Enable Social Links Under Settings
-
-function social_callback() { // Section Callback
-	echo '<p>Add Your Social Media Links Below</p>';  
-}
-	
-function url_callback($args) {  // Textbox Callback
-	$option = get_option($args[0]);
-	echo '<input type="url" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 }
 
 
 
-// Add Custom Field in General Settings for Footer Content 
-function footer_content() {  
-	add_settings_section(  
-		'footer_content', // Section ID 
-		'Footer Content', // Section Title
-		'footer_content_callback', // Callback
-		'general' // What Page?  This makes the section show up on the General Settings Page
-	);
-		
-	add_settings_field( // Option 1
-		'text', // Option ID
-		'Text', // Label
-		'text_callback', // !important - This is where the args go!
-		'general', // Page it will be displayed (General Settings)
-		'footer_content', // Name of our section
-		array( // The $args
-			'text' // Should match Option ID
-		)  
-	);
-		
-	register_setting('general','text', 'esc_attr');
-
-}
-add_action('admin_init', 'footer_content'); //Enable Footer Text in Pages
-
-function footer_content_callback() { // Section Callback
-	echo '<p>Add Your Footer Text Below</p>';  
-}
-	
-function text_callback($argu) {  // Textbox Callback
-	$text = get_option($argu[0]);
-	echo '<textarea rows="4" cols="50" type="text" name="'. $argu[0] .'" id="'. $argu[0] .'">' . $text . '</textarea>';
+function facebook_url_callback() {
+    $facebook_url = get_option('facebook_url');
+    echo '<input type="text" name="facebook_url" value="' . esc_attr($facebook_url) . '" />';
 }
 
+function twitter_url_callback() {
+    $twitter_url = get_option('twitter_url');
+    echo '<input type="text" name="twitter_url" value="' . esc_attr($twitter_url) . '" />';
+}
+
+function linkedin_url_callback() {
+    $linkedin_url = get_option('linkedin_url');
+    echo '<input type="text" name="linkedin_url" value="' . esc_attr($linkedin_url) . '" />';
+}
+
+function instagram_url_callback() {
+    $instagram_url = get_option('instagram_url');
+    echo '<input type="text" name="instagram_url" value="' . esc_attr($instagram_url) . '" />';
+}

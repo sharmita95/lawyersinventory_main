@@ -8,12 +8,12 @@
                     </svg>
                 </span>
             </div>
-            <div class="mx-auto w-full max-w-[78rem] mt-[calc(1rem+3vmin)]">
+            <div class="mx-auto w-full mt-[calc(1rem+3vmin)]">
                 <div class="input-sec">
                     <input type="search" name="s" id="default-search" class="search-input-field" placeholder="TYPE TO SEARCH...." required="">
-                    <div class="search-svg">
+                    <button class="search-svg">
 
-                    </div>
+                    </button>
                 </div>
 
                 <div class="modal-body">

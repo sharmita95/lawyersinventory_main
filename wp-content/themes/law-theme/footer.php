@@ -1,3 +1,13 @@
+    <?php
+    $facebook_url = get_options('facebook_url');
+    $twitter_url = get_options('twitter_url');
+    $linkedin_url = get_options('linkedin_url');
+    $instagram_url = get_options('instagram_url');
+    ?>
+    
+    
+    
+    
     </main>
         <footer class="footer">
             <div class="container mx-auto ">
@@ -7,16 +17,16 @@
                             <h3 class="footer-link-header relative">IMPORTANT LINKS</h3>
                             <ul class="footer-ul">
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Find a Lawyer</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/find-lawyers'); ?>">Find a Lawyer</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Learn About the Law</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/find-lawfirms'); ?>">Find a Lawfirm</a>
                                 </li>
                                 <li class="footer-ul-li">
                                     <a class="footer-ul-li-link" href="">Legal Professionals</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Blogs</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/blogs'); ?>">Blogs</a>
                                 </li>
                             </ul>
                         </div>
@@ -31,18 +41,23 @@
                             </div>
 
                             <div class="footer-social-wrapper">
-                                <a class="footer-social-icon" href="">
+                                <?php if(!empty($facebook_url)) { ?>
+                                <a class="footer-social-icon" href="<?php echo $facebook_url; ?>" rel="noopener noreferrer nofollow" target="_blank" aria-label="social_link">
                                     <span class="icon-facebook"></span>
                                 </a>
-                                <a class="footer-social-icon" href="">
+                                <?php } if(!empty($linkedin_url)) { ?>
+                                <a class="footer-social-icon" href="<?php echo $linkedin_url; ?>" rel="noopener noreferrer nofollow" target="_blank" aria-label="social_link">
                                     <span class="icon-linkedin"></span>
                                 </a>
-                                <a class="footer-social-icon" href="">
+                                <?php } if(!empty($twitter_url)) { ?>
+                                <a class="footer-social-icon" href="<?php echo $twitter_url; ?>" rel="noopener noreferrer nofollow" target="_blank" aria-label="social_link">
                                     <span class="icon-Twitter-x"></span>
                                 </a>
-                                <a class="footer-social-icon" href="">
+                                <?php } if(!empty($instagram_url)) { ?>
+                                <a class="footer-social-icon" href="<?php echo $instagram_url; ?>" rel="noopener noreferrer nofollow" target="_blank" aria-label="social_link">
                                     <span class="icon-instagram"></span>
                                 </a>
+                                <?php } ?>
                             </div>
 
                             <div class="footer-subscribe-sec">
@@ -68,10 +83,10 @@
                                     <a class="footer-ul-li-link" href="">Contact Us</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Write for Us</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/write-for-us'); ?>">Write for Us</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Practice</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/practice'); ?>">Practice</a>
                                 </li>
                                 <li class="footer-ul-li">
                                     <a class="footer-ul-li-link" href="">Location</a>
@@ -88,11 +103,11 @@
 
                     <div class="footer-copy-right-sec">
                         <p class="footer-copy-right-p">
-                            © 2024 Lawyersinventory. All rights reserved.
+                            © <?php echo get_the_date('Y'); ?> Lawyersinventory. All rights reserved.
                         </p>
 
                         <p class="footer-copy-right-p">
-                            Privacy Policy
+                            <a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a>
                         </p>
                     </div>
 
@@ -102,6 +117,140 @@
         </footer>
         
         <?php wp_footer(); ?>
+
+
+        <script>
+        new Swiper(".issueSwiper", {
+            loop: true,
+            paginationClickable: true,
+            spaceBetween: 30,
+            breakpoints: {
+                1920: {
+                    slidesPerView: 4,
+                    spaceBetween: 30,
+                },
+                1536: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+                1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 15,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+            },
+ 
+            // autoplay: {
+            //     delay: 3000,
+            //     disableOnInteraction: false,
+            // },
+ 
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+ 
+        new Swiper(".LawfirmSwiper", {
+            loop: true,
+            paginationClickable: true,
+            spaceBetween: 30,
+            breakpoints: {
+                1920: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+                1536: {
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                },
+                1280: {
+                    slidesPerView: 3,
+                    spaceBetween: 15,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+            },
+ 
+            // autoplay: {
+            //     delay: 3000,
+            //     disableOnInteraction: false,
+            // },
+ 
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+ 
+ 
+        new Swiper(".LawyersSwiper", {
+            loop: true,
+            paginationClickable: true,
+            spaceBetween: 30,
+            breakpoints: {
+                1920: {
+                    slidesPerView: 4,
+                    spaceBetween: 30,
+                },
+                1536: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+                1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 15,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+            },
+            // autoplay: {
+            //     delay: 3000,
+            //     disableOnInteraction: false,
+            // },
+ 
+            // pagination: {
+            //     el: ".swiper-pagination",
+            //     clickable: true,
+            // },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+ 
+        });
+    </script>
 
     </body>
 </html>

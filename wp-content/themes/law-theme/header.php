@@ -36,21 +36,9 @@
                     <div class="c-navbar-center">
                         <ul class="center-nav-bar-menu ">
                             <li class="center-nav-bar-menu-li">
-                                <a class="center-nav-bar-menu-a" href="">Find a Lawyer</a>
-                            </li>
-                            <li class="center-nav-bar-menu-li">
-                                <a class="center-nav-bar-menu-a" href="">Write for Us</a>
-                            </li>
-                            <li class="center-nav-bar-menu-li">
-                                <a class="center-nav-bar-menu-a" href="">About Us</a>
-                            </li>
-                            <li class="center-nav-bar-menu-li">
-                                <a class="center-nav-bar-menu-a" href="">Contact Us</a>
-                            </li>
-                            <li class="center-nav-bar-menu-li">
                                 <a class="center-nav-bar-menu-a" href="">
                                     <span>
-                                        Blogs
+                                        Find
                                     </span>
                                     <span class="icon-arow-down">
                                     </span>
@@ -58,12 +46,24 @@
 
                                 <ul class="center-nav-bar-menu-dropdown">
                                     <li class="cnb-menu-dropdown-li">
-                                        <a class="cnb-menu-dropdown-li-a" href="">Submenu 1</a>
+                                        <a class="cnb-menu-dropdown-li-a" href="<?php echo home_url('/find-lawyers'); ?>">Find a Lawyer</a>
                                     </li>
                                     <li class="cnb-menu-dropdown-li">
-                                        <a class="cnb-menu-dropdown-li-a" href="">Submenu 2</a>
+                                        <a class="cnb-menu-dropdown-li-a" href="<?php echo home_url('/find-lawfirms'); ?>">Find a Lawfirm</a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="center-nav-bar-menu-li">
+                                <a class="center-nav-bar-menu-a" href="<?php echo home_url('/write-for-us'); ?>">Write for Us</a>
+                            </li>
+                            <li class="center-nav-bar-menu-li">
+                                <a class="center-nav-bar-menu-a" href="<?php echo home_url('/about-us'); ?>">About Us</a>
+                            </li>
+                            <li class="center-nav-bar-menu-li">
+                                <a class="center-nav-bar-menu-a" href="<?php echo home_url('/contact-us'); ?>">Contact Us</a>
+                            </li>
+                            <li class="center-nav-bar-menu-li">
+                                <a class="center-nav-bar-menu-a" href="<?php echo home_url('/blogs'); ?>">Blogs</a>
                             </li>
                         </ul>
                     </div>
@@ -75,11 +75,11 @@
                             </span>
                         </button>
 
-                        <button class="like-user-button"  aria-label=" nav bar user button">
+                        <!-- <button class="like-user-button"  aria-label=" nav bar user button">
                             <span class="icon-user"></span>
-                        </button>
+                        </button> -->
 
-                        <a class="nab-cta hidden lg:flex">
+                        <a class="nab-cta hidden lg:flex" href="<?php echo home_url('/registration'); ?>">
                             Get Listed
                         </a>
 

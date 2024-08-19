@@ -28,7 +28,7 @@ function lyi_enqueue_files()
     // wp_enqueue_script('swiper-bundle.js.min', get_template_directory_uri() . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
 
     // wp_enqueue_style('owl.carousel.min', get_template_directory_uri() . '/css/owl.carousel.min.css', $ver, 'all');
-    // wp_enqueue_style('swiper-bundle.css.min', get_template_directory_uri() . '/css/swiper-bundle.min.css', $ver, 'all');
+    wp_enqueue_style('swiper-bundle.css.min', get_template_directory_uri() . '/css/swiper-bundle.min.css', $ver, 'all');
     wp_enqueue_style('style', get_stylesheet_uri(), false, $ver, 'all');
 
     wp_enqueue_script( 'jquery' );    
@@ -68,6 +68,8 @@ if(!function_exists('custom_theme_setup'))
 
 		add_image_size('about-us-thumbnail', 1390, 647, true);
         add_image_size('write-for-us-thumbnail', 1412, 538, true);
+
+        add_image_size('side-bar-thumb', 100, 100, true);
 
         //Add Role
 		// if (!(wp_roles()->is_role('pet-vet'))){
@@ -148,7 +150,8 @@ function custom_pagination($args = ''){
                     'next_text' => '>>',
     );
     $args = wp_parse_args( $args, $defaults );
-//-----------------Other Button Structure
+
+    //Other Button Structure
     function get_custom_pagination($num,$args,$format){
         if($num==1){
             return '<a class="pagination-btn" href="'.$args['base'].'">'.$num.'</a>';
@@ -156,9 +159,11 @@ function custom_pagination($args = ''){
             return '<a class="pagination-btn" href="'.$args['base'].$format.$num.'">'.$num.'</a>';    
         }
     }
-//-----------------Current Pagination
+
+    //Current Pagination
     $output = '<span aria-current="page" class="pagination-btn p-b-active">'.$args['current'].'</span>';
-//-----------------Prev Mid Buttons
+
+    //Prev Mid Buttons
     if(!empty($args['mid_size']) && !empty($args['current'])){
         $total = $args['current']-1;
         if(!empty($args['end_size'])){
@@ -176,7 +181,8 @@ function custom_pagination($args = ''){
             }
         }
     }
-//-----------------Prev End Buttons
+
+    //Prev End Buttons
     if(!empty($args['end_size']) && !empty($args['current'])){
         $total = $args['current']-1;
         $round = ($args['end_size']>=$total)?$total:$args['end_size'];
@@ -184,13 +190,15 @@ function custom_pagination($args = ''){
             $output = get_custom_pagination($x,$args,$format).$output;
         }
     }
-//-----------------Prev Button
+
+    //Prev Button
     if(!empty($args['current']) && $args['current']>=2){
         if($args['current']==2) $prev_button = '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].'">'.$args['prev_text'].'</a>';
         else $prev_button = '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].$format.($args['current']-1).'">'.$args['prev_text'].'</a>';
         $output = $prev_button.$output;
     }
-//-----------------Next Mid Buttons
+
+    //Next Mid Buttons
     if(!empty($args['mid_size']) && !empty($args['current'])){
         $total = $args['total']-$args['current'];
         if(!empty($args['end_size'])){
@@ -208,7 +216,8 @@ function custom_pagination($args = ''){
             }
         }
     }
-//-----------------Next End Buttons
+
+    //Next End Buttons
     if(!empty($args['end_size']) && !empty($args['current'])){
         $total = $args['total']-$args['current'];
         $round = ($total<=$args['end_size'])?$total:$args['end_size'];
@@ -216,7 +225,8 @@ function custom_pagination($args = ''){
             $output .= get_custom_pagination($x,$args,$format);
         }
     }
-//-----------------Next Button
+
+    //Next Button
     if(!empty($args['current']) && $args['current']<=($args['total']-1)){
         $output .= '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].$format.($args['current']+1).'">'.$args['next_text'].'</a>';
     }
@@ -227,25 +237,17 @@ function custom_pagination($args = ''){
     <div class="pagination">'.$output.'</div></form>';
 }
 
-//------------------------------------------------- Custom comment form---------------------------------------------------
 
-//---------------------------------------custom comment form
+//------------- Custom comment form-----------------//
 
 function custom_comment_form_defaults($defaults) {
+    // print_r($defaults);
     // Title for the comment form
-    $defaults['title_reply'] = '<span class="content-common-title">Leave A Reply</span>';
+    $defaults['title_reply_before'] = '<span id="reply-title" class="content-common-title">';
+    $defaults['title_reply'] = 'Leave A Reply';
+    $defaults['title_reply_after'] = '</span>';
 
-    // Custom checkbox and note after comment field
-    $comment_notes_after = '<div class="comment-from-checkbox-wrapper">
-                                <label class="comment-from-checkbox">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-
-                                <p>
-                                    Save my name, email, and website in this browser for the next time I comment.
-                                </p>
-                            </div>';
+    $defaults['class_form'] = 'comment-from';
 
     // Custom submit button
     $submit_button = '<div class="comment-from-submit-wrapper">
@@ -258,8 +260,8 @@ function custom_comment_form_defaults($defaults) {
  
     return $defaults;
 }
-add_filter('comment_form_defaults', 'custom_comment_form_defaults');
 add_filter( 'comment_form_fields', 'mo_comment_fields_custom_order' );
+add_filter('comment_form_defaults', 'custom_comment_form_defaults');
 
 function mo_comment_fields_custom_order( $fields ) {
     $cookies = $fields['cookies'];
@@ -268,48 +270,48 @@ function mo_comment_fields_custom_order( $fields ) {
     unset( $fields['email'] );
     unset( $fields['url'] );
     unset( $fields['cookies'] );
-    $fields['form-open'] = '<form class="comment-from">';
     $fields['wrapper-open'] = '<div class="comment-from-first-row">';
     $fields['author'] = '<label class="comment-from-half" for="text">
-                                    <input class="comment-from-common-input" type="text" placeholder="Name*">
+                                    <input class="comment-from-common-input" type="text" name="author" placeholder="Name*">
                                 </label>';
     $fields['email'] = '<label class="comment-from-half" for="email">
-                                    <input class="comment-from-common-input" type="email" placeholder="Email*">
+                                    <input class="comment-from-common-input" type="email" name="email" placeholder="Email*">
                                 </label>';
     $fields['wrapper-close'] = '</div>';
-    // $fields['url'] = '<input id="url" name="url" type="text" class="c-input" placeholder="YOUR Website">';
     $fields['comment'] = '<label class="comment-from-second-row" for="comment">
                                 <textarea class="comment-from-common-textarea" rows="3" name="comment" id="" placeholder="Comment"></textarea>
                             </label>';
-    $fields['form-close'] = '</form>';
     $fields['cookies'] = $cookies;
     return $fields;
 }
 
 
-// ------------------------------------ Comment Section ----------------------------------------------------------------------
+//------------------- Comment Section ------------//
 
-// ------------------------------------------------- Comment section ------------- ----------------
 function display_comments_recursive($comments, $parent_id = 0) {
     foreach ($comments as $comment) {
         if ($comment->comment_parent == $parent_id) {
             // Display the comment
             ?>
-            <div class="<?php if ($comment->comment_parent) echo 'with-out-'; ?>border-replay-card">
+            <div class="<?php if (!$comment->comment_parent) echo 'with-out-'; ?>border-replay-card">
                 <div class="replay-user-and-edit">
                     <div class="flex w-fit gap-[20px]">
                         <figure class="replay-user-image-ctrl">
-                            <img class="image-responsive" src="<?php echo get_template_directory_uri(); ?>/images/author-img.jpg" alt="author-img" />
+                        <?php
+                            // pls check this line
+                            echo get_avatar($comment, 96, get_template_directory_uri() . '/images/internal-one.png', 'author-img', array('class' => 'image-responsive'));
+                            ?>
+                            <!-- <img class="image-responsive" src="<?php// echo get_template_directory_uri(); ?>/images/Lawyers-1.png" alt="author-img" /> -->
                         </figure>
                         <div class="comment-replay-card-title-sec">
                             <h2 class="comment-replay-card-title"><?php echo esc_html($comment->comment_author); ?></h2>
                             <p class="comment-replay-card-publish-date">
-                            <?php echo esc_html(date('d F, Y', strtotime($comment->comment_date))); ?>
-                                        </p>
+                            <?php echo esc_html(date('F j, Y \a\t g:i a', strtotime($comment->comment_date))); ?></p>
+                            
                         </div>                    
                     </div>
 
-                    <a class="c-r-replay-edit-btn" href="">Edit</a>
+                    <!-- <a class="c-r-replay-edit-btn" href="">Edit</a> -->
                 </div>
 
                 <div class="c-r-replay-comment-sec ">
@@ -317,7 +319,6 @@ function display_comments_recursive($comments, $parent_id = 0) {
                     <a href="<?php echo get_permalink(); ?>?replytocom=<?php echo $comment->comment_ID; ?>#respond" data-commentid="<?php echo $comment->comment_ID; ?>" data-postid="<?php echo get_the_ID(); ?>" class=".c-r-replay-edit-btn">Reply</a>
                 </div>   
             </div> 
-			
             <?php
             // Fetch child comments
             $child_comments = get_comments(array(
@@ -326,9 +327,9 @@ function display_comments_recursive($comments, $parent_id = 0) {
             ));
             if ($child_comments) {
                 ?>
-                <div class="comment-child">
+                <!-- <div class="comment-child"> -->
                     <?php display_comments_recursive($child_comments, $comment->comment_ID); ?>
-                </div>
+                <!-- </div> -->
                 <?php
             }
         }
