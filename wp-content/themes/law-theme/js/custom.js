@@ -239,6 +239,43 @@ jQuery(document).ready(function ($) {
     //For designing
     $('.custom-pagination a.page-numbers').addClass('pagination-btn');
     $('.custom-pagination a.page-numbers.current').addClass('pagination-btn p-b-active');
+
+
+
+
+    //Blog page pagination
+    $('body').on('click','.pagination-btn',function(e){
+        e.preventDefault();
+        var category = $('#category_filter').val();
+        var dateSort = $('#date_sort').val();
+        var searchQuery = $('.lawyers-filter-search-from-input').val();
+        var href = $(this).attr('href');
+        $('form.pagination-wrapper').attr('action',href);
+        $('input[name="input_category"]').val(category);
+        $('input[name="input_order"]').val(dateSort);
+        $('input[name="input_search"]').val(searchQuery);
+        $('form.pagination-wrapper').submit();
+    });
+
+
+    $('#category_filter, #date_sort, .lawyers-filter-search-from-input').on('change keyup', function() {
+        var category = $('#category_filter').val();
+        var dateSort = $('#date_sort').val();
+        var searchQuery = $('.lawyers-filter-search-from-input').val();
+        $.ajax({
+            url: Front.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'filter_posts',
+                category: category,
+                date_sort: dateSort,
+                s: searchQuery
+            },
+            success: function(response) {
+                $('#posts-container').html(response);
+            }
+        });
+    });
 	
 });
 

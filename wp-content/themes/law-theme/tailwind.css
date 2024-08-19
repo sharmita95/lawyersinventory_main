@@ -20,6 +20,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
     padding: 0;
   }
 
+  /* 
   @font-face {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -48,7 +49,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
     font-style: italic;
     font-variation-settings: "wdth" 100;
     src: url("fonts/OpenSans-Italic.ttf") format("ttf");
-  }
+  } */
 
   /* icon moon icon file */
   @font-face {
@@ -130,6 +131,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
   .icon-Twitter-x:before {
     content: "\e910";
   }
+
   .icon-left-mid-arrow:before {
     content: "\e911";
   }
@@ -150,7 +152,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
   /* start nav bar */
 
   .navbar {
-    @apply relative !p-0;
+    @apply relative !p-0 border-b-[2px] sm:border-b-[3px] border-b-primary;
   }
 
   /* start footer component */
@@ -205,7 +207,8 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
   }
 
   .l-c-b-title {
-    @apply text-primary text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] xl:text-[52px] 2xl:text-[58px] 3xl:text-[64px]
+    @apply text-primary 
+    text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] xl:text-[52px] 2xl:text-[58px] 3xl:text-[64px]
     font-Montserrat font-bold leading-[1.35];
   }
 
@@ -284,7 +287,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
     text-[8px] sm:text-[11px] md:text-[14px] lg:text-[15px] xl:text-[15px] 2xl:text-[15px] 3xl:text-[16px];
   }
 
-  /* */
+  /* the  */
 
   .lawyers-card {
     @apply relative w-full border-[4px] border-primary flex items-end 
@@ -354,6 +357,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
   .pagination {
     @apply relative w-fit flex;
   }
+
   .pagination-btn {
     @apply flex justify-center items-center font-bold text-primary
     w-[20px] sm:w-[26px] md:w-[33px] lg:w-[26px] xl:w-[28px] 2xl:w-[31px] 3xl:w-[33px] h-[24px] sm:h-[31px] md:h-[38px] lg:h-[31px] xl:h-[33px] 2xl:h-[36px] 3xl:h-[39px]
@@ -464,7 +468,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
   .blog-card-c-date-publisher-text {
     @apply font-medium text-black 
-     text-[12px] sm:text-[12px] md:text-[14px] lg:text-[12px] xl:text-[13px] 2xl:text-[14px] 3xl:text-[14px];
+    text-[12px] sm:text-[12px] md:text-[14px] lg:text-[12px] xl:text-[13px] 2xl:text-[14px] 3xl:text-[14px];
   }
 
   .blog-card-c-read-more-cta {
@@ -477,22 +481,53 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
     @apply text-primary text-[14px] sm:text-[15px] md:text-[16px] lg:text-[14px] xl:text-[15px] 2xl:text-[15px] 3xl:text-[16px];
   }
 
-
-  
   /* side bar broder  */
 
+  /* 
+  h = horizontal 
+  C = card 
+  */
+
   .side-c-border {
-    @apply border-primary border border-solid;
+    @apply border-primary border-[5px] border-solid;
   }
 
-  
+  .side-bar-horizontal-card {
+    @apply relative w-full flex py-[20px] border-b border-senary_accent border-solid last:border-b-0 last:!pb-0 
+    gap-[15px] sm:gap-[20px] md:gap-[12px] lg:gap-[11px] xl:gap-[12px] 2xl:gap-[13px] 3xl:gap-[14px];
+  }
 
+  .side-bar-h-c-image-ctrl {
+    @apply relative flex
+    w-[80px] sm:w-[90px] md:w-[70px] lg:w-[70px] xl:w-[80px] 2xl:w-[90px] 3xl:w-[100px]
+    h-[80px] sm:h-[90px] md:h-[70px] lg:h-[70px] xl:h-[80px] 2xl:h-[90px] 3xl:h-[100px]
+    min-w-[80px] sm:min-w-[90px] md:min-w-[70px] lg:min-w-[70px] xl:min-w-[80px] 2xl:min-w-[90px] 3xl:min-w-[100px];
+  }
 
+  .side-bar-h-c-content-sec {
+    @apply relative;
+  }
 
+  .side-bar-h-c-title {
+    @apply font-OpenSans font-semibold text-black leading-[1.57] 
+    text-[14px] sm:text-[14px] md:text-[11px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] 3xl:text-[20px];
+  }
 
+  .side-bar-h-c-publish-date {
+    @apply font-Montserrat  md:font-medium text-[#434343]
+    text-[14px] sm:text-[14px] md:text-[11px] lg:text-[14px] xl:text-[12px] 2xl:text-[13px] 3xl:text-[14px]
+    mt-[11px] sm:mt-[9px] md:mt-[8px] lg:mt-[8px] xl:mt-[10px] 2xl:mt-[12px] 3xl:mt-[14px];
+  }
 
+  /* issue card  */
+  .issue-card {
+    @apply relative;
+  }
 
-
+  .issue-card-icon-wrapper {
+    @apply absolute top-0 left-[50%] translate-x-[-50%] flex
+    justify-center items-center w-[40px] h-[40px] bg-primary;
+  }
 }
 
 /* -------------------------------normal css ------------------------------------*/
@@ -522,7 +557,7 @@ ul.center-nav-bar-menu li.center-nav-bar-menu-li {
 
 ul.center-nav-bar-menu li.center-nav-bar-menu-li a.center-nav-bar-menu-a {
   @apply py-[8px] px-[16px] flex items-center gap-[12px]
-        text-[16px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] 3xl:text-[16px] text-black font-bold uppercase  tracking-[4%];
+text-[16px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] 3xl:text-[16px] text-black font-bold uppercase  tracking-[4%];
 }
 
 ul.center-nav-bar-menu
@@ -992,7 +1027,16 @@ footer.footer {
     text-[12px] sm:text-[14px] md:text-[16px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] 3xl:text-[16px];
 }
 
+.common-load-more-button {
+  @apply relative text-center border-[2px] sm:border-[3px] border-primary leading-[1]
+    py-[14px] sm:py-[17x] md:py-[20px] lg:py-[15px] xl:py-[16px] 2xl:py-[17px] 3xl:py-[18px]
+    px-[35px] sm:px-[22px] md:px-[56px] xl:px-[33px] 2xl:px-[34px] 3xl:px-[63px]
+    flex justify-center items-center uppercase text-black font-Montserrat font-bold
+    text-[12px] sm:text-[14px] md:text-[16px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] 3xl:text-[16px];
+}
+
 /* review-sec */
+
 .review-sec {
   @apply relative;
 }
@@ -1090,7 +1134,8 @@ footer.footer {
 
 .lawfirm-practice-filter-left-sec,
 .lawyers-practice-filter-left-sec {
-  @apply flex relative flex-wrap w-full lg:w-[84.40%]  gap-[9px] sm:gap-[18px] md:gap-[22px] lg:gap-[24px];
+  @apply flex relative flex-wrap w-full lg:w-[84.40%] 
+  gap-[9px] sm:gap-[18px] md:gap-[22px] lg:gap-[24px];
 }
 .lawfirm-practice-filter-right-sec,
 .lawyers-practice-filter-right-sec {
@@ -1292,6 +1337,10 @@ footer.footer {
  last:text-[21px] md:last:text-[24px] last:font-medium;
 }
 
+.single-post-content > a {
+  @apply text-primary hover:text-black;
+}
+
 .single-post-content .table-whapper {
   @apply overflow-x-auto 
   mt-[16px] sm:mt-[18px] md:mt-[20px] lg:mt-[22px] xl:mt-[24px] 2xl:mt-[26px] 3xl:mt-[28px]
@@ -1408,9 +1457,87 @@ footer.footer {
   @apply mt-[20px] sm:mt-[30px] md:mt-[35px] lg:mt-[40px] xl:mt-[45px] 2xl:mt-[50px] 3xl:mt-[55px];
 }
 
+.comment-replay-sec {
+  @apply relative border-senary border border-solid 
+  pt-[20px] sm:pt-[20px] md:pt-[20px] lg:pt-[40px] xl:pt-[45px] 2xl:pt-[50px] 3xl:pt-[52px]
+  pb-[20px] sm:pb-[20px] md:pb-[20px] lg:pb-[40px] xl:pb-[45px] 2xl:pb-[50px] 3xl:pb-[52px]
+  pl-[20px] sm:pl-[20px] md:pl-[20px] 
+  pr-[20px] sm:pr-[20px] md:pr-[20px] lg:pr-[45px] xl:pr-[55px] 2xl:pr-[65px] 3xl:pr-[75px];
+}
+
+.comment-replay-title {
+  @apply text-[16px] sm:text-[17px] md:text-[18px] text-senary mb-[18px];
+}
+
+.with-out-border-replay-card {
+  @apply relative;
+}
+
+.replay-user-and-edit {
+  @apply relative flex items-center justify-between;
+}
+
+.comment-replay-card-title-sec {
+  @apply w-fit relative;
+}
+
+.comment-replay-card-title {
+  @apply text-[16px] sm:text-[17px] md:text-[18px] text-primary 
+  font-bold font-OpenSans;
+}
+
+.comment-replay-card-publish-date {
+  @apply text-[10px] sm:text-[11px] md:text-[12px];
+}
+
+.replay-user-image-ctrl {
+  @apply relative 
+  w-[36px] sm:w-[40px] md:w-[48px] lg:w-[42px] xl:w-[44px] 2xl:w-[46px] 3xl:w-[48px]
+  h-[14px] sm:h-[20px] md:h-[24px] lg:h-[42px] xl:h-[44px] 2xl:h-[46px] 3xl:h-[48px];
+}
+
+.c-r-card-comment {
+  @apply text-[14px] sm:text-[16px] md:text-[18px];
+}
+
+.c-r-replay-comment-sec {
+  @apply flex gap-[16px] sm:gap-[18px] md:gap-[20px] 
+  mt-[40px] sm:ml-[45px] md:ml-[50px] lg:ml-[55px] xl:ml-[60px] 2xl:ml-[65px] 3xl:ml-[78px];
+}
+
+.c-r-replay-card-comment {
+  @apply relative text-[14px] sm:text-[15px] md:text-[16px] font-OpenSans font-normal;
+}
+
+.c-r-replay-btn {
+  @apply text-[10px] sm:text-[11px] md:text-[12px] font-Montserrat font-medium
+  text-senary;
+}
+
+.c-r-replay-edit-btn {
+  @apply relative py-[3px] px-[10px] flex w-fit border border-senary border-solid leading-[1.1]
+  text-[12px] sm:text-[13px] md:text-[14px] text-senary;
+}
+
+.c-r-replay-small-edit-btn {
+  @apply relative py-[3px] px-[10px] flex w-fit border border-senary border-solid leading-[1.1]
+  text-[10px] sm:text-[11px] md:text-[12px] text-senary;
+}
+
+.border-replay-card {
+  @apply relative border border-senary
+  pt-[13px] sm:pt-[14px] md:pt-[15px] lg:pt-[16px] xl:pt-[17px] 2xl:pt-[18px] 3xl:pt-[19px]
+  pb-[20px] sm:pb-[20px] md:pb-[20px] lg:pb-[40px] xl:pb-[45px] 2xl:pb-[50px] 3xl:pb-[52px] 
+  px-[21px] sm:px-[22px] md:px-[23px] lg:px-[24px] xl:px-[26px] 2xl:px-[37px] 3xl:px-[39px]
+  ml-[47px] sm:ml-[57px] md:ml-[67px] lg:ml-[77px] xl:ml-[87px] 2xl:ml-[97px] 3xl:ml-[106px]
+  mt-[20px] sm:mt-[25px] md:mt-[28px] lg:mt-[32px] xl:mt-[38px] 2xl:mt-[42px] 3xl:mt-[47px];
+}
+
+/*  */
+
 .single-page-related-sec {
   @apply relative
-   mt-[55px] sm:mt-[24px] md:mt-[80px] lg:mt-[80px] xl:mt-[87px] 2xl:mt-[93px] 3xl:mt-[100px];
+  mt-[55px] sm:mt-[24px] md:mt-[80px] lg:mt-[80px] xl:mt-[87px] 2xl:mt-[93px] 3xl:mt-[100px];
 }
 
 .single-related-title-sec {
@@ -1438,20 +1565,375 @@ footer.footer {
   @apply sticky top-[50px] h-fit;
 }
 
-.side-bar-innner {
-  @apply relative flex-col gap-[30px] sm:gap-[25px] md:gap-[20px] lg:gap-[20px];
+.side-bar-inner {
+  @apply relative flex flex-col gap-[30px] sm:gap-[25px] md:gap-[20px] lg:gap-[20px];
 }
 
-/* .side-bar-title {
-  @apply text-center text-primary font-bold font-Montserrat text-[22px] sm:text-[26px] md:text-[30px] lg:text-[34px] xl:text-[38px] 2xl:text-[42px] 3xl:text-[46px];
-}  */
+.side-search-card {
+  @apply relative side-c-border w-full h-fit;
+}
+
+.side-search-from {
+  @apply w-full h-fit relative;
+}
+
+.side-search-from-button {
+  @apply absolute right-[20px] top-[50%] translate-y-[-50%]  w-[30px] h-[30px] flex items-center justify-center;
+}
+
+.side-search-from-button .icon-search {
+  @apply text-[23px] sm:text-[24px] md:text-[25px] lg:text-[25px] xl:text-[26px] 2xl:text-[27px] 3xl:text-[28px] text-primary;
+}
+
+.side-search-input {
+  @apply relative w-full focus:outline-none
+  p-[20px] sm:p-[22px] md:p-[24px] lg:p-[22px] xl:p-[24px] 2xl:p-[26px] 3xl:p-[28px];
+}
+
+.side-bar-title {
+  @apply text-primary font-bold font-Montserrat 
+  text-[21px] sm:text-[22px] md:text-[23px] lg:text-[21px] xl:text-[22px] 2xl:text-[23px] 3xl:text-[24px];
+}
 
 .side-bar-list {
   @apply relative grid grid-cols-1 gap-[10px] sm:gap-[15px] md:gap-[20px] lg:gap-[25px] xl:gap-[30px] 2xl:gap-[35px] 3xl:gap-[40px];
 }
 
-/* start mediaquary */
+.side-bar-social-sec {
+  @apply relative w-full p-[20px] side-c-border;
+}
 
+.side-bar-social-card-wrapper {
+  @apply w-full flex relative
+  mt-[30px] sm:mt-[16px] md:mt-[17px] lg:mt-[30px] xl:mt-[35px] 2xl:mt-[40px] 3xl:mt-[45px]
+  gap-[30px] sm:gap-[16px] md:gap-[17px] lg:gap-[17px] xl:gap-[35px] 2xl:gap-[40px] 3xl:gap-[42px];
+}
+
+.side-bar-social-card {
+  @apply relative flex items-center justify-center bg-primary
+  w-[50px] sm:w-[50px] md:w-[50px] lg:w-[55px] xl:w-[60px] 2xl:w-[65px] 3xl:w-[70px]
+  h-[50px] sm:h-[50px] md:h-[50px] lg:h-[58px] xl:h-[63px] 2xl:h-[68px] 3xl:h-[73px];
+}
+
+.side-bar-social-card [class^="icon-"] {
+  @apply font-icomoon text-black;
+}
+
+.side-bar-social-card :is(.icon-facebook, .icon-instagram, .icon-linkedin) {
+  @apply text-[35px] md:text-[33px] lg:text-[30px] xl:text-[34px] 2xl:text-[37px] 3xl:text-[40px];
+}
+
+.side-bar-social-card .icon-Twitter-x {
+  @apply text-[26px] md:text-[28px] lg:text-[25px] xl:text-[28px] 2xl:text-[30px] 3xl:text-[35px];
+}
+
+.side-bar-recent-post-sec {
+  @apply relative p-[20px] w-full side-c-border;
+}
+
+.side-bar-card-wrappe {
+  @apply relative;
+}
+
+.side-bar-user-card {
+  @apply relative side-c-border w-full;
+}
+
+.side-bar-user-card-img-sec {
+  @apply w-full flex justify-center;
+}
+
+.side-bar-user-card-img-ctrl {
+  @apply relative rounded-b-full overflow-hidden
+  h-[100px] sm:h-[105px] md:h-[110px] lg:h-[110px] xl:h-[130px] 2xl:h-[170px] 3xl:h-[200px]
+  w-[100px] sm:w-[105px] md:w-[110px] lg:w-[110px] xl:w-[130px] 2xl:w-[170px] 3xl:w-[200px];
+}
+
+.side-bar-user-card-content-sec {
+  @apply px-[20px] lg:px-[20px] xl:px-[24px] 2xl:px-[27px] 3xl:px-[30px] w-full block 
+  pb-[20px] lg:pb-[23px] xl:pb-[30px] 2xl:pb-[33px] 3xl:pb-[37px];
+}
+
+.side-bar-user-card-title {
+  @apply relative text-center font-bold font-OpenSans text-primary
+  text-[18px] md:text-[18px] lg:text-[21px] xl:text-[27px] 2xl:text-[29px] 3xl:text-[32px];
+}
+
+.side-bar-user-card-dsc {
+  @apply text-[14px] md:text-[15px] lg:text-[16px] font-OpenSans font-normal w-full block;
+}
+
+/* author card */
+
+.author-page-sec {
+  @apply relative
+  pt-[55px] sm:pt-[67.5px] md:pt-[80px] lg:pt-[80px] xl:pt-[85px] 2xl:pt-[90px] 3xl:pt-[95px]
+  pb-[55px] sm:pb-[67.5px] md:pb-[80px] lg:pb-[80px] xl:pb-[87px] 2xl:pb-[84px] 3xl:pb-[100px];
+}
+
+.auth-author-card {
+  @apply relative flex flex-col lg:flex-row p-[20px] sm:p-[20px] md:p-[20px] 
+  lg:gap-[21px] xl:gap-[24px] 2xl:gap-[27px] 3xl:gap-[30px]
+  border-primary border-[5px] 
+  mb-[30px] sm:mb-[40px] md:mb-[50px] lg:mb-[30px] xl:mb-[40px] 2xl:mb-[50px] 3xl:mb-[60px];
+}
+
+.author-card-image-sec {
+  @apply relative w-[100%] flex justify-center lg:w-fit;
+}
+
+.author-card-image-ctrl {
+  @apply relative
+  w-[183px] md:w-[209px] lg:w-[209px] xl:w-[319px] 2xl:w-[319] 3xl:w-[319px]
+  min-w-[183px] md:min-w-[209px] lg:min-w-[209px] xl:min-w-[319px] 2xl:min-w-[319px] 3xl:min-w-[319px]
+  h-[186px] md:h-[192px] lg:h-[192px] xl:h-[225px] 2xl:h-[259px] 3xl:h-[293px];
+}
+
+.auth-author-card-content {
+  @apply relative;
+}
+
+.auth-author-card-title {
+  @apply text-primary font-bold text-center lg:text-left
+  text-[24px] sm:text-[28px] md:text-[32px] lg:text-[30px] xl:text-[32px] 2xl:text-[34px] 3xl:text-[36px];
+}
+
+.auth-author-card-dsc {
+  @apply text-black text-[14px] sm:text-[14px] md:text-[16px] font-Montserrat;
+}
+
+.author-grid-card {
+  @apply relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2
+  gap-[20px] sm:gap-y-[25px] sm:gap-x-[18px] md:gap-y-[30px] md:gap-x-[22px] lg:gap-x-[25px] lg:gap-y-[32px] xl:gap-y-[38px] 2xl:gap-y-[44px] 3xl:gap-y-[50px];
+}
+
+.author-grid-card .blog-card .blog-card-content-sec .blog-card-title {
+  @apply text-[18px] sm:text-[18px] md:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:text-[25px] 3xl:text-[28px];
+}
+
+.author-grid-card .blog-card .blog-card-content-sec {
+  @apply pr-[40px] sm:pr-[45px] md:pr-[20px] lg:pr-[49px] xl:pr-[51px] 2xl:pr-[53px] 3xl:pr-[55px];
+}
+
+/*  */
+
+.author-page-pagination-sec {
+  @apply relative flex justify-center 
+  mt-[30px] sm:mt-[45px] md:mt-[60px] lg:mt-[60px] xl:mt-[65px] 2xl:mt-[75px] 3xl:mt-[80px];
+}
+
+.auth-pagination {
+  @apply relative w-fit flex gap-[7px];
+}
+
+.auth-p-b-active {
+  @apply !border-primary !bg-primary !text-white;
+}
+
+.auth-pagination-btn-dot {
+  @apply relative flex items-end gap-[4.5px];
+}
+
+.auth-pagination-btn-dot-disc {
+  @apply w-[6px] h-[6px] bg-primary gap-[5px] rounded-full;
+}
+
+.auth-pagination-btn {
+  @apply flex items-center justify-center w-[27px] h-[36px] 
+  relative text-primary font-semibold font-Montserrat border border-[#CCCCCC] 
+  text-[15px] md:text-[15px] lg:text-[17px] xl:text-[18px] 2xl:text-[19px] 3xl:text-[20px];
+}
+
+.auth-pagination-btn .icon-left-mid-arrow {
+  @apply relative text-senary text-[14px];
+}
+
+/* front page .f = front  */
+
+.front-top-liggal-sec {
+  @apply relative;
+}
+
+.front-featured-lower-sec {
+  @apply relative;
+}
+
+.featured-loyers-to {
+  @apply relative;
+}
+
+/* Featured Lawfirm */
+
+.front-Lawfirm-sec {
+  @apply relative;
+}
+
+/* anbout and letest post slider */
+
+.front-common-title {
+  @apply text-black font-OpenSans font-bold text-center uppercase                
+  text-[28px] sm:text-[41px] md:text-[50px] lg:text-[50px] xl:text-[55px] 2xl:text-[60px] 3xl:text-[64px];
+}
+
+.front-top-legal-issues-sec {
+  @apply relative;
+}
+
+.front-about-us-inner {
+  @apply relative bg-white border-primary border-[5px] border-solid
+  px-[25px] sm:px-[30px] md:px-[50px] lg:px-[35px] xl:px-[40px] 2xl:px-[45px] 3xl:px-[50px]
+  py-[30px] sm:py-[30px] md:py-[50px] lg:py-[35px] xl:py-[40px] 2xl:py-[50px] 3xl:py-[86px]
+  mb-[25px] sm:mb-[30px] md:mb-[50px] lg:mb-[35px] xl:mb-[40px] 2xl:mb-[45px] 3xl:mb-[50px];
+}
+
+.front-about-us-inner-p {
+  @apply text-[12px] sm:text-[16px] md:text-[18px] font-Montserrat text-center;
+}
+
+.about-and-latest-post-sec {
+  @apply relative 
+  pb-[20px] md:pb-[30px] xl:pb-[40px] 2xl:pb-[50px] 3xl:pb-[60px];
+}
+
+.front-latest-post-sec {
+  @apply relative;
+}
+
+.front-latest-sec {
+  @apply relative;
+}
+
+.front-latest-grid-sec {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+  gap-[20px] md:gap-[271px] lg:gap-[24px] xl:gap-[25px] 2xl:gap-[26px] 3xl:gap-[27px];
+}
+
+.front-common-title-wrapper {
+  @apply relative 
+  mb-[20px] md:mb-[30px] lg:mb-[30px] xl:mb-[40px] 2xl:mb-[50px] 3xl:mb-[60px];
+}
+
+.front-latest-button-wrapper {
+  @apply relative flex justify-center 
+  mt-[20px] md:mt-[30px] lg:mt-[30px] xl:mt-[40px] 2xl:mt-[50px] 3xl:mt-[60px];
+}
+
+.common-load-more-button .icon-left-mid-arrow {
+  @apply absolute right-[15px] font-icomoon text-[15px] font-bold;
+}
+
+/* log in page */
+
+.log-in-page-sec {
+  @apply relative py-[50px] sm:py-[60px] md:py-[70px] lg:py-[80px] xl:py-[90px] 2xl:py-[100px] 3xl:py-[110px];
+}
+
+.log-in-inner-sec {
+  @apply relative flex justify-center items-center flex-col;
+}
+
+.log-in-from-wrapper {
+  @apply relative border-primary 
+   border-[10px] sm:border-[12px] md:border-[14px] lg:border-[16px] xl:border-[18px] 2xl:border-[19px] 3xl:border-[20px]
+   w-[100%] sm:w-[100%] md:w-[670px] lg:w-[670px] xl:w-[792px] 2xl:w-[913px] 3xl:w-[1034px]
+   px-[35px] sm:px-[60px] md:px-[85px] lg:px-[85px] xl:px-[100px] 2xl:px-[116px] 3xl:px-[126px]
+   py-[35px] sm:py-[40px] md:py-[44px] lg:py-[44px] xl:py-[54px] 2xl:py-[64px] 3xl:py-[74px];
+}
+
+.log-in-from{
+  @apply relative flex flex-col ;
+}
+
+.log-in-title {
+  @apply text-black font-OpenSans font-bold leading-[1.35] text-center
+  text-[32px] sm:text-[36px] md:text-[40px] lg:text-[46px] xl:text-[52px] 2xl:text-[58px] 3xl:text-[64px];
+}
+
+.log-in-input-sec-wrapper{
+  @apply mt-[32px] sm:mt-[34px] md:mt-[36px] lg:mt-[38px] xl:mt-[40px] 2xl:mt-[42px] 3xl:mt-[45px] relative
+}
+
+.log-in-input-password-wrapper{
+  @apply mt-[19px] sm:mt-[20px] md:mt-[21px] lg:mt-[22px] xl:mt-[23px] 2xl:mt-[24px] 3xl:mt-[25px] relative block
+}
+
+.log-in-input{
+   @apply w-full py-[11px] md:py-[10px] lg:py-[10px] border-b border-[#747474]
+    focus:outline-none focus-within:outline-none rounded-[1px] tracking-[1.5px] placeholder:text-quinary relative
+    text-[10px] md:text-[14px] lg:text-[14px] xl:text-[16px] 2xl:text-[17px] 3xl:text-[18px] font-Montserrat font-medium  text-[#5C5C5C];
+}
+
+.label-link{
+  @apply text-primary relative flex justify-end
+  text-[16px] sm:text-[17px] md:text-[18px] lg:text-[14px] xl:text-[16px] 2xl:text-[17px] 3xl:text-[18px]
+}
+
+
+.label-link-wrapper{
+  @apply block w-full mt-[16px] sm:mt-[18px] md:mt-[20px] lg:mt-[23px] xl:mt-[25px] 2xl:mt-[27px] 3xl:mt-[30px] relative
+}
+
+.log-in-from-submit-button-wrapper{
+  @apply relative 
+  mt-[16px] sm:mt-[18px] md:mt-[20px] lg:mt-[23px] xl:mt-[25px] 2xl:mt-[27px] 3xl:mt-[30px]
+  w-full flex justify-center;
+}
+
+.create-an-account-p-wrapper{
+  @apply mt-[35px] sm:mt-[38px] md:mt-[40px] lg:mt-[40px] xl:mt-[42px] 2xl:mt-[44px] 3xl:mt-[47px]
+}
+
+.create-an-account-p {
+  @apply text-black font-Montserrat font-medium
+  text-[14px] sm:text-[15px] md:text-[16px] lg:text-[21px] xl:text-[22px] 2xl:text-[23px] 3xl:text-[24px];
+}
+
+.create-an-account {
+  @apply text-primary;
+}
+
+/*  */
+
+.modal-content{
+    @apply bg-white w-full h-full flex flex-col animate-[animatetop_.4s] 
+    font-Montserrat fixed top-0 overflow-y-scroll z-50
+}
+
+.toggle-cut{
+    @apply w-full flex justify-end my-4 md:my-6 lg:my-8 xl:my-12 
+}
+
+.toggle-cut-svg{
+  @apply w-[20px] sm:w-[22px] md:w-[24px] lg:w-[25px] xl:w-[26px] 2xl:w-[28px] 
+}
+
+.input-sec{
+  @apply w-full relative flex items-center 
+}
+
+.search-svg{
+    @apply bg-transparent px-10 py-3 absolute top-[50%] translate-y-[50%]
+}
+
+
+.input-field{
+    @apply block w-full p-4 pl-10 text-sm text-gray-900 border rounded-[10px] bg-[#F0F2F5] outline-none
+}
+
+.search-input-field{
+  @apply block w-full p-4 pl-10 text-gray-900 rounded-[0] bg-transparent outline-none text-base md:text-lg lg:text-xl border-[5px] border-primary
+}
+
+.modal-body{
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[2.125rem] my-12 
+}
+
+.modal-adds{
+    @apply flex items-center
+}
+
+
+/* start mediaquary */
 @media only screen and (min-width: 0px) and (max-width: 540px) {
   .container {
     @apply max-w-[100%] px-[1.75rem];

@@ -5,18 +5,21 @@ $my_service = "law-firms";
 $tax = "lawfirms-location";
 $countriesArr = get_country($my_service);
 
+$search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 // $post_per_page = get_option('posts_per_page');
 $post_per_page = 9;
-$args= array(
-    'post_type'         => $my_service,
+
+$args = array(
+    'post_type'        => $my_service,
     'post_status'       => 'publish',
     'orderby'           => 'date',
     'paged'             => $paged,
     'order'             => 'DESC',
     'posts_per_page'    => $post_per_page
 );
+
 if(!empty($choosed_issue)) { //Not working
     $args['tax_query'] = array(
         'taxonomy' => 'lawyers-category',
@@ -25,13 +28,18 @@ if(!empty($choosed_issue)) { //Not working
     );
 }
 
+if(!empty($search_param)) { //Not working
+    $args['s'] =  $search_param;
+    
+}
+
 $lawyers_posts = new WP_Query($args);
 $page_count = $lawyers_posts->max_num_pages;
 $post_count = $lawyers_posts->found_posts;
 
 // echo '<pre>';
+// print_r($lawyers_posts->posts);
 // print_r($args);
-// print_r($issuesArr);
 // echo '</pre>';
 
 $issuesArr = get_practice_area();
@@ -42,7 +50,7 @@ $issuesArr = get_practice_area();
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers firm In US
+                    Best Lawyers firm
                 </h2>
             </div>
         </div>
@@ -52,8 +60,8 @@ $issuesArr = get_practice_area();
 <section class="best-lawyers-in-us">
     <div class="container mx-auto">
         <div class="lawyers-filter-search-wrapper">
-            <form action="/action_page.php" class="lawyers-filter-search-from">
-                <input class="lawyers-filter-search-from-input" type="text" placeholder="Search.." name="search">
+            <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" class="lawyers-filter-search-from">
+                <input class="lawyers-filter-search-from-input" type="text" placeholder="Search.." name="find">
                 <button class="lawyers-filter-search-from-button" type="submit">
                     <span class="icon-search"></span>
                 </button>
@@ -61,7 +69,7 @@ $issuesArr = get_practice_area();
         </div>
 
         <div class="lawyers-filter-submit-from-whapper">
-        <form id="find-firms-by-location" action="" method="POST" class="lawyers-filter-submit-from" name="lawyers-filter-from">
+            <form id="find-firms-by-location" action="" method="POST" class="lawyers-filter-submit-from" name="lawyers-filter-from">
                 
                 <input type="hidden" name="type" value="<?php echo $my_service; ?>" id="type"/>
                 <input type="hidden" name="tax_name" value="<?php echo $tax; ?>" id="tax-type"/>
@@ -113,15 +121,13 @@ $issuesArr = get_practice_area();
 
         <div class="lawyers-firm-card-grid-wrapper">
             <div class="lawyers-firm-card-grid">
-                <?php
-                    if ($lawyers_posts->have_posts()) :
-                        while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
-                            get_template_part('template-parts/lawyers', 'card');
-                        endwhile; ?>
-                    <?php else : ?>
-                        <p>No data available</p>
-                    <?php endif; ?>
-                ?>
+                <?php if ($lawyers_posts->have_posts()) :
+                    while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
+                        get_template_part('template-parts/lawyersfirm', 'card');
+                    endwhile; ?>
+                <?php else : ?>
+                    <p>No data available</p>
+                <?php endif; ?>                
             </div>
         </div>
 

@@ -16,7 +16,7 @@ module.exports = {
         sm: "640px",
         md: "769px",
         lg: "1025px",
-        xl: "1281px", 
+        xl: "1281px",
         "2xl": "1537px",
         "3xl": "1681px",
       },
@@ -30,7 +30,8 @@ module.exports = {
         quaternary: "#747474",
         quaternary_accent: "#1E1E1E",
         quinary: "#484848",
-        // senary: "#2476BB",
+        senary: "#909090",
+        senary_accent: "#D9D9D9",
         // black: "#000000",
         // white: "#FFFFFF",
         // primary_accent: "#DAEAF7",
@@ -38,9 +39,7 @@ module.exports = {
     },
   },
 
-  plugins: [
-    require("daisyui"),
-  ],
+  plugins: [require("daisyui")],
 
   daisyui: {
     themes: false,
