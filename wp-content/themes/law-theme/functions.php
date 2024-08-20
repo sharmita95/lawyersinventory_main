@@ -21,15 +21,13 @@ if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
 add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
 function lyi_enqueue_files()
 {
-    $ver = '5.8.7';
+    $ver = '5.9.3';
     wp_enqueue_script('jquery.min', get_template_directory_uri() . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
-    // wp_enqueue_script('owl.carousel.min', get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), $ver, true);
     wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/ThemeScript.js', array('jquery'), $ver, true);
-    // wp_enqueue_script('swiper-bundle.js.min', get_template_directory_uri() . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
+    wp_enqueue_script('swiper-bundle.js.min', get_template_directory_uri() . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
 
-    // wp_enqueue_style('owl.carousel.min', get_template_directory_uri() . '/css/owl.carousel.min.css', $ver, 'all');
     wp_enqueue_style('swiper-bundle.css.min', get_template_directory_uri() . '/css/swiper-bundle.min.css', $ver, 'all');
-    wp_enqueue_style('style', get_stylesheet_uri(), false, $ver, 'all');
+    wp_enqueue_style('style', get_stylesheet_uri(), false, '', 'all');
 
     wp_enqueue_script( 'jquery' );    
     wp_enqueue_script('custom-js', LYI_URI. '/js/custom.js', array('jquery'), $ver, true);
@@ -38,7 +36,6 @@ function lyi_enqueue_files()
         'test' => '123',
         'test1' => 'world',
     ];
-
     wp_localize_script('custom-js', 'Front', $jsData);
     
 }

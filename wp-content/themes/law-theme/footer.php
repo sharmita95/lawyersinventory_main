@@ -1,12 +1,9 @@
     <?php
-    $facebook_url = get_options('facebook_url');
-    $twitter_url = get_options('twitter_url');
-    $linkedin_url = get_options('linkedin_url');
-    $instagram_url = get_options('instagram_url');
+    $facebook_url = get_option('facebook_url');
+    $twitter_url = get_option('twitter_url');
+    $linkedin_url = get_option('linkedin_url');
+    $instagram_url = get_option('instagram_url');
     ?>
-    
-    
-    
     
     </main>
         <footer class="footer">
@@ -23,7 +20,7 @@
                                     <a class="footer-ul-li-link" href="<?php echo home_url('/find-lawfirms'); ?>">Find a Lawfirm</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Legal Professionals</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/practice'); ?>">Practice</a>
                                 </li>
                                 <li class="footer-ul-li">
                                     <a class="footer-ul-li-link" href="<?php echo home_url('/blogs'); ?>">Blogs</a>
@@ -77,19 +74,13 @@
                             <h3 class="footer-link-header relative">USEFUL LINKS</h3>
                             <ul class="footer-ul">
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">About Us</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/about-us'); ?>">About Us</a>
                                 </li>
                                 <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Contact Us</a>
+                                    <a class="footer-ul-li-link" href="<?php echo home_url('/contact-us'); ?>">Contact Us</a>
                                 </li>
                                 <li class="footer-ul-li">
                                     <a class="footer-ul-li-link" href="<?php echo home_url('/write-for-us'); ?>">Write for Us</a>
-                                </li>
-                                <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="<?php echo home_url('/practice'); ?>">Practice</a>
-                                </li>
-                                <li class="footer-ul-li">
-                                    <a class="footer-ul-li-link" href="">Location</a>
                                 </li>
                             </ul>
                         </div>

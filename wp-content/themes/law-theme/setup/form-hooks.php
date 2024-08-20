@@ -1,8 +1,8 @@
 <?php
 
 //Registration
-add_shortcode('LYI_registration_form', 'LYI_registration_func');
-function LYI_registration_func() {
+add_shortcode('LYI_registration_form_old', 'LYI_registration_func_old');
+function LYI_registration_func_old() {
     $output = '';
     ob_start();
 
@@ -12,7 +12,7 @@ function LYI_registration_func() {
         'hide_empty' => false
     ));
     ?>
-    <div class="contactpage-form">
+    <div class="contactpage-form register-right-sec">
         <form name="lyi_registration_form" method="post" id="lyi_registration_form" action="">
             <input type="hidden" name="action" value="lyi_registration_process" />
 
@@ -55,6 +55,126 @@ function LYI_registration_func() {
 }
 
 
+
+add_shortcode('LYI_registration_form', 'LYI_registration_func');
+function LYI_registration_func() {
+    $output = '';
+    ob_start();
+
+    /*$countryList = get_terms(array(
+        'taxonomy' => 'lawyers-location',
+        'parent' => 0,
+        'hide_empty' => false
+    )); */
+    ?>
+
+    <div class="register-right-sec">
+        <form class="register-from" name="lyi_registration_form" method="post" id="lyi_registration_form" action="">
+                
+            <input type="hidden" name="action" value="lyi_registration_process" />
+            <input type="hidden" name="type" value="" id="type"/>
+            <input type="hidden" name="tax_name" value="" id="tax-type"/>
+
+            <h2 class="register-form-title">Registration</h2>
+
+            <div class="register-radio-btn-sec">
+                <label class="register-radio-label" for="">
+                    <input type="radio" id="lyr" name="user_type" value="lawyers" class="radio" checked="checked" />
+                    <span>
+                        Lawyers
+                    </span>
+                </label>
+
+                <label class="register-radio-label" for="">
+                    <input type="radio" id="lfm" name="user_type" value="law-firms" class="radio" />
+                    <span>
+                        Lawyers Firm
+                    </span>
+                </label>
+            </div>
+
+            <div class="">
+                <div class="common-header-wrapper">
+                    <div class="common-imput-wrapper ">
+                        <input type="text" name="name" id="domain-name" autocomplete="domain-name" class="border-b" placeholder="Domain Name">
+                    </div>
+
+                    <div class="common-imput-wrapper">
+                        <input type="text" name="point_of_contact" value="" autocomplete="point-of-contact" class="border-b" placeholder="Point of Contact Person">
+                    </div>
+
+                </div>
+
+                <div class="common-header-wrapper">
+                    <div class="common-imput-wrapper">
+                        <div class="mt-2">
+                            <input id="email" name="email" value="" type="email" autocomplete="email" class="border-b" placeholder="Email address">
+                        </div>
+                    </div>
+
+                    <div class="common-imput-wrapper">
+                        <div class="mt-2">
+                            <input id="phone" name="phone" type="text" autocomplete="phone" class="border-b" placeholder="Phone">
+                        </div>
+                    </div>
+                </div>
+
+                <label for="address" class="common-imput-full-wrapper">
+                    <input class="register-input-full" type="text" name="address" id="address" autocomplete="address" class="border-b-2" placeholder="Address">
+                </label>
+
+                <div class="select-common-header-wrapper">
+                    <div class="register-commo-select-wrapper">
+                        <select name="country" id="country" class="register-commo-select">
+                            <option disabled selected>Country</option>
+                            <?php /*foreach($countryList as $country) { ?>
+                                <option value="<?php echo $country->term_id; ?>" slug="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
+                            <?php }*/ ?>
+                        </select>
+                    </div>
+
+                    <div class="register-commo-select-wrapper">
+                        <select name="state" id="state" class="register-commo-select">
+                            <option disabled selected>State</option>
+                        </select>
+                    </div>
+                    <div class=" register-commo-select-wrapper">
+                        <select name="city" id="city" class="register-commo-select">
+                            <option disabled selected>City</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <label for="gmb-link" class="common-imput-full-wrapper">
+                    <input class="register-input-full" type="text" name="gmb_link" id="gmb_link" class="border-b-2" placeholder="GMB Link">
+                </label>
+
+
+                <label for="business-description" class="common-imput-full-wrapper">
+                    <input class="register-input-full" type="text" name="business_description" class="border-b-2" placeholder="Business Description">
+                </label>
+            </div>
+
+            <button type="submit" class="register-submit-button">Submit <img class="submit-image-arrow" src="<?php echo get_template_directory_uri(); ?>/images/arrow.png" alt="arrow" /></button>
+            <!-- <button type="submit" name="registration_btn" class="sub-btn">Submit</button> -->
+            
+        </form>
+
+        <div class="success-msg output-msg"></div>
+        <div class="error-msg output-msg"></div>
+        <div class="clear"></div>
+
+    </div>
+
+    
+    
+    <?php
+    $output = ob_get_contents();
+    ob_end_clean();
+    return $output;
+}
+
 add_action('wp_ajax_lyi_registration_process', 'ajax_lyi_registration_process_func');
 add_action('wp_ajax_nopriv_lyi_registration_process', 'ajax_lyi_registration_process_func');
 function ajax_lyi_registration_process_func() {
@@ -62,6 +182,7 @@ function ajax_lyi_registration_process_func() {
     
     $user_type = $_POST['user_type'];
     $name = $_POST['name'];    
+    $point_of_contact = $_POST['point_of_contact'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $country = $_POST['country'];
@@ -70,9 +191,12 @@ function ajax_lyi_registration_process_func() {
     $address = $_POST['address'];
     $gmb_link = $_POST['gmb_link'];
     $business_description = $_POST['business_description'];
+
     
     if(empty($name)) {
         $response_arr['msg'] = 'Enter your name.';
+    } elseif(empty($point_of_contact)) {
+        $response_arr['msg'] = 'Enter Contact Person Name.';
     } elseif(empty($phone)) {
         $response_arr['msg'] = 'Enter your phone.';
     } elseif(empty($email)) {
@@ -87,6 +211,8 @@ function ajax_lyi_registration_process_func() {
         $response_arr['msg'] = 'Enter your Google My Business link.';
     } elseif(empty($address)) {
         $response_arr['msg'] = 'Enter your Address.';
+    } elseif(!empty(email_exists($email))) {
+        $response_arr['msg'] = 'You are already registed. Try to login.';
     }
     else {
 
@@ -113,6 +239,7 @@ function ajax_lyi_registration_process_func() {
             );
             $post_id = wp_insert_post($new_post);
 
+            add_post_meta( $post_id, 'point_of_contact', $point_of_contact, true );
             add_post_meta( $post_id, 'address', $address, true );
             add_post_meta( $post_id, 'phone', $phone, true );
             add_post_meta( $post_id, 'gmb_link', $gmb_link, true );
@@ -123,9 +250,10 @@ function ajax_lyi_registration_process_func() {
             $response_arr['msg'] = 'Successfully registered.';
             $response_arr['flag'] = true;
             
-        } 
+        } else {
 
-        $response_arr['msg'] = 'Error. Try after sometime!!';
+            $response_arr['msg'] = 'Error. Try after sometime!!';
+        }
         
         
     }
@@ -195,7 +323,31 @@ function ajax_registration_get_city_func() {
 }
 
 
+//Get Country depending on type (for registration only)
+add_action('wp_ajax_registration_get_country', 'ajax_registration_get_country_func');
+add_action('wp_ajax_nopriv_registration_get_country', 'ajax_registration_get_country_func');
+function ajax_registration_get_country_func() {
+    $response_arr = ['flag' => FALSE, 'data' => NULL];
+    $tax_type = $_POST['tax'];
+    $gen_country_html = '<option value="" label="">Choose Country</option>';
 
+    $countryList = get_terms( $tax_type, 
+    array(
+        'parent' => 0,
+        'hide_empty' => false,                        
+    ));
+                
+    foreach($countryList as $country) {
+        $gen_country_html .= '<option value="'.$country->term_id.'" slug="'.$country->slug.'">'.$country->name.'</option>';
+    }
+    
+    $response_arr['flag'] = true;
+    $response_arr['data'] = $gen_country_html;
+    
+    
+    echo json_encode($response_arr);
+    exit;
+}
 
 
 

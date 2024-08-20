@@ -1,27 +1,57 @@
 jQuery(document).ready(function ($) {
-    
-    console.log('LYI');
+
+    $(document).on('change', 'input[name="user_type"]', function(e) {
+        e.preventDefault();
+
+        $('button[type="submit"]').addClass('disabled');
+        var userType = $(this).val();
+        if(userType == 'lawyers') {
+            $('#type').val('lawyers');
+            $('#tax-type').val('lawyers-location');
+        } else {
+            $('#type').val('law-firms');
+            $('#tax-type').val('lawfirms-location');
+        }
+
+        var data = {
+            action: 'registration_get_country', // This is the PHP function to call - note it must be hooked to AJAX
+            tax: $('#tax-type').val()
+        };
+        console.log(data);
+        $.post(Front.ajaxurl, data, function (resp) {
+            $('button[type="submit"]').removeClass('disabled');
+            if(resp.flag === true) {
+                $('#country').find('option')
+                .remove()
+                .end()
+                .append(resp.data);                
+                console.log({success: resp.data});
+            } else {
+                console.log({error: resp.data});
+            }
+        }, 'json');
+    });
 
     $(document).on('submit','#lyi_registration_form', function (e) {
         e.preventDefault();
         var _data = $(this).serialize();
         $.post(Front.ajaxurl, _data, function (resp) {
             if(resp.flag == true) {
-                // $('.success-msg').show();
-                // $('.success-msg').append('<span class="smessage" style="color: green;">' + resp.msg + '</span>');
-                // $('#ft_contact_form').trigger("reset");
-                // setTimeout(function() {
-                //   $('span.smessage').remove();
-                //   $('.success-msg').hide();
-                // }, 6000);
+                $('.success-msg').show();
+                $('.success-msg').append('<span class="smessage" style="color: green;">' + resp.msg + '</span>');
+                $('#ft_contact_form').trigger("reset");
+                setTimeout(function() {
+                  $('span.smessage').remove();
+                  $('.success-msg').hide();
+                }, 6000);
                 console.log(resp);
             } else {
-                // $('.error-msg').show();
-                // $('.error-msg').append('<span class="emessage" style="color: red;">' + resp.msg + '</span>');
-                // setTimeout(function() {
-                //   $('span.emessage').remove();
-                //   $('.error-msg').hide();
-                // }, 6000);
+                $('.error-msg').show();
+                $('.error-msg').append('<span class="emessage" style="color: red;">' + resp.msg + '</span>');
+                setTimeout(function() {
+                  $('span.emessage').remove();
+                  $('.error-msg').hide();
+                }, 6000);
                 console.log(resp);
             }
         }, 'json');
