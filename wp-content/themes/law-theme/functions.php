@@ -21,12 +21,12 @@ if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
 add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
 function lyi_enqueue_files()
 {
-    $ver = '5.9.3';
-    wp_enqueue_script('jquery.min', get_template_directory_uri() . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/ThemeScript.js', array('jquery'), $ver, true);
-    wp_enqueue_script('swiper-bundle.js.min', get_template_directory_uri() . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
+    $ver = '6.0.4';
+    wp_enqueue_script('jquery.min', LYI_URI . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
+    wp_enqueue_script('custom-script', LYI_URI . '/js/ThemeScript.js', array('jquery'), $ver, true);
+    wp_enqueue_script('swiper-bundle.js.min', LYI_URI . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
 
-    wp_enqueue_style('swiper-bundle.css.min', get_template_directory_uri() . '/css/swiper-bundle.min.css', $ver, 'all');
+    wp_enqueue_style('swiper-bundle.css.min', LYI_URI . '/css/swiper-bundle.min.css', $ver, 'all');
     wp_enqueue_style('style', get_stylesheet_uri(), false, '', 'all');
 
     wp_enqueue_script( 'jquery' );    

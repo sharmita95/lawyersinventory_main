@@ -1,37 +1,35 @@
 <?php /* Template Name: Practice Area Page */
 get_header();
 
-// echo do_shortcode('[LYI_practice_area_form]');
-// $my_service = () ?  'lawyers';
 $tax = "lawyers-category";
 
+$search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
-// $post_per_page = get_option('posts_per_page');
-$post_per_page = 3;
+$post_per_page = 12;
 
-
-$lawyers_posts = new WP_Query(array(
-    'post_type'         => array('lawyers', 'law-firms'),
+$args = array(
+    'post_type'         => 'lawyers',
     'post_status'       => 'publish',
     'orderby'           => 'date',
-    'paged'             => $paged,
+    'paged'             => $paged,    
     'order'             => 'DESC',
-    'posts_per_page'    => $post_per_page,
-    // 'tax_query' => array(
-    //     array(
-    //         'taxonomy' => $tax,
-    //         'field' => 'slug',
-    //         'terms' => array($desired_slug)
-    //     )
-    // )
-));
+    'posts_per_page'    => $post_per_page,    
+);
+
+if(!empty($search_param)) { //Not working
+    $args['s'] =  $search_param;
+    
+}
+
+
+$lawyers_posts = new WP_Query($args);
 $page_count = $lawyers_posts->max_num_pages;
 $post_count = $lawyers_posts->found_posts;
 
 
 $taxonomies = get_terms( array(
     'taxonomy' => $tax,
-    'hide_empty' => false
+    'hide_empty' => true
 ) );
 
 ?>
@@ -51,25 +49,27 @@ $taxonomies = get_terms( array(
 <section class="best-lawyers-in-us">
     <div class="container mx-auto">
         <div class="lawyers-filter-search-wrapper">
-            <!-- <form action="" class="lawyers-filter-search-from">
+            <form action="" class="lawyers-filter-search-from" method="post">
                 <input class="lawyers-filter-search-from-input" type="text" 
-                    placeholder="Search.." name="search">
+                    placeholder="Search.." name="find">
                 <button class="lawyers-filter-search-from-button" type="submit">
                     <span class="icon-search"></span>
                 </button>
-            </form> -->
+            </form>
         </div>
 
         <div class="lawyers-filter-submit-from-whapper">
             <form id="find-by-issue" action="" method="POST" class="lawyers-filter-submit-from" name="find-by-issue-form">
 
+                <input type="hidden" name="action" value="lyi_practice_process" />
+                
                 <div class="lawyers-filter-left-sec">
 
                     <div class="lawyers-filter-select-option-wrapper">
                         <select x class="lawyers-filter-select-option" name="type" id="type">
                             <option value="">Choose</option>
                             <option value="lawyers" slug="lawyers" selected>Lawyers</option>
-                            <option value="lawfirms" slug="law-firms">Law Firms</option>
+                            <option value="law-firms" slug="law-firms">Law Firms</option>
                         </select>
                     </div>
 
@@ -93,17 +93,21 @@ $taxonomies = get_terms( array(
 
         </div>
 
-        <div class="lawyers-card-grid-wrapper">
-            <div class="lawyers-card-grid">
-                <?php 
-                if ($lawyers_posts->have_posts()) :
-                    while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
-                        get_template_part('template-parts/lawyers', 'card');
-                    endwhile; ?>
-                <?php else : ?>
-                    <p>No data available</p>
-                <?php endif; ?>
+        <div id="result-container">
+
+            <div class="lawyers-card-grid-wrapper">
+                <div class="lawyers-card-grid">
+                    <?php 
+                    if ($lawyers_posts->have_posts()) :
+                        while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
+                            get_template_part('template-parts/lawyers', 'card');
+                        endwhile; ?>
+                    <?php else : ?>
+                        <p>No data available</p>
+                    <?php endif; ?>
+                </div>
             </div>
+
         </div>
 
         <div class="pagination-wrapper">

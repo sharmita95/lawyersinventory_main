@@ -79,14 +79,14 @@ function LYI_registration_func() {
 
             <div class="register-radio-btn-sec">
                 <label class="register-radio-label" for="">
-                    <input type="radio" id="lyr" name="user_type" value="lawyers" class="radio" checked="checked" />
+                    <input type="radio" id="lawyer" name="user_type" value="lawyers" class="radio" checked="checked" />
                     <span>
                         Lawyers
                     </span>
                 </label>
 
                 <label class="register-radio-label" for="">
-                    <input type="radio" id="lfm" name="user_type" value="law-firms" class="radio" />
+                    <input type="radio" id="firm" name="user_type" value="law-firms" class="radio" />
                     <span>
                         Lawyers Firm
                     </span>
@@ -402,3 +402,94 @@ function LYI_practice_area_func() {
     return $output;
 }
 
+
+add_action('wp_ajax_lyi_practice_process', 'ajax_lyi_practice_func');
+add_action('wp_ajax_nopriv_lyi_practice_process', 'ajax_lyi_practice_func');
+function ajax_lyi_practice_func() {
+    // $response_arr = ['flag' => FALSE, 'type' => NULL, 'msg' => NULL];
+    
+    $type = $_POST['type'];
+    $choosed_issue = $_POST['issue'];
+
+    $gen_full_html = '';    
+
+    $args = array(
+        'post_type'         => $type,
+        'post_status'       => 'publish',
+        'orderby'           => 'date',
+        //'paged'             => $paged,
+        'order'             => 'DESC',
+        'posts_per_page'    => 4,
+    );
+    if(!empty($choosed_issue)) {
+        $args['tax_query'] = array(
+            [
+            'taxonomy' => 'lawyers-category',
+            'field' => 'id',
+            'terms' => $choosed_issue
+            ]
+        );
+    }     
+
+    if($type == 'lawyers') {
+
+        echo '<div class="lawyers-card-grid-wrapper">
+            <div class="lawyers-card-grid">';        
+
+        display_custom_card_posts($args,'lawyers');    
+        
+        echo '</div>
+        </div>';
+        
+    } else {
+        echo '<div class="lawyers-firm-card-grid-wrapper">
+            <div class="lawyers-firm-card-grid">';        
+
+        display_custom_card_posts($args,'lawyersfirm',$before_html,$after_html);
+
+        echo'</div>
+        </div>';
+        
+    }
+    die();
+}
+
+
+//////////////////// Search
+add_action('wp_ajax_ajax_search', 'ajax_search');
+add_action('wp_ajax_nopriv_ajax_search', 'ajax_search');
+if(!function_exists('ajax_search'))
+{
+    function ajax_search() {
+        $search_query = $_POST['search_query'];
+           
+        $search_args = array(
+            's' => $search_query,
+            'post_type' => 'post',
+            'posts_per_page' => get_option('posts_per_page'),
+            'order'      =>'DESC',
+        );
+       
+        display_custom_card_posts($search_args,'blog');
+       
+        die();
+    }
+}
+
+if(!function_exists('display_custom_card_posts')) {
+    function display_custom_card_posts($query_args, $card_type, $before_card = "", $after_card = "") {
+        $custom_query = new WP_Query($query_args);
+
+        if(!empty($before_card)) echo $before_card;
+        if ($custom_query->have_posts()) :            
+            while ($custom_query->have_posts()) : $custom_query->the_post();                
+                get_template_part('/template-parts/'.$card_type, 'card');                
+            endwhile;            
+            wp_reset_postdata();            
+        else :
+            echo '<p>No posts found.</p>';
+        endif;
+
+        if(!empty($after_card)) echo $after_card;
+    }
+}

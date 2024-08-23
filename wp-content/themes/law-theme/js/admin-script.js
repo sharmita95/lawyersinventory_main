@@ -63,6 +63,6 @@ jQuery(document).ready(function ($) {
         $('.location select').hide();
         $('#'+currentVal+'-location').show();
         
-    });
+    });    
     
 });

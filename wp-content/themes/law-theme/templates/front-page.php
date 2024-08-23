@@ -1,6 +1,19 @@
 <?php /* Template Name: Front Page Temp */
 get_header(); ?>
 
+
+
+<!-- when  developer start working need to remove this sec  -->
+
+<!-- banner complicate  sec -->
+<section class="front-banner-sec">
+    <div class="container mx-auto">
+        <div class="front-page-banner">
+
+        </div>
+    </div>
+</section>
+
 <!-- Top Legal Issues -->
 <section class="front-top-legal-issues-sec">
     <div class=" container mx-auto">
@@ -62,6 +75,14 @@ get_header(); ?>
             <div class="swiper-button-prev" style="left: 0px !important;"></div>
             <div class="swiper-pagination"></div>
         </div>
+
+        <div class="view-all-btn-wrapper">
+            <a class="view-all-btn" href="">
+                View all
+                <span class="icon-left-mid-arrow"></span>
+            </a>
+        </div>
+
     </div>
     </div>
 </section>
@@ -78,7 +99,7 @@ get_header(); ?>
 
 
 <!-- About Us -->
-<section class="front-Lawfirm-sec">
+<section class="front-Lawyers-sec">
     <div class="container mx-auto">
         <div class="front-common-title-wrapper">
             <h2 class="front-common-title ">
@@ -139,13 +160,19 @@ get_header(); ?>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
+        <div class="view-all-btn-wrapper">
+            <a class="view-all-btn" href="">
+                View all
+                <span class="icon-left-mid-arrow"></span>
+            </a>
+        </div>
     </div>
 </section>
 
 
 <!-- Featured Lawfirm-->
 
-<section class="front-Lawyers-sec">
+<section class="front-Lawfirm-sec">
     <div class="container mx-auto">
         <div class="front-common-title-wrapper">
             <h2 class="front-common-title ">
@@ -153,60 +180,70 @@ get_header(); ?>
             </h2>
         </div>
 
-        <div class="swiper LawyersSwiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
+        <div class="front-Lawfirm-slider-wrapper">
+            <img class="front-Lawfirm-element-left" src="<?php echo get_template_directory_uri(); ?>/images/left-element.png" alt="front Lawfirm element left">
+            <div class="swiper LawyersSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
+                    <div class="swiper-slide">
+                        <?php
+                        echo  get_template_part('template-parts/lawyersfirm', 'card');
+                        ?>
+                    </div>
                 </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/lawyersfirm', 'card');
-                    ?>
-                </div>
+                <div class="swiper-button-next" style="right: 0px !important;"></div>
+                <div class="swiper-button-prev" style="left: 0px !important;"></div>
+                <div class="swiper-pagination"></div>
             </div>
-            <div class="swiper-button-next" style="right: 0px !important;"></div>
-            <div class="swiper-button-prev" style="left: 0px !important;"></div>
-            <div class="swiper-pagination"></div>
         </div>
 
+        <div class="view-all-btn-wrapper">
+            <a class="view-all-btn" href="">
+                View all
+                <span class="icon-left-mid-arrow"></span>
+            </a>
+        </div>
     </div>
+    <img class="front-Lawfirm-element-bottom" src="<?php echo get_template_directory_uri(); ?>/images/down-element.png" alt="front Lawfirm element bottom">
 </section>
 
 <!-- Our Latest Posts -->
@@ -275,8 +312,8 @@ get_header(); ?>
     </div>
 </section>
 
-<section class="mb-[100px]">
-    <div class=" container mx-auto ">
+<section class="my-[50px]">
+    <div class="container mx-auto ">
         <ul class="local-ul">
             <li class="local-li">
                 <a href="http://localhost/projects/lawyersinventory/lawyers-in-us/">
@@ -329,10 +366,35 @@ get_header(); ?>
                 </a>
             </li>
 
+            <li class="local-li">
+                <a href="http://localhost/projects/lawyersinventory/register/">
+                    register
+                </a>
+            </li>
+
+            <li class="local-li">
+                <a href="http://localhost/projects/lawyersinventory/about-us/">
+                    about us
+                </a>
+            </li>
+
+            <li class="local-li">
+                <a href="http://localhost/projects/lawyersinventory/write-for-us/">
+                    write for us
+                </a>
+            </li>
+
+            <li class="local-li">
+                <a href="http://localhost/projects/lawyersinventory/package/">
+                    package
+                </a>
+            </li>
+
+
+
         </ul>
     </div>
 </section>
-
 
 <?php
 get_footer();

@@ -1,5 +1,6 @@
 jQuery(document).ready(function ($) {
 
+    //Get country on registration form
     $(document).on('change', 'input[name="user_type"]', function(e) {
         e.preventDefault();
 
@@ -37,7 +38,7 @@ jQuery(document).ready(function ($) {
         var _data = $(this).serialize();
         $.post(Front.ajaxurl, _data, function (resp) {
             if(resp.flag == true) {
-                $('.success-msg').show();
+                $('.success-msg').show().empty();
                 $('.success-msg').append('<span class="smessage" style="color: green;">' + resp.msg + '</span>');
                 $('#ft_contact_form').trigger("reset");
                 setTimeout(function() {
@@ -46,7 +47,7 @@ jQuery(document).ready(function ($) {
                 }, 6000);
                 console.log(resp);
             } else {
-                $('.error-msg').show();
+                $('.error-msg').show().empty();
                 $('.error-msg').append('<span class="emessage" style="color: red;">' + resp.msg + '</span>');
                 setTimeout(function() {
                   $('span.emessage').remove();
@@ -150,29 +151,27 @@ jQuery(document).ready(function ($) {
 
 
 
-    //Practice/issue page form
-    $("#find-by-issue").submit(function(e) {
+    //Practice/issue page filter form
+    $('#find-by-issue').submit(function(e) {
         e.preventDefault();
-
+        $('button[type="submit"]').addClass('disabled');        
         var _data = $(this).serialize();
-        console.log(_data);        
 
-        var issue_slug = $(this).find('#issue option:selected').attr('slug');
-        if(!issue_slug || issue_slug === 'undefined') {
-            issue_slug = '';            
-        } else {
-            issue_slug = '/'+issue_slug;  
-        }   
-        
-        var type_slug = $(this).find('#type option:selected').attr('slug');
-        if(!type_slug || type_slug === 'undefined') {
-            type_slug = '';            
-        } else {
-            type_slug = '?type='+type_slug;  
-        }
+        $.post(Front.ajaxurl, _data, function (resp) {
+            $('button[type="submit"]').removeClass('disabled');
+            $('#result-container').html(resp);
+            
+        });
+    });
 
-        // window.location = 'http://localhost/lawyersinventory_main/practice'+issue_slug+type_slug;
-        
+    //Practice Page Search
+    $('.lawyers-filter-search-from input').keyup(function (e) {
+        console.log('Time elapsed!');
+
+        clearTimeout(keyupTimer);
+        keyupTimer = setTimeout(function () {
+            console.log('Time expired!');
+        }, 800);
     });
 
 
@@ -306,6 +305,47 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+
+
+
+
+
+    ///////////////////////////////////////////////
+    $('#default-search').keyup('on', function(e) {
+        e.preventDefault();
+        console.log('okay');
+        var searchQuery = $(this).val();
+        performSearch(searchQuery);    
+    });
+
+    var sidebarSearchForm = $('.side-search-from');
+    var sidebarSearchInput = $('.side-search-input');
+    var modal = $('#myModal');
+    var modalSearchInput = modal.find('.search-input-field');
+
+    sidebarSearchForm.on('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        modal.show(); // Open the modal
+        modalSearchInput.val(sidebarSearchInput.val()); // Pass the input value to the modal search field
+        performSearch(sidebarSearchInput.val()); // Perform the search
+    });
+
+    // function for ajax search.
+    function performSearch(query){
+        $.ajax({
+            type: 'POST',
+            url: Front.ajaxurl,
+            data: {
+                //function
+                action: 'ajax_search',
+                search_query: query
+            },
+            success: function(response) {
+                $('.modal-body').html(response);
+            }
+        });
+    }
 	
 });
 

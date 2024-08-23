@@ -22,9 +22,11 @@ $args = array(
 
 if(!empty($choosed_issue)) { //Not working
     $args['tax_query'] = array(
-        'taxonomy' => 'lawyers-category',
-        'field' => 'slug',
-        'terms' => $choosed_issue
+        [
+            'taxonomy' => 'lawyers-category',
+            'field' => 'slug',
+            'terms' => $choosed_issue
+        ]
     );
 }
 

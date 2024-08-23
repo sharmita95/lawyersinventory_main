@@ -17,11 +17,13 @@ $args= array(
     'order'             => 'DESC',
     'posts_per_page'    => $post_per_page
 );
-if(!empty($choosed_issue)) { //Not working
+if(!empty($choosed_issue)) {
     $args['tax_query'] = array(
-        'taxonomy' => 'lawyers-category',
-        'field' => 'slug',
-        'terms' => $choosed_issue
+        [
+            'taxonomy' => 'lawyers-category',
+            'field' => 'slug',
+            'terms' => $choosed_issue
+        ]
     );
 }
 
