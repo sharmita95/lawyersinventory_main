@@ -4,231 +4,331 @@ if (!defined('LYI_URI')) define('LYI_URI', get_template_directory_uri());
 
 
 //---------- Importing files
-if (file_exists(get_template_directory() . '/includes.php')) {
-	require_once(get_template_directory() . '/includes.php');
+if (file_exists(get_template_directory() . '/setup/includes.php')) {
+	require_once(get_template_directory() . '/setup/includes.php');
 }
-if (file_exists(get_template_directory() . '/form-hooks.php')) {
-	require_once(get_template_directory() . '/form-hooks.php');
+if (file_exists(get_template_directory() . '/setup/form-hooks.php')) {
+	require_once(get_template_directory() . '/setup/form-hooks.php');
 }
-if (file_exists(get_template_directory() . '/data-import.php')) {
-	require_once(get_template_directory() . '/data-import.php');
+if (file_exists(get_template_directory() . '/setup/data-import.php')) {
+	require_once(get_template_directory() . '/setup/data-import.php');
+}
+if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
+	require_once(get_template_directory() . '/setup/theme-functions.php');
 }
 
-/*
-* Creating a function to create our CPT
-*/
-  
-add_action( 'init', 'custom_post_type', 0 );
-function custom_post_type() {
-  
-    // Lawyers
-    $labels = array(
-        'name'                => _x( 'Lawyers', 'Post Type General Name', 'lyi' ),
-        'singular_name'       => _x( 'Lawyers', 'Post Type Singular Name', 'lyi' ),
-        'menu_name'           => __( 'Lawyers', 'lyi' ),
-        'parent_item_colon'   => __( 'Parent Lawyers', 'lyi' ),
-        'all_items'           => __( 'All Lawyers', 'lyi' ),
-        'view_item'           => __( 'View Lawyers', 'lyi' ),
-        'add_new_item'        => __( 'Add New Lawyers', 'lyi' ),
-        'add_new'             => __( 'Add New', 'lyi' ),
-        'edit_item'           => __( 'Edit Lawyers', 'lyi' ),
-        'update_item'         => __( 'Update Lawyers', 'lyi' ),
-        'search_items'        => __( 'Search Lawyers', 'lyi' ),
-        'not_found'           => __( 'Not Found', 'lyi' ),
-        'not_found_in_trash'  => __( 'Not found in Trash', 'lyi' ),
-    );
-        
-    $args = array(
-        'label'               => __( 'lawyers', 'lyi' ),
-        'description'         => __( 'Movie news and reviews', 'lyi' ),
-        'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields', ),
-        // 'taxonomies'          => array( 'genres' ),
-        'hierarchical'        => false,
-        'public'              => true,
-        'show_ui'             => true,
-        'show_in_menu'        => true,
-        'show_in_nav_menus'   => true,
-        'show_in_admin_bar'   => true,
-        'menu_position'       => 5,
-        'can_export'          => true,
-        'has_archive'         => true,
-        'exclude_from_search' => false,
-        'publicly_queryable'  => true,
-        'capability_type'     => 'post',
-        'show_in_rest' => true,
-    
-    );
-    register_post_type( 'lawyers', $args );
 
-    //Law Firms
-    $labels = array(
-        'name'                => _x( 'Law Firms', 'Post Type General Name', 'lyi' ),
-        'singular_name'       => _x( 'Law Firms', 'Post Type Singular Name', 'lyi' ),
-        'menu_name'           => __( 'Law Firms', 'lyi' ),
-        'parent_item_colon'   => __( 'Parent Law Firms', 'lyi' ),
-        'all_items'           => __( 'All Law Firms', 'lyi' ),
-        'view_item'           => __( 'View Law Firms', 'lyi' ),
-        'add_new_item'        => __( 'Add New Law Firms', 'lyi' ),
-        'add_new'             => __( 'Add New', 'lyi' ),
-        'edit_item'           => __( 'Edit Law Firms', 'lyi' ),
-        'update_item'         => __( 'Update Law Firms', 'lyi' ),
-        'search_items'        => __( 'Search Law Firms', 'lyi' ),
-        'not_found'           => __( 'Not Found', 'lyi' ),
-        'not_found_in_trash'  => __( 'Not found in Trash', 'lyi' ),
-    );
-        
-    $args = array(
-        'label'               => __( 'law-firms', 'lyi' ),
-        'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'custom-fields', ),
-        // 'taxonomies'          => array( 'genres' ),
-        'hierarchical'        => false,
-        'public'              => true,
-        'show_ui'             => true,
-        'show_in_menu'        => true,
-        'show_in_nav_menus'   => true,
-        'show_in_admin_bar'   => true,
-        'menu_position'       => 5,
-        'can_export'          => true,
-        'has_archive'         => true,
-        'exclude_from_search' => false,
-        'publicly_queryable'  => true,
-        'capability_type'     => 'post',
-        'show_in_rest' => true,
+add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
+function lyi_enqueue_files()
+{
+    $ver = '6.0.4';
+    wp_enqueue_script('jquery.min', LYI_URI . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
+    wp_enqueue_script('custom-script', LYI_URI . '/js/ThemeScript.js', array('jquery'), $ver, true);
+    wp_enqueue_script('swiper-bundle.js.min', LYI_URI . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
+
+    wp_enqueue_style('swiper-bundle.css.min', LYI_URI . '/css/swiper-bundle.min.css', $ver, 'all');
+    wp_enqueue_style('style', get_stylesheet_uri(), false, '', 'all');
+
+    wp_enqueue_script( 'jquery' );    
+    wp_enqueue_script('custom-js', LYI_URI. '/js/custom.js', array('jquery'), $ver, true);
+	$jsData = [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'test' => '123',
+        'test1' => 'world',
+    ];
+    wp_localize_script('custom-js', 'Front', $jsData);
     
-    );
-    register_post_type( 'law-firms', $args );
-    
+}
+
+add_action( 'after_setup_theme', 'custom_theme_setup' );
+if(!function_exists('custom_theme_setup'))
+{
+	function custom_theme_setup()
+	{
+		load_theme_textdomain( 'custom_theme' );
+		add_theme_support( 'automatic-feed-links' );		
+		add_theme_support( 'title-tag' );		
+		add_theme_support( 'custom-logo');		
+		add_theme_support( 'post-thumbnails');
+		add_theme_support('html5', array('comment-form','comment-list','script', 'style') );
+
+		$GLOBALS['content_width'] = 900;
+		
+		set_post_thumbnail_size( 1200, 9999 );
+
+        //Add Image Size
+		add_image_size('breed-hero-thumbnail', 830, 503, true);
+		add_image_size('lawyers-list-thumbnail', 475, 643, true);
+
+		add_image_size('single-page-thumbnail', 1920, 600, true);
+		add_image_size('related-posts-thumbnail', 475, 404, true);
+
+		add_image_size('about-us-thumbnail', 1390, 647, true);
+        add_image_size('write-for-us-thumbnail', 1412, 538, true);
+
+        add_image_size('side-bar-thumb', 100, 100, true);
+
+        //Add Role
+		// if (!(wp_roles()->is_role('pet-vet'))){
+		// 	add_role( 'pet-vet', 'Veterinarians', get_role( 'author' )->capabilities);
+		// }
+
+        //Show Admin bar on Login as per Role
+		$allowed_roles = array('administrator', 'editor', 'author');
+		if(!count(array_intersect($allowed_roles, wp_get_current_user()->roles))) {
+			show_admin_bar(false);
+		} else {
+			show_admin_bar(true);
+		}
+	}
 }
 
 
 
 
+///////////////////////////////////////
+function display_custom_card_posts($query_args, $card_type, $before_card = "", $after_card = "") {
+    $custom_query = new WP_Query($query_args);
 
-
-
-
-add_action( 'init', 'create_lawyers_location');
-function create_lawyers_location() {
-
-    $labels = array(
-        'name'              => _x( 'Location', 'taxonomy general name', 'lyi' ),
-        'singular_name'     => _x( 'Location', 'taxonomy singular name', 'lyi' ),
-        'search_items'      => __( 'Search location', 'lyi' ),
-        'all_items'         => __( 'All Location', 'lyi' ),
-        'parent_item'       => __( 'Year of publication', 'lyi' ),
-        'parent_item_colon' => __( 'Year of publication:', 'lyi' ),
-        'edit_item'         => __( 'Edit Location', 'lyi' ),
-        'update_item'       => __( 'Update Location', 'lyi' ),
-        'add_new_item'      => __( 'Add new Location', 'lyi' ),
-        'new_item_name'     => __( 'New Location', 'lyi' ),
-        'menu_name'         => __( 'Location', 'lyi' ),
-    );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'public' => true,
-        'has_archive' => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 
-            'slug' => 'find-lawfirms', 
-            'hierarchical' => true,
-            'with_front'    => true 
-        ),
-    );
-
-    register_taxonomy( 'lawfirms-location', array( 'law-firms' ), $args );
-
-    //OLD
-    $labels = array(
-        'name'              => _x( 'Location', 'taxonomy general name', 'lyi' ),
-        'singular_name'     => _x( 'Location', 'taxonomy singular name', 'lyi' ),
-        'search_items'      => __( 'Search location', 'lyi' ),
-        'all_items'         => __( 'All Location', 'lyi' ),
-        'parent_item'       => __( 'Year of publication', 'lyi' ),
-        'parent_item_colon' => __( 'Year of publication:', 'lyi' ),
-        'edit_item'         => __( 'Edit Location', 'lyi' ),
-        'update_item'       => __( 'Update Location', 'lyi' ),
-        'add_new_item'      => __( 'Add new Location', 'lyi' ),
-        'new_item_name'     => __( 'New Location', 'lyi' ),
-        'menu_name'         => __( 'Location', 'lyi' ),
-    );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'public' => true,
-        'has_archive' => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 
-            'slug' => 'find-lawyers', 
-            'hierarchical' => true,
-            'with_front'    => true 
-        ),
-    );
-
-    register_taxonomy( 'lawyers-location', array( 'lawyers' ), $args );
-}
-
-
-
-function add_post_type_to_taxonomy_url() {
-
-    $taxonomy_slug="lawyers-location";
-     $post_type_slug="lawyers";
-         
-    
-    add_rewrite_rule(         "{$post_type_slug}/{$taxonomy_slug}/([^/]+)/?$",         'index.php?post_type=' . $post_type_slug . '&' . $taxonomy_slug . '=$matches[1]',         'top' );
-
-    $posst_type_slug="law-firms";
-
-    add_rewrite_rule(         "{$posst_type_slug}/{$taxonomy_slug}/([^/]+)/?$",         'index.php?post_type=' . $posst_type_slug . '&' . $taxonomy_slug . '=$matches[1]',         'top' );
-    
-    flush_rewrite_rules(); }
-
-
-         
-// add_action( 'init', 'add_post_type_to_taxonomy_url');
-
-
-
-// add_filter( 'request', 'service_remove_tax_slugs', 1, 1 );
-function service_remove_tax_slugs( $query_vars ) {
-    $tax_slugs = array('lawyers-location');
-    if ( isset( $query_vars['attachment'] ) ? $query_vars['attachment'] : null ) :
-        $include_children = true;
-        $name             = $query_vars['attachment'];
+    if ($custom_query->have_posts()) :
+        while ($custom_query->have_posts()) : $custom_query->the_post();
+            if(!empty($before_card)) echo $before_card;
+            get_template_part('/template-parts/'.$card_type, 'card');
+            if(!empty($after_card)) echo $after_card;
+        endwhile;
+        wp_reset_postdata();
     else :
-        if ( isset( $query_vars['name'] ) ? $query_vars['name'] : null ) {
-            $include_children = false;
-            $name             = $query_vars['name'];
-        }
+        echo '<p>No posts found.</p>';
     endif;
-    if ( isset( $name ) ) :
-        foreach ( $tax_slugs as $slug ) {
-            $term = get_term_by( 'slug', $name, $slug.'s' );
-            if ( $term && ! is_wp_error( $term ) ) :
-                if ( $include_children ) {
-                    unset( $query_vars['attachment'] );
-                    $parent = $term->parent;
-                    while ( $parent ) {
-                        $parent_term = get_term( $parent, $slug.'s' );
-                        $name        = $parent_term->slug . '/' . $name;
-                        $parent      = $parent_term->parent;
-                    }
-                } else {
-                    unset( $query_vars['name'] );
-                }
-                $query_vars[ $slug.'s' ] = $slug.'s/'.$name;
-            endif;
+}
+
+
+add_action('wp_ajax_filter_posts', 'filter_posts');
+add_action('wp_ajax_nopriv_filter_posts', 'filter_posts');
+if(!function_exists('filter_posts'))
+{
+	function filter_posts() {
+		$category = isset($_POST['category']) ? intval($_POST['category']) : '';
+		$date_sort = isset($_POST['date_sort']) ? sanitize_text_field($_POST['date_sort']) : 'DESC';
+		$search_query = isset($_POST['s']) ? sanitize_text_field($_POST['s']) : '';
+		$paged = get_query_var( 'paged' ) ? (int) get_query_var( 'paged' ) : 1;
+		$args = array(
+			'post_type' => 'post',
+			'posts_per_page' => get_option('posts_per_page'),
+			'order' => $date_sort,
+			'paged' => $paged,
+			'orderby' => 'date',
+			's' => $search_query,
+		);
+		if ($category) {
+			$args['cat'] = $category;
+		}
+		$custom_query = new WP_Query($args);
+		display_custom_card_posts($args, 'blog');
+        die();
+	}
+	
+}
+
+
+
+
+function custom_pagination($args = ''){
+    global $wp_query;
+    $format = 'page/';
+    $total   = isset( $wp_query->max_num_pages ) ? $wp_query->max_num_pages : 1;
+	$current = isset($_POST['paged']) ? (int)$_POST['paged'] : 1;
+    $defaults = array('base'    => get_permalink(),
+                    'current'   => $current,
+                    'total'     => $total,
+                    'mid_size'  => 0,
+                    'end_size'  => 0,
+                    'prev_text' => '<<',
+                    'next_text' => '>>',
+    );
+    $args = wp_parse_args( $args, $defaults );
+
+    //Other Button Structure
+    function get_custom_pagination($num,$args,$format){
+        if($num==1){
+            return '<a class="pagination-btn" href="'.$args['base'].'">'.$num.'</a>';
+        }else{
+            return '<a class="pagination-btn" href="'.$args['base'].$format.$num.'">'.$num.'</a>';    
         }
-    endif;
+    }
+
+    //Current Pagination
+    $output = '<span aria-current="page" class="pagination-btn p-b-active">'.$args['current'].'</span>';
+
+    //Prev Mid Buttons
+    if(!empty($args['mid_size']) && !empty($args['current'])){
+        $total = $args['current']-1;
+        if(!empty($args['end_size'])){
+            if(($args['end_size']+$args['mid_size'])<=$total){
+                $round = $args['mid_size'];
+            }else{
+                $round = $total-$args['end_size'];
+            }
+        }else{
+            $round = ($args['mid_size']>=$total)?$total:$args['mid_size'];
+        }
+        if($round>=1){
+            for($x = ($args['current']-$round); $x <= $total; $x++){
+                $output = get_custom_pagination($x,$args,$format).$output;
+            }
+        }
+    }
+
+    //Prev End Buttons
+    if(!empty($args['end_size']) && !empty($args['current'])){
+        $total = $args['current']-1;
+        $round = ($args['end_size']>=$total)?$total:$args['end_size'];
+        for($x = 1; $x <= $round; $x++){
+            $output = get_custom_pagination($x,$args,$format).$output;
+        }
+    }
+
+    //Prev Button
+    if(!empty($args['current']) && $args['current']>=2){
+        if($args['current']==2) $prev_button = '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].'">'.$args['prev_text'].'</a>';
+        else $prev_button = '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].$format.($args['current']-1).'">'.$args['prev_text'].'</a>';
+        $output = $prev_button.$output;
+    }
+
+    //Next Mid Buttons
+    if(!empty($args['mid_size']) && !empty($args['current'])){
+        $total = $args['total']-$args['current'];
+        if(!empty($args['end_size'])){
+            if(($args['end_size']+$args['mid_size'])<=$total){
+                $round = $args['mid_size'];
+            }else{
+                $round = $total-$args['end_size'];
+            }
+        }else{
+            $round = ($total<=$args['mid_size'])?$total:$args['mid_size'];
+        }
+        if($round>=1){
+            for($x = ($args['current']+1); $x <= $args['current']+$round; $x++){
+                $output .= get_custom_pagination($x,$args,$format);
+            }
+        }
+    }
+
+    //Next End Buttons
+    if(!empty($args['end_size']) && !empty($args['current'])){
+        $total = $args['total']-$args['current'];
+        $round = ($total<=$args['end_size'])?$total:$args['end_size'];
+        for($x = ($args['total']-($round-1)); $x <= $args['total']; $x++){
+            $output .= get_custom_pagination($x,$args,$format);
+        }
+    }
+
+    //Next Button
+    if(!empty($args['current']) && $args['current']<=($args['total']-1)){
+        $output .= '<a class="pagination-btn-next pagination-btn" href="'.$args['base'].$format.($args['current']+1).'">'.$args['next_text'].'</a>';
+    }
+    return '<form class="pagination-wrapper" name="blog-pagination-form" method="POST" action"">
+    <input type="hidden" name="input_category" value="">
+    <input type="hidden" name="input_order" value="">
+    <input type="hidden" name="input_search" value="">
+    <div class="pagination">'.$output.'</div></form>';
+}
+
+
+//------------- Custom comment form-----------------//
+
+function custom_comment_form_defaults($defaults) {
+    // print_r($defaults);
+    // Title for the comment form
+    $defaults['title_reply_before'] = '<span id="reply-title" class="content-common-title">';
+    $defaults['title_reply'] = 'Leave A Reply';
+    $defaults['title_reply_after'] = '</span>';
+
+    $defaults['class_form'] = 'comment-from';
+
+    // Custom submit button
+    $submit_button = '<div class="comment-from-submit-wrapper">
+                                <button class="l-d-r-f-btn">
+                                    Submit
+                                </button>
+                            </div>';
+
+    $defaults['submit_button'] = $submit_button;
  
-    return $query_vars;
+    return $defaults;
+}
+add_filter( 'comment_form_fields', 'mo_comment_fields_custom_order' );
+add_filter('comment_form_defaults', 'custom_comment_form_defaults');
+
+function mo_comment_fields_custom_order( $fields ) {
+    $cookies = $fields['cookies'];
+    unset( $fields['comment'] );
+    unset( $fields['author'] );
+    unset( $fields['email'] );
+    unset( $fields['url'] );
+    unset( $fields['cookies'] );
+    $fields['wrapper-open'] = '<div class="comment-from-first-row">';
+    $fields['author'] = '<label class="comment-from-half" for="text">
+                                    <input class="comment-from-common-input" type="text" name="author" placeholder="Name*">
+                                </label>';
+    $fields['email'] = '<label class="comment-from-half" for="email">
+                                    <input class="comment-from-common-input" type="email" name="email" placeholder="Email*">
+                                </label>';
+    $fields['wrapper-close'] = '</div>';
+    $fields['comment'] = '<label class="comment-from-second-row" for="comment">
+                                <textarea class="comment-from-common-textarea" rows="3" name="comment" id="" placeholder="Comment"></textarea>
+                            </label>';
+    $fields['cookies'] = $cookies;
+    return $fields;
+}
+
+
+//------------------- Comment Section ------------//
+
+function display_comments_recursive($comments, $parent_id = 0) {
+    foreach ($comments as $comment) {
+        if ($comment->comment_parent == $parent_id) {
+            // Display the comment
+            ?>
+            <div class="<?php if (!$comment->comment_parent) echo 'with-out-'; ?>border-replay-card">
+                <div class="replay-user-and-edit">
+                    <div class="flex w-fit gap-[20px]">
+                        <figure class="replay-user-image-ctrl">
+                        <?php
+                            // pls check this line
+                            echo get_avatar($comment, 96, get_template_directory_uri() . '/images/internal-one.png', 'author-img', array('class' => 'image-responsive'));
+                            ?>
+                            <!-- <img class="image-responsive" src="<?php// echo get_template_directory_uri(); ?>/images/Lawyers-1.png" alt="author-img" /> -->
+                        </figure>
+                        <div class="comment-replay-card-title-sec">
+                            <h2 class="comment-replay-card-title"><?php echo esc_html($comment->comment_author); ?></h2>
+                            <p class="comment-replay-card-publish-date">
+                            <?php echo esc_html(date('F j, Y \a\t g:i a', strtotime($comment->comment_date))); ?></p>
+                            
+                        </div>                    
+                    </div>
+
+                    <!-- <a class="c-r-replay-edit-btn" href="">Edit</a> -->
+                </div>
+
+                <div class="c-r-replay-comment-sec ">
+                    <p class="c-r-replay-card-comment"><?php echo esc_html($comment->comment_content); ?></p>
+                    <a href="<?php echo get_permalink(); ?>?replytocom=<?php echo $comment->comment_ID; ?>#respond" data-commentid="<?php echo $comment->comment_ID; ?>" data-postid="<?php echo get_the_ID(); ?>" class=".c-r-replay-edit-btn">Reply</a>
+                </div>   
+            </div> 
+            <?php
+            // Fetch child comments
+            $child_comments = get_comments(array(
+                'parent' => $comment->comment_ID,
+                'status' => 'approve'
+            ));
+            if ($child_comments) {
+                ?>
+                <!-- <div class="comment-child"> -->
+                    <?php display_comments_recursive($child_comments, $comment->comment_ID); ?>
+                <!-- </div> -->
+                <?php
+            }
+        }
+    }
 }
