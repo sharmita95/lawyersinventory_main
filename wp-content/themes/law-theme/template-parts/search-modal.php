@@ -18,10 +18,21 @@
 
                 <div class="modal-body">
                     <?php
-                    for ($latest_card = 0; $latest_card <= 2; $latest_card++) {
-                        echo  get_template_part('template-parts/Blog', 'card');
-                    }
-                    ?>
+                    $args = array(
+                        'post_type'=> 'post',
+                        'orderby'    => 'date',
+                        'post_status' => 'publish',
+                        'order'    => 'DESC',
+                        'posts_per_page' => 3 // this will retrive all the post that is published 
+                        );
+                        $result = new WP_Query( $args );
+                        if ( $result-> have_posts() ) : 
+                            while ( $result->have_posts() ) : $result->the_post();
+                                    get_template_part('template-parts/Blog', 'card');
+                            endwhile; 
+                        endif; 
+                        wp_reset_postdata(); ?>
+
                 </div>
 
             </div>

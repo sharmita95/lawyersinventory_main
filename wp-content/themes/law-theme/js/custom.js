@@ -166,11 +166,25 @@ jQuery(document).ready(function ($) {
 
     //Practice Page Search
     $('.lawyers-filter-search-from input').keyup(function (e) {
-        console.log('Time elapsed!');
+        console.log( $(this).val());
+        
+        setTimeout(function () {
+            console.log($('#type option:selected').val());
 
-        clearTimeout(keyupTimer);
-        keyupTimer = setTimeout(function () {
-            console.log('Time expired!');
+            var _data = {
+                action: 'service_search',
+                search_query: $(this).val(),
+                type: $('#type option:selected').val()
+            }
+            console.log(_data)
+            
+            $.post(Front.ajaxurl, _data, function (resp) {                
+                $('#result-container').html(resp);
+                
+            });
+s
+
+
         }, 800);
     });
 
@@ -346,15 +360,22 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+
+
+
+
+
+
+    //Front page Form
+    $('#home-page-form input[type="radio"]').change(function(){
+        var selectedValue = $('input[name="type"]:checked').val();
+        console.log(selectedValue)
+        if(selectedValue == 'lawyers') {
+            link = $(location).attr('href')+'/find-lawyers';
+        } else {
+            link = $(location).attr('href')+'/find-lawfirms';
+        }
+        $('#service-redirect').attr('href', link );
+    });
 	
 });
-
-
-
-
-
-
-
-
-
-

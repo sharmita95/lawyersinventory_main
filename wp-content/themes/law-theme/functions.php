@@ -21,7 +21,7 @@ if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
 add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
 function lyi_enqueue_files()
 {
-    $ver = '6.0.4';
+    $ver = '6.0.'.rand();
     wp_enqueue_script('jquery.min', LYI_URI . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
     wp_enqueue_script('custom-script', LYI_URI . '/js/ThemeScript.js', array('jquery'), $ver, true);
     wp_enqueue_script('swiper-bundle.js.min', LYI_URI . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
@@ -80,6 +80,9 @@ if(!function_exists('custom_theme_setup'))
 		} else {
 			show_admin_bar(true);
 		}
+
+        add_post_type_support( 'page', 'excerpt' );
+
 	}
 }
 

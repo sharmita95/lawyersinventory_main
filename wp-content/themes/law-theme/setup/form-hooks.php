@@ -455,6 +455,21 @@ function ajax_lyi_practice_func() {
 }
 
 
+
+// Services and practice search
+add_action('wp_ajax_service_search', 'service_search_func');
+add_action('wp_ajax_nopriv_service_search', 'service_search_func');
+if(!function_exists('service_search_func'))
+{
+    function service_search_func() {
+
+        print_r($_POST);
+       
+        die();
+    }
+}
+
+
 //////////////////// Search
 add_action('wp_ajax_ajax_search', 'ajax_search');
 add_action('wp_ajax_nopriv_ajax_search', 'ajax_search');

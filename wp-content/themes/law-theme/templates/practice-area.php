@@ -52,7 +52,7 @@ $taxonomies = get_terms( array(
             <form action="" class="lawyers-filter-search-from" method="post">
                 <input class="lawyers-filter-search-from-input" type="text" 
                     placeholder="Search.." name="find">
-                <button class="lawyers-filter-search-from-button" type="submit">
+                <button class="lawyers-filter-search-from-button" type="button">
                     <span class="icon-search"></span>
                 </button>
             </form>
