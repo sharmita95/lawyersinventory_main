@@ -67,7 +67,6 @@ $taxonomies = get_terms( array(
 
                     <div class="lawyers-filter-select-option-wrapper">
                         <select x class="lawyers-filter-select-option" name="type" id="type">
-                            <option value="">Choose</option>
                             <option value="lawyers" slug="lawyers" selected>Lawyers</option>
                             <option value="law-firms" slug="law-firms">Law Firms</option>
                         </select>

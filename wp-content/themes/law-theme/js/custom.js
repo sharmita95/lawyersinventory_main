@@ -368,13 +368,19 @@ s
 
     //Front page Form
     $('#home-page-form input[type="radio"]').change(function(){
-        var selectedValue = $('input[name="type"]:checked').val();
-        console.log(selectedValue)
-        if(selectedValue == 'lawyers') {
-            link = $(location).attr('href')+'/find-lawyers';
+        
+        var selectedService = $('input[name="type"]:checked').val();
+        var selectedIssue = $('input[name="issue"]:checked').val();
+        var selectedCountry = $('input[name="country"]:checked').val();
+
+        if(selectedService == 'lawyers') {
+            link = $(location).attr('href')+'/find-lawyers/';
+            if(selectedCountry) link = link+selectedCountry;
+            if(selectedIssue) link = link+'?issue='+selectedIssue;
         } else {
-            link = $(location).attr('href')+'/find-lawfirms';
+            link = $(location).attr('href')+'/find-lawfirms/'+selectedCountry+'?issue='+selectedIssue;
         }
+        console.log(link);
         $('#service-redirect').attr('href', link );
     });
 	

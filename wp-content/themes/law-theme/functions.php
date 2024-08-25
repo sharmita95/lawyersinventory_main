@@ -335,3 +335,27 @@ function display_comments_recursive($comments, $parent_id = 0) {
         }
     }
 }
+
+
+//Rating
+if(!function_exists('get_rating_star_func'))
+{
+	function get_rating_star_func($rating) {
+        
+        $r = 1;
+        for($r = 1; $r<=round($rating); $r++) {
+            if($rating > $r-1 && $rating <$r ) {
+                echo '<div class="lawyers-d-c-rating-card">
+                        <span class="icon-hulf-ster"></span>
+                    </div>';    
+            } else {
+
+            echo '<div class="lawyers-d-c-rating-card">
+                    <span class="icon-ster"></span>
+                </div>';
+            }
+        } 
+
+    }
+
+}

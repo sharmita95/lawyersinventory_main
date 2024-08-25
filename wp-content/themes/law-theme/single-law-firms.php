@@ -22,6 +22,7 @@
             if($key == 'insta_link') $insta_link  = $val[0];
             if($key == 'linkedin_url') $linkedin_url  = $val[0];
             if($key == 'twitter_url') $twitter_url  = $val[0];
+            if($key == 'image') $image  = $val[0];
 
             // if($key == 'latitude') $lat  = !empty($val[0]) ? '70.999956':'';
             // if($key == 'longitude') $lon  = !empty($val[0]) ? '70.999956':'';
@@ -30,8 +31,8 @@
         }
 
         $img_url = get_the_post_thumbnail_url($post_id,'large'); 
+        if(!$img_url) $img_url= $image;
         if(!$img_url) $img_url= get_template_directory_uri() . '/images/featured-law-firm-banner-image.png';
-
         
         //Generating Lat and Lon
         $api_key = '66a802526abcd459524436has4fc924';
@@ -125,25 +126,7 @@
 
                         <div class="lawyers-d-c-rating-sec">
                             <div class="lawyers-d-c-rating-wrapper"> 
-                                <div class="lawyers-d-c-rating-card">
-                                    <span class="icon-ster"></span>
-                                </div>
-
-                                <div class="lawyers-d-c-rating-card">
-                                    <span class="icon-ster"></span>
-                                </div>
-
-                                <div class="lawyers-d-c-rating-card">
-                                    <span class="icon-ster"></span>
-                                </div>
-
-                                <div class="lawyers-d-c-rating-card">
-                                    <span class="icon-ster"></span>
-                                </div>
-
-                                <div class="lawyers-d-c-rating-card">
-                                    <span class="icon-hulf-ster"></span>
-                                </div>
+                                <?php get_rating_star_func($rating); ?>
                             </div>
                             <?php if(!empty($rating)) { ?>
                                 <p class="lawyers-d-c-rating-date">

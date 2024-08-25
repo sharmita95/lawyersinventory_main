@@ -9,7 +9,7 @@ $search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 // $post_per_page = get_option('posts_per_page');
-$post_per_page = 9;
+$post_per_page = 12;
 
 $args = array(
     'post_type'        => $my_service,

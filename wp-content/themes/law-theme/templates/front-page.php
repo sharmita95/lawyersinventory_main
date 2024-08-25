@@ -58,19 +58,19 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
                                     <div class="front-from-select-sec">
 
                                         <div class="front-from-select-wrapper">
-                                            <select class="front-from-select" name="choose a country" id="issue">
+                                            <select class="front-from-select" name="issue" id="issue">
                                                 <option selected="">any issue</option>
                                                 <?php foreach($practice_terms as $term) { ?>
-                                                    <option value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                                                    <option slug="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
 
                                         <div class="front-from-select-wrapper">
-                                            <select class="front-from-select" name="choose a country" id="country">
+                                            <select class="front-from-select" name="country" id="country">
                                                 <option selected="">choose a Country</option>                                                
                                                 <?php foreach($country_terms as $country) { ?>
-                                                    <option value="<?php echo $country->term_id; ?>"><?php echo $country->name; ?></option>
+                                                    <option slug="<?php echo $country->slug; ?>" value="<?php echo $country->term_id; ?>"><?php echo $country->name; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -218,8 +218,8 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
             <div class="swiper LawyersSwiper">
                 <div class="swiper-wrapper">
 
-                    <?php
-                    $args_firm = array(
+                <?php
+                $args_firm = array(
                     'post_type'=> 'law-firms',
                     'orderby'    => 'date',
                     'post_status' => 'publish',
@@ -228,16 +228,25 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
                     );
                     $result_firm = new WP_Query( $args_firm );
                     if ( $result_firm-> have_posts() ) : 
-                        while ( $result_firm->have_posts() ) : $result_firm->the_post();
-                            echo '<div class="swiper-slide">';
-                                get_template_part('template-parts/lawyersfirm', 'card');
-                            echo '</div>';
+                        while ( $result_firm->have_posts() ) : $result_firm->the_post(); ?>
+                            <div class="swiper-slide">
+                                <?php get_template_part('template-parts/lawyersfirm', 'card'); ?>
+                            </div>
+
+                        <?php endwhile; 
+                    endif; 
+                    wp_reset_postdata(); ?>
+
+
+                    <?php
+                    /*$ ?>
+                            <div class="swiper-slide">
+                                <?php get_template_part('template-parts/lawyersfirm', 'card'); ?>
+                            </div>
                             ?>
                         </div>
                         <?php
-                        endwhile; 
-                    endif; 
-                    wp_reset_postdata(); ?>
+                         */ ?>
                     
                 </div>
                 <div class="swiper-button-next" style="right: 0px !important;"></div>
@@ -294,17 +303,17 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
 
             <div class="front-latest-grid-sec">
                 <?php
-                $args = array(
+                $args2 = array(
                 'post_type'=> 'post',
                 'orderby'    => 'date',
                 'post_status' => 'publish',
                 'order'    => 'DESC',
                 'posts_per_page' => 3 // this will retrive all the post that is published 
                 );
-                $result = new WP_Query( $args );
-                if ( $result-> have_posts() ) : 
-                    while ( $result->have_posts() ) : $result->the_post();
-                            get_template_part('template-parts/Blog', 'card');
+                $result2 = new WP_Query( $args2 );
+                if ( $result2-> have_posts() ) : 
+                    while ( $result2->have_posts() ) : $result2->the_post();
+                            get_template_part('template-parts/blog', 'card');
                     endwhile; 
                 endif; 
                 wp_reset_postdata(); ?>
@@ -312,7 +321,7 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
             </div>
 
             <div class="front-latest-button-wrapper">
-                <a class="common-load-more-button" href="">
+                <a class="common-load-more-button" href="<?php echo home_url('/blogs'); ?>">
                     View all <span class="icon-left-mid-arrow"></span>
                 </a>
             </div>

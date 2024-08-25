@@ -4,6 +4,9 @@
     while (have_posts()) : the_post();
         $post_id = get_queried_object_id();
         $title = get_the_title();
+
+        $practice_list = get_the_terms($post_id, 'lawyers-category');
+
         $myvals = get_post_meta($post_id);
 
         foreach($myvals as $key=>$val)
@@ -23,6 +26,7 @@
             if($key == 'insta_link') $insta_link  = $val[0];
             if($key == 'linkedin_url') $linkedin_url  = $val[0];
             if($key == 'twitter_url') $twitter_url  = $val[0];
+            if($key == 'image') $image  = $val[0];
 
             // if($key == 'latitude') $lat  = !empty($val[0]) ? '70.999956':'';
             // if($key == 'longitude') $lon  = !empty($val[0]) ? '70.999956':'';
@@ -31,6 +35,7 @@
         }
 
         $img_url = get_the_post_thumbnail_url($post_id,'lawyers-list-thumbnail'); 
+        if(!$img_url) $img_url= $image;
         if(!$img_url) $img_url= get_template_directory_uri() . '/images/lawyer-details-image.jpg';
 
         //Generating Lat and Lon
@@ -124,32 +129,20 @@
                                     <?php echo $title; ?>
                                 </h3>
                                 <p class="lawyers-d-c-designation">
-                                    criminal lawyer
+                                    <?php $i = 0;
+                                    foreach($practice_list as $practice) {
+                                        if($i > 0 ) echo ' ,';  ?>
+                                        <a href="<?php echo esc_url(get_term_link( $practice )); ?>">
+                                            <?php echo $practice->name; ?>
+                                        </a>
+                                    <?php $i++;
+                                    } ?>
                                 </p>
                             </div>
 
                             <div class="lawyers-d-c-rating-sec">
-                                <div class="lawyers-d-c-rating-wrapper">                               
-                                    
-                                    <div class="lawyers-d-c-rating-card">
-                                        <span class="icon-ster"></span>
-                                    </div>
-
-                                    <div class="lawyers-d-c-rating-card">
-                                        <span class="icon-ster"></span>
-                                    </div>
-
-                                    <div class="lawyers-d-c-rating-card">
-                                        <span class="icon-ster"></span>
-                                    </div>
-
-                                    <div class="lawyers-d-c-rating-card">
-                                        <span class="icon-ster"></span>
-                                    </div>
-
-                                    <div class="lawyers-d-c-rating-card">
-                                        <span class="icon-hulf-ster"></span>
-                                    </div>
+                                <div class="lawyers-d-c-rating-wrapper">                                      
+                                    <?php get_rating_star_func($rating); ?>
                                 </div>
                                 <?php if(!empty($rating)) { ?>
                                     <p class="lawyers-d-c-rating-date">
