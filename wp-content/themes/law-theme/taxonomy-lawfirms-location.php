@@ -12,7 +12,7 @@ $grand_parent_id = (!empty($parent_id)) ? get_term($parent_id)->parent : '';
 
 $choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
-$post_per_page = 9;
+$post_per_page = 1000;
 
 //When Country is available
 if(empty($grand_parent_id) && empty($parent_id)) { 

@@ -5,7 +5,7 @@ $tax = "lawyers-category";
 
 $search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
-$post_per_page = 12;
+$post_per_page = 1000;
 
 $args = array(
     'post_type'         => 'lawyers',

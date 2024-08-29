@@ -59,18 +59,18 @@ $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'pa
 
                                         <div class="front-from-select-wrapper">
                                             <select class="front-from-select" name="issue" id="issue">
-                                                <option selected="">any issue</option>
+                                                <option value="" selected="">Any issue</option>
                                                 <?php foreach($practice_terms as $term) { ?>
-                                                    <option slug="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                                                    <option slug="<?php echo $term->slug; ?>" value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
 
                                         <div class="front-from-select-wrapper">
                                             <select class="front-from-select" name="country" id="country">
-                                                <option selected="">choose a Country</option>                                                
+                                                <option value="" selected="">choose a Country</option>                                                
                                                 <?php foreach($country_terms as $country) { ?>
-                                                    <option slug="<?php echo $country->slug; ?>" value="<?php echo $country->term_id; ?>"><?php echo $country->name; ?></option>
+                                                    <option slug="<?php echo $country->slug; ?>" value="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>

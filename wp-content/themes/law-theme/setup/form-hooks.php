@@ -463,7 +463,49 @@ if(!function_exists('service_search_func'))
 {
     function service_search_func() {
 
-        print_r($_POST);
+        $search_param = $_POST['searchPram'];
+        $service = $_POST['service'];
+        $issue = $_POST['issue'];
+
+        $post_per_page = 1000;
+
+
+        $search_args = array(
+            's' => $search_param,
+            'post_type' => $service,
+            'posts_per_page' => $post_per_page,
+            'order'      =>'DESC',
+            'post_status'       => 'publish',
+        );
+
+        if(!empty($issue)) {
+            $search_args['tax_query'] = array(
+                'taxonomy' => 'lawyers-location',
+                'field' => 'slug',
+                'terms' => array($issue)
+            );
+        }
+
+        if($service == 'lawyers') {
+
+            echo '<div class="lawyers-card-grid-wrapper">
+                <div class="lawyers-card-grid">';        
+    
+            display_custom_card_posts($search_args,'lawyers');    
+            
+            echo '</div>
+            </div>';
+            
+        } else {
+            echo '<div class="lawyers-firm-card-grid-wrapper">
+                <div class="lawyers-firm-card-grid">';        
+    
+            display_custom_card_posts($search_args,'lawyersfirm');
+    
+            echo'</div>
+            </div>';
+            
+        }        
        
         die();
     }

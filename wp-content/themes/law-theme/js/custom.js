@@ -1,5 +1,8 @@
 jQuery(document).ready(function ($) {
 
+    var url = $(location).attr("origin");
+    console.log(url);
+
     //Get country on registration form
     $(document).on('change', 'input[name="user_type"]', function(e) {
         e.preventDefault();
@@ -145,48 +148,49 @@ jQuery(document).ready(function ($) {
             issue_slug = '?issue='+issue_slug;  
         }
 
-        window.location = 'http://localhost/lawyersinventory_main/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
+        window.location = $(location).attr('href')+'/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
         
     });
 
 
-
+    // Practice page starts //
     //Practice/issue page filter form
     $('#find-by-issue').submit(function(e) {
         e.preventDefault();
-        $('button[type="submit"]').addClass('disabled');        
+        $('button[type="submit"]').addClass('disabled');  
+        $('.lawyers-filter-search-from input').val('');      
         var _data = $(this).serialize();
 
         $.post(Front.ajaxurl, _data, function (resp) {
-            $('button[type="submit"]').removeClass('disabled');
-            $('#result-container').html(resp);
-            
+            $('button[type="submit"]').removeClass('disabled');            
+            $('#result-container').html(resp);            
         });
     });
 
     //Practice Page Search
     $('.lawyers-filter-search-from input').keyup(function (e) {
-        console.log( $(this).val());
+        e.preventDefault();
+        $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
+        serviceType = $('#type option:selected').val();
+        searchKeyword = $(this).val();
+        issueSlug = $('#issue option:selected').attr('slug');
         
-        setTimeout(function () {
-            console.log($('#type option:selected').val());
+        setTimeout(function () {            
 
             var _data = {
                 action: 'service_search',
-                search_query: $(this).val(),
-                type: $('#type option:selected').val()
-            }
-            console.log(_data)
-            
+                searchPram: searchKeyword,
+                service: serviceType,
+                issue: issueSlug,
+            }            
             $.post(Front.ajaxurl, _data, function (resp) {                
                 $('#result-container').html(resp);
-                
             });
-s
-
 
         }, 800);
     });
+    // Practice page ends //
+
 
 
     ////////////////// Firms Listing Form /////////////////////////
@@ -222,7 +226,7 @@ s
             issue_slug = '?issue='+issue_slug;  
         }
 
-        window.location = 'http://localhost/lawyersinventory_main/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
+        window.location = $(location).attr('href')+'/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
         
     });
 
@@ -367,11 +371,11 @@ s
 
 
     //Front page Form
-    $('#home-page-form input[type="radio"]').change(function(){
+    $('#home-page-form input[type="radio"], #issue, #country').change(function(){
         
         var selectedService = $('input[name="type"]:checked').val();
-        var selectedIssue = $('input[name="issue"]:checked').val();
-        var selectedCountry = $('input[name="country"]:checked').val();
+        var selectedIssue = $('#issue option:selected').val();
+        var selectedCountry = $('#country option:selected').val();
 
         if(selectedService == 'lawyers') {
             link = $(location).attr('href')+'/find-lawyers/';
