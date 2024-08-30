@@ -2,21 +2,21 @@
     <h3 class="review-card-title">
         Communication
     </h3>
-    <div class="review-card-ster-wrapper">
+    <div class="review-card-star-wrapper">
         <a class="review-card-icon-card" href="">
-            <span class="icon-out-line-ster"></span>
+            <span class="icon-out-line-star"></span>
         </a>
         <a class="review-card-icon-card" href="">
-            <span class="icon-out-line-ster"></span>
+            <span class="icon-out-line-star"></span>
         </a>
         <a class="review-card-icon-card" href="">
-            <span class="icon-out-line-ster"></span>
+            <span class="icon-out-line-star"></span>
         </a>
         <a class="review-card-icon-card" href="">
-            <span class="icon-out-line-ster"></span>
+            <span class="icon-out-line-star"></span>
         </a>
         <a class="review-card-icon-card" href="">
-            <span class="icon-out-line-ster"></span>
+            <span class="icon-out-line-star"></span>
         </a>
     </div>
 </div>

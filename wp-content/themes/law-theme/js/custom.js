@@ -1,7 +1,8 @@
 jQuery(document).ready(function ($) {
 
-    var url = $(location).attr("origin");
-    console.log(url);
+    var originalURL = $(location).attr("origin");
+    if(originalURL == 'https://viaconprojects.com' || originalURL == 'http://localhost.com') originalURL = originalURL+'/lawyersinventory';
+    console.log(originalURL);
 
     //Get country on registration form
     $(document).on('change', 'input[name="user_type"]', function(e) {
@@ -114,45 +115,6 @@ jQuery(document).ready(function ($) {
     
 
 
-
-    ////////////////// Lawyers Listing Form /////////////////////////
-    $("#find-lawyers-by-location").submit(function(e) {
-        e.preventDefault();
-
-        var _data = $(this).serialize();
-        console.log(_data);        
-
-        var co_slug = $(this).find('#country option:selected').attr('slug');
-        if(!co_slug || co_slug === 'undefined') {
-            co_slug = '';            
-        } else {
-            co_slug = '/'+co_slug;  
-        }
-        var s_slug = $(this).find('#state option:selected').attr('slug');
-        if(!s_slug || s_slug === 'undefined') {
-            s_slug = '';            
-        } else {
-            s_slug = '/'+s_slug;  
-        }
-        var ct_slug = $(this).find('#city option:selected').attr('slug');
-        if(!ct_slug || ct_slug === 'undefined') {
-            ct_slug = '';            
-        } else {
-            ct_slug = '/'+ct_slug;  
-        }   
-        
-        var issue_slug = $(this).find('#issue option:selected').attr('slug');
-        if(!issue_slug || issue_slug === 'undefined') {
-            issue_slug = '';            
-        } else {
-            issue_slug = '?issue='+issue_slug;  
-        }
-
-        window.location = $(location).attr('href')+'/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
-        
-    });
-
-
     // Practice page starts //
     //Practice/issue page filter form
     $('#find-by-issue').submit(function(e) {
@@ -193,6 +155,43 @@ jQuery(document).ready(function ($) {
 
 
 
+    ////////////////// Lawyers Listing Form /////////////////////////
+    $("#find-lawyers-by-location").submit(function(e) {
+        e.preventDefault();
+
+        var _data = $(this).serialize();
+        console.log(_data);        
+
+        var co_slug = $(this).find('#country option:selected').attr('slug');
+        if(!co_slug || co_slug === 'undefined') {
+            co_slug = '';            
+        } else {
+            co_slug = '/'+co_slug;  
+        }
+        var s_slug = $(this).find('#state option:selected').attr('slug');
+        if(!s_slug || s_slug === 'undefined') {
+            s_slug = '';            
+        } else {
+            s_slug = '/'+s_slug;  
+        }
+        var ct_slug = $(this).find('#city option:selected').attr('slug');
+        if(!ct_slug || ct_slug === 'undefined') {
+            ct_slug = '';            
+        } else {
+            ct_slug = '/'+ct_slug;  
+        }   
+        
+        var issue_slug = $(this).find('#issue option:selected').attr('slug');
+        if(!issue_slug || issue_slug === 'undefined') {
+            issue_slug = '';            
+        } else {
+            issue_slug = '?issue='+issue_slug;  
+        }
+
+        window.location = originalURL+'/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
+        
+    });
+
     ////////////////// Firms Listing Form /////////////////////////
     $("#find-firms-by-location").submit(function(e) {
         e.preventDefault();
@@ -226,8 +225,31 @@ jQuery(document).ready(function ($) {
             issue_slug = '?issue='+issue_slug;  
         }
 
-        window.location = $(location).attr('href')+'/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
+        window.location = originalURL+'/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
         
+    });
+
+    //Lawyers and Lawfirm serach
+    $('.lawyers-filter-search-from input').keyup(function (e) {
+        e.preventDefault();
+        $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
+        serviceType = $('#type option:selected').val();
+        searchKeyword = $(this).val();
+        issueSlug = $('#issue option:selected').attr('slug');
+        
+        setTimeout(function () {            
+
+            var _data = {
+                action: 'service_search',
+                searchPram: searchKeyword,
+                service: serviceType,
+                issue: issueSlug,
+            }            
+            $.post(Front.ajaxurl, _data, function (resp) {                
+                $('#result-container').html(resp);
+            });
+
+        }, 800);
     });
 
 
@@ -378,11 +400,11 @@ jQuery(document).ready(function ($) {
         var selectedCountry = $('#country option:selected').val();
 
         if(selectedService == 'lawyers') {
-            link = $(location).attr('href')+'/find-lawyers/';
+            link = originalURL+'/find-lawyers/';
             if(selectedCountry) link = link+selectedCountry;
             if(selectedIssue) link = link+'?issue='+selectedIssue;
         } else {
-            link = $(location).attr('href')+'/find-lawfirms/'+selectedCountry+'?issue='+selectedIssue;
+            link = originalURL+'/find-lawfirms/'+selectedCountry+'?issue='+selectedIssue;
         }
         console.log(link);
         $('#service-redirect').attr('href', link );

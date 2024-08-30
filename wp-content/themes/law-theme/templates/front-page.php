@@ -1,7 +1,7 @@
 <?php /* Template Name: Front Page Temp */
 get_header(); 
 
-$practice_terms = get_terms( 'lawyers-category', array( 'hide_empty' => true ) ); 
+$practice_terms = get_terms( 'lawyers-category', array( 'hide_empty' => true, 'parent' => 0 ) ); 
 $country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'parent' => 0 ) );
 
 ?>

@@ -44,9 +44,10 @@ $issuesArr = get_practice_area();
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers
-                </h2>
+                    Find Top Lawyers Near You
+                </h2>                
             </div>
+            <p>Find top-rated lawyers in your area: Search our comprehensive directory of top attorneys, read reviews, and compare expertise to find the best fit for your legal needs.</p>
         </div>
     </div>
 </section>
