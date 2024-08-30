@@ -111,12 +111,13 @@ $countriesArr = get_country($my_service);
 
 <section class="lawyers-common-banner-sec">
     <div class="container mx-auto">
-        <div class="lawyers-c-b-inner">
+    <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers
-                </h2>
+                    Find Top Law Firms Near You
+                </h2>                
             </div>
+            <p>Reach the top law firms near you: Browse our directory of top-rated firms, read reviews, and compare expertise to find the best fit for your legal needs and budget.</p>
         </div>
     </div>
 </section>
