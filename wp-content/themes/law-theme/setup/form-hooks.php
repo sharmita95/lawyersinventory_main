@@ -465,46 +465,82 @@ if(!function_exists('service_search_func'))
 
         $search_param = $_POST['searchPram'];
         $service = $_POST['service'];
-        $issue = $_POST['issue'];
+        $issueSlug = $_POST['issue'];
+        $countrySlug = $_POST['country'];
+        $stateSlug = $_POST['state'];
+        $citySlug = $_POST['city'];
 
         $post_per_page = 1000;
-
 
         $search_args = array(
             's' => $search_param,
             'post_type' => $service,
             'posts_per_page' => $post_per_page,
             'order'      =>'DESC',
-            'post_status'       => 'publish',
+            'post_status' => 'publish',
         );
 
-        if(!empty($issue)) {
+        
+        if(!empty($issueSlug) || !empty($countrySlug) || !empty($stateSlug) || !empty($citySlug)) {
+
+            if($service === 'lawyers') { $locationTax = "lawyers-location"; } else { $locationTax = "lawfirms-location"; }
+
+            if(!empty($issueSlug)) { //if issus exists
+                $tax_query[0] = array(
+                    'taxonomy' => 'lawyers-category',
+                    'field' => 'slug',
+                    'terms' => array($issueSlug)
+                );
+            }
+
+            if(!empty($countrySlug) && empty($stateSlug) && empty($citySlug)) { // if only country is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($countrySlug)
+                );
+            }
+
+            if(!empty($countrySlug) && !empty($stateSlug) && empty($citySlug)) { // if only country & state is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($stateSlug)
+                );
+            }
+
+            if(!empty($countrySlug) && !empty($stateSlug) && !empty($citySlug)) { // if only country, state & city is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($citySlug)
+                );
+            }            
+        
             $search_args['tax_query'] = array(
-                'taxonomy' => 'lawyers-location',
-                'field' => 'slug',
-                'terms' => array($issue)
+                'relation' => 'AND',
+                $tax_query
             );
         }
 
-        if($service == 'lawyers') {
+        // echo '<pre>';
+        // print_r($_POST);
+        // print_r($search_args);
+        // echo '</pre>';
+        // die('LYI');
 
+        if($service == 'lawyers') {
             echo '<div class="lawyers-card-grid-wrapper">
-                <div class="lawyers-card-grid">';        
-    
-            display_custom_card_posts($search_args,'lawyers');    
-            
+                <div class="lawyers-card-grid">';            
+                    display_custom_card_posts($search_args,'lawyers');                
             echo '</div>
-            </div>';
-            
+            </div>';            
         } else {
             echo '<div class="lawyers-firm-card-grid-wrapper">
-                <div class="lawyers-firm-card-grid">';        
-    
-            display_custom_card_posts($search_args,'lawyersfirm');
-    
+                <div class="lawyers-firm-card-grid">';           
+                    display_custom_card_posts($search_args,'lawyersfirm');    
             echo'</div>
-            </div>';
-            
+            </div>';            
         }        
        
         die();
@@ -539,7 +575,7 @@ if(!function_exists('display_custom_card_posts')) {
 
         if(!empty($before_card)) echo $before_card;
         if ($custom_query->have_posts()) :            
-            while ($custom_query->have_posts()) : $custom_query->the_post();                
+            while ($custom_query->have_posts()) : $custom_query->the_post();  
                 get_template_part('/template-parts/'.$card_type, 'card');                
             endwhile;            
             wp_reset_postdata();            

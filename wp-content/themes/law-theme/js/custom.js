@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     var originalURL = $(location).attr("origin");
-    if(originalURL == 'https://viaconprojects.com' || originalURL == 'http://localhost') originalURL = originalURL+'/lawyersinventory';
+    if(originalURL == 'https://viaconprojects.com' || originalURL == 'http://localhost') originalURL = originalURL+'/lawyersinventory_main';
     console.log(originalURL);
 
     //Get country on registration form
@@ -235,25 +235,34 @@ jQuery(document).ready(function ($) {
     //Lawyers and Lawfirm serach
     $('.lawyers-filter-search-from input').keyup(function (e) {
         e.preventDefault();
-        console.log($(this).val());
-        // $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
-        // serviceType = $('#type option:selected').val();
-        // searchKeyword = $(this).val();
-        // issueSlug = $('#issue option:selected').attr('slug');
         
-        // setTimeout(function () {            
+        $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
+        
+        searchKeyword = $(this).val();
+        issueSlug = $('#issue option:selected').attr('slug');
+        serviceType = $('#type').val();
+        countrySlug = $('#country option:selected').attr('slug');
+        stateSlug = $('#state option:selected').attr('slug');
+        citySlug = $('#city option:selected').attr('slug');
+        
+        setTimeout(function () {            
 
-        //     var _data = {
-        //         action: 'service_search',
-        //         searchPram: searchKeyword,
-        //         service: serviceType,
-        //         issue: issueSlug,
-        //     }            
-        //     $.post(Front.ajaxurl, _data, function (resp) {                
-        //         $('#result-container').html(resp);
-        //     });
+            var _data = {
+                action: 'service_search',
+                searchPram: searchKeyword,
+                service: serviceType,
+                issue: issueSlug,
+                country: countrySlug,
+                state: stateSlug,
+                city: citySlug
+            }         
+            console.log(_data);   
+            $.post(Front.ajaxurl, _data, function (resp) {     
+                console.log(resp);              
+                $('#result-container').html(resp);
+            });
 
-        // }, 800);
+        }, 800);
     });
 
     //////// Services Form submit and Search Ends ////////

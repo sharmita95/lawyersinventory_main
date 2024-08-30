@@ -1,4 +1,5 @@
-<?php $postid = get_the_ID(); ?>
+<?php $postid = get_the_ID();
+$practice_arr = get_the_terms( $postid, 'lawyers-category' ); ?>
 
 <div class="lawyers-card">
     <figure class="lawyers-card-figure">
@@ -12,7 +13,7 @@
             <div class="lawyers-card-title-wrapper">
                 <h2 class="lawyers-card-title"><?php the_title(); ?></h2>
                 <p class="lawyers-card-subtitle">
-                    Car Accidents
+                    <?php echo $practice_arr[0]->name; ?>
                 </p>
             </div>
             <button class="lawyers-card-button">

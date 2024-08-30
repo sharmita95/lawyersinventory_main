@@ -39,9 +39,10 @@ $taxonomies = get_terms( array(
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers
-                </h2>
+                    Search by Practice Area
+                </h2>                
             </div>
+            <p>Find the right lawyer for your case by practice area: Browse our directory of expert attorneys specializing in various fields, from personal injury to business law and more.</p>
         </div>
     </div>
 </section>

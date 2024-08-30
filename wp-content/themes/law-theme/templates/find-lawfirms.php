@@ -63,7 +63,7 @@ $issuesArr = get_practice_area();
 <section class="best-lawyers-in-us">
     <div class="container mx-auto">
         <div class="lawyers-filter-search-wrapper">
-            <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" class="lawyers-filter-search-from">
+            <form action="" class="lawyers-filter-search-from">
                 <input class="lawyers-filter-search-from-input" type="text" placeholder="Search.." name="find">
                 <button class="lawyers-filter-search-from-button" type="submit">
                     <span class="icon-search"></span>
@@ -122,44 +122,49 @@ $issuesArr = get_practice_area();
 
         </div>
 
-        <div class="lawyers-firm-card-grid-wrapper">
-            <div class="lawyers-firm-card-grid">
-                <?php if ($lawyers_posts->have_posts()) :
-                    while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
-                        get_template_part('template-parts/lawyersfirm', 'card');
-                    endwhile; ?>
-                <?php else : ?>
-                    <p>No data available</p>
-                <?php endif; ?>                
+
+        <div id="result-container">
+
+            <div class="lawyers-firm-card-grid-wrapper">
+                <div class="lawyers-firm-card-grid">
+                    <?php if ($lawyers_posts->have_posts()) :
+                        while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
+                            get_template_part('template-parts/lawyersfirm', 'card');
+                        endwhile; ?>
+                    <?php else : ?>
+                        <p>No data available</p>
+                    <?php endif; ?>                
+                </div>
             </div>
-        </div>
 
-        <div class="pagination-wrapper">
-            <div class="pagination">
-                <?php 
-                $big = 999999999;
+            <div class="pagination-wrapper">
+                <div class="pagination">
+                    <?php 
+                    $big = 999999999;
 
-                $pagination_args = array(
-                    'base' => add_query_arg('pagination', '%#%'),
-                    'format' => '',
-                    'current' => max(1, $paged),
-                    'total' => $lawyers_posts->max_num_pages,
-                    'prev_text' => __('« Prev'),
-                    'next_text' => __('Next »'),
-                );
+                    $pagination_args = array(
+                        'base' => add_query_arg('pagination', '%#%'),
+                        'format' => '',
+                        'current' => max(1, $paged),
+                        'total' => $lawyers_posts->max_num_pages,
+                        'prev_text' => __('« Prev'),
+                        'next_text' => __('Next »'),
+                    );
 
-                // Add additional query parameters to pagination
-                if ($paged) {
-                    $pagination_args['add_args'] = array('pagination' => $paged);
-                }
-            
-                $pagination = paginate_links($pagination_args);
-            
-                if ($pagination) {
-                    echo '<div>' . $pagination . '</div>';
-                }
-                ?>
+                    // Add additional query parameters to pagination
+                    if ($paged) {
+                        $pagination_args['add_args'] = array('pagination' => $paged);
+                    }
+                
+                    $pagination = paginate_links($pagination_args);
+                
+                    if ($pagination) {
+                        echo '<div>' . $pagination . '</div>';
+                    }
+                    ?>
+                </div>
             </div>
+        
         </div>
 
     </div>
