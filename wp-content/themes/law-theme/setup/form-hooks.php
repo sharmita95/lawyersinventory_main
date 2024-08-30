@@ -412,6 +412,7 @@ function ajax_lyi_practice_func() {
     $choosed_issue = $_POST['issue'];
 
     $gen_full_html = '';    
+    $post_per_page = 1000;
 
     $args = array(
         'post_type'         => $type,
@@ -419,7 +420,7 @@ function ajax_lyi_practice_func() {
         'orderby'           => 'date',
         //'paged'             => $paged,
         'order'             => 'DESC',
-        'posts_per_page'    => 4,
+        'posts_per_page'    => $post_per_page,
     );
     if(!empty($choosed_issue)) {
         $args['tax_query'] = array(
@@ -580,7 +581,7 @@ if(!function_exists('display_custom_card_posts')) {
             endwhile;            
             wp_reset_postdata();            
         else :
-            echo '<p>No posts found.</p>';
+            echo '<p>No data found.</p>';
         endif;
 
         if(!empty($after_card)) echo $after_card;

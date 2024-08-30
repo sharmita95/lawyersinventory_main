@@ -3,37 +3,21 @@
 // $page_count = $GLOBALS['wp_query']->max_num_pages;
 // $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-if (is_author()){
-    $author = get_queried_object();
-    $author_id = $author->ID;
-  }
+if (is_category()){
+    $category = get_queried_object();
+    $cat_id = $category->term_id;
+    // $cat_id = $author->ID;
+}
 ?>
-
-
 <section class="author-page-sec">
     <div class="container mx-auto">
         <div class="content-sec-wrapper">
             <div class="left-content-sec">
-                <div class="auth-author-card">
- 
-                    <div class="author-card-image-sec">
-                        <a href="<?php echo get_author_posts_url($author_id); ?>">
-                            <figure class="author-card-image-ctrl">
-                                <?php echo get_avatar($author_id, 96, '', '', array('class' => 'image-responsive')); ?>
-                            </figure>
-                        </a>
-                    </div>
- 
-                    <div class="auth-author-card-content">
- 
-                        <h2 class="auth-author-card-title">
-                        <a href="<?php echo get_author_posts_url($author_id); ?>"><?php the_author(); ?></a>
-                        </h2>
- 
-                        <p class="auth-author-card-dsc"><?php the_author_meta('description'); ?></p>
- 
-                    </div>
-                   
+                <div class="auth-author-card"> 
+                    <div class="auth-author-card-content"> 
+                        <h2 class="auth-author-card-title"><?php echo strip_tags(single_cat_title()); ?></h2> 
+                        <p class="auth-author-card-dsc"><?php category_description(); ?></p> 
+                    </div>                   
                 </div>
  
                 <div class="author-grid-card">

@@ -26,9 +26,9 @@ $post_count = $blog_query->found_posts; ?>
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
                     Read Best Legal Blogs and Resources
-                </h2>
-                <p>Stay informed with our expert legal blogs: Get insights on the latest laws, trends, and case studies from top attorneys, and stay up-to-date on legal matters that affect you.</p>
+                </h2>                
             </div>
+            <p>Stay informed with our expert legal blogs: Get insights on the latest laws, trends, and case studies from top attorneys, and stay up-to-date on legal matters that affect you.</p>
         </div>
     </div>
 </section>

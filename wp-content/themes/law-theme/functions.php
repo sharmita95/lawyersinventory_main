@@ -101,7 +101,7 @@ if(!function_exists('custom_theme_setup'))
 //         endwhile;
 //         wp_reset_postdata();
 //     else :
-//         echo '<p>No posts found.</p>';
+//         echo '<p>No data found.</p>';
 //     endif;
 // }
 

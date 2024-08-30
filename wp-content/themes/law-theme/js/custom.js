@@ -149,7 +149,7 @@ jQuery(document).ready(function ($) {
                 $('#result-container').html(resp);
             });
 
-        }, 800);
+        }, 2000);
     });
     // Practice page ends //
 
@@ -262,7 +262,7 @@ jQuery(document).ready(function ($) {
                 $('#result-container').html(resp);
             });
 
-        }, 800);
+        }, 2000);
     });
 
     //////// Services Form submit and Search Ends ////////

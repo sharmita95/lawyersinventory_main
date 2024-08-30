@@ -1,22 +1,28 @@
 <?php
-    // Define the arguments for WP_Query
-    $recent_posts = array(
-        'post_type'      => 'post',
-        'posts_per_page' => 4, 
-        'post_status'    => 'publish', 
-        'order'          => 'DESC', 
-        'orderby'        => 'date' // Order by date - for recent post
-    );
+// Define the arguments for WP_Query
+$recent_posts = array(
+    'post_type'      => 'post',
+    'posts_per_page' => 4, 
+    'post_status'    => 'publish', 
+    'order'          => 'DESC', 
+    'orderby'        => 'date' // Order by date - for recent post
+);
+
+$facebook_url = get_option('facebook_url');
+$twitter_url = get_option('twitter_url');
+$linkedin_url = get_option('linkedin_url');
+$instagram_url = get_option('instagram_url');
 
 ?>
 <div class="side-bar-sec">
     <div class="side-bar">
         <div class="side-bar-inner">
-       <?php if (!is_author()) {
-                // Include the publisher card if not on an author archive page
-                get_template_part('template-parts/publisher', 'card');
-            }?>
-<!---------------------------------- Sidebar search  ------------------------------------------------->
+            <?php if (is_singular()) {
+                    // Include the publisher card if not on an author archive page
+                    get_template_part('template-parts/publisher', 'card');
+                }?>
+
+            <!--- Search --->
             <div class="side-search-card">
                 <form action="<?php echo esc_url(home_url('/')); ?>" method="get" class="side-search-from">
                     <input class="side-search-input" type="text" name="s" placeholder="Search..." value="<?php echo get_search_query(); ?>">
@@ -26,7 +32,7 @@
                 </form>
             </div>
 
-<!---------------------------------------Side Bar Social Share Post  ------------------------------------>
+            <!---- Side Bar Social Share Post ---->
             <div class="side-bar-social-sec">
 
                 <h2 class="side-bar-title">
@@ -34,18 +40,31 @@
                 </h2>
 
                 <div class="side-bar-social-card-wrapper">
-                    <button class="side-bar-social-card" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href), '_blank')">
-                        <span class="icon-facebook"></span>
-                    </button>
-                    <button class="side-bar-social-card" onclick="window.open('https://www.instagram.com/?url='+encodeURIComponent(window.location.href), '_blank')">
-                        <span class="icon-instagram"></span>
-                    </button>
-                    <button class="side-bar-social-card" onclick="window.open('https://x.com/intent/tweet?url='+encodeURIComponent(window.location.href), '_blank')">
-                        <span class="icon-Twitter-x"></span>
-                    </button>
-                    <button class="side-bar-social-card" onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent(window.location.href), '_blank')">
-                        <span class="icon-linkedin"></span>
-                    </button>
+                    <?php if(!empty($facebook_url)) { ?>
+                        <a href="<?php echo $facebook_url; ?>" target="_blank" rel="noopener noreferrer nofollow">
+                            <button class="side-bar-social-card" >
+                                <span class="icon-facebook"></span>
+                            </button>
+                        </a>
+                    <?php } if(!empty($instagram_url)) { ?>
+                        <a href="<?php echo $instagram_url; ?>" target="_blank" rel="noopener noreferrer nofollow">
+                            <button class="side-bar-social-card" >
+                                <span class="icon-instagram"></span>
+                            </button>
+                        </a>
+                    <?php } if(!empty($twitter_url)) { ?>
+                        <a href="<?php echo $twitter_url; ?>" target="_blank" rel="noopener noreferrer nofollow">
+                            <button class="side-bar-social-card" >
+                                <span class="icon-Twitter-x"></span>
+                            </button>
+                        </a>
+                    <?php } if(!empty($linkedin_url)) { ?>
+                        <a href="<?php echo $linkedin_url; ?>" target="_blank" rel="noopener noreferrer nofollow">
+                            <button class="side-bar-social-card" >
+                                <span class="icon-linkedin"></span>
+                            </button>
+                        </a>
+                    <?php } ?>
                 </div>
 
             </div>
