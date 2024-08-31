@@ -424,5 +424,14 @@ jQuery(document).ready(function ($) {
         console.log(link);
         $('#service-redirect').attr('href', link );
     });
+
+
+
+    //Blogs page Pagination
+    $('.pagination .nav-links a.page-numbers').addClass('pagination-btn');
+    $('.pagination .nav-links a.next').addClass('pagination-btn-next pagination-btn');
+    $('.pagination .nav-links span.current').addClass('pagination-btn p-b-active');
+    $('.pagination .nav-links').addClass('pagination');
+    
 	
 });

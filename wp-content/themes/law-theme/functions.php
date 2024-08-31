@@ -359,3 +359,12 @@ if(!function_exists('get_rating_star_func'))
     }
 
 }
+
+//Search Hook For Post Type
+function search_filter($query)
+{
+	if ($query->is_search) {
+		$query->set('post_type', 'post');
+	}
+}
+add_action('pre_get_posts', 'search_filter');

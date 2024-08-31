@@ -71,7 +71,7 @@ $instagram_url = get_option('instagram_url');
 
             <div class="side-bar-recent-post-sec">
                 <h2 class="side-bar-title">
-                    Keep in Touch
+                    Recent Articles
                 </h2>
 
                 <div class="side-bar-card-wrapper">
