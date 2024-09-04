@@ -33,8 +33,135 @@ function custom_csv_import_menu()
         'firms-import',     // Submenu slug
         'firms_import_callback' // Function to display the content
     );
+
+    add_submenu_page(
+        'custom-csv-import',        // Parent slug
+        'Testing',         // Page title
+        'For Testing',                    // Menu title
+        'view_custom_menu',             // Capability required
+        'test-import',     // Submenu slug
+        'testing_callback' // Function to display the content
+    );
+
+    add_submenu_page(
+        'custom-csv-import',        // Parent slug
+        'Lat Lon Update',         // Page title
+        'Lat Lon Update',                    // Menu title
+        'view_custom_menu',             // Capability required
+        'lat-lon-update',     // Submenu slug
+        'lat_lng_checking_callback' // Function to display the content
+    );
     
 }
+
+function testing_callback() {
+    ?>
+
+    <div class="wrap">
+        <h1>Test</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="text" class="regular-text" name="pic" required>
+            <input type="submit" name="test_import" class="button button-primary" value="Test">
+        </form>
+
+    </div>
+
+
+    <?php
+
+    if (isset($_POST['test_import'])) {
+        $image_url = $_POST['pic'];
+        // $image_url = 'https://example.com/image.jpg'; // Replace with your image URL
+        $post_id = 51; // Attach to a post ID, or 0 for unattached
+        $image_url = 'https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=kvlEANMESccdufSZYqBiqA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=219.64227&pitch=0&thumbfov=100';
+        // $image_url = 'https://lh5.googleusercontent.com/p/AF1QipOGIv6f9UuFdmtMXz9gq4aOb3SycjzpdA2TVB7S=w408-h306-k-no';
+        // $actual_image_url = get_image_url($image_url);
+
+        $images_arr = file_get_contents($image_url);
+        $img_arr = file_put_contents('abcdef.jpg', $images_arr);
+
+        die($img_arr);
+
+        if ($actual_image_url) {
+            echo "Image URL found: " . $actual_image_url;
+        } else {
+            echo "Failed to find image URL.";
+        }
+
+    }
+    
+}
+
+
+function lat_lng_checking_callback() {
+
+    $args = array(
+        'post_type' => array('lawyers', 'law-firms'),
+        'post_status' => 'publish',
+        'orderby' => 'date',
+        'order'   => 'DESC',
+        'posts_per_page' => -1,
+    );
+    $posts_array = get_posts( $args );
+    // echo '<pre>';
+    // print_r($posts_array);
+    // echo '</pre>'; ?>
+
+    <div class="wrap">
+        <h1>Service Location <b>Latitude & Longitude</b></h1>
+        <p>Add latitude and longitude for each users. Here are the list of missing items.</p>
+        <table id="sample-table">
+            <tr style="border: 1px solid black;">
+                <th>Type</th>
+                <th>Post Id</th>
+                <th>Title </th>
+                <th>Addess </th>
+                <th>Latitude </th>
+                <th>Longitude </th>
+                <th>Action </th>
+            </tr>
+            <?php
+            foreach ( $posts_array as $posts ) { 
+                $address = get_post_meta( $posts->ID, 'address', true );
+                $location_lat = get_post_meta($posts->ID, 'latitude', true);
+                $location_lon = get_post_meta($posts->ID, 'longitude', true);
+                if(!$location_lat || !$location_lon) {
+                    echo '<tr>
+                        <td>'.$posts->post_type.'</td>
+                        <td>'.$posts->ID.'</td>
+                        <td>'. esc_html($posts->post_title).'</td>
+                        <td>'.$address.'</td>
+                        <td>'.$location_lat.'</td>
+                        <td>'.$location_lon.'</td>
+                        <td>
+                            <a href="'. home_url('wp-admin/post.php?post='.$posts->ID.'&action=edit').'">Edit</a>
+                        </td>
+                    </tr>';
+                }
+            } ?>
+        </table>
+
+        <style>
+            table {
+                width: 100%;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+            table th {
+                background: #000;
+                color: white;
+            }
+            table tr { background: #e6e6e6b3; }
+            table td:not(:last-child), table th:not(:last-child) {
+                border-right: 1px solid #000;
+            }
+        </style>
+    </div>
+    <?php
+}
+
+
 
 function custom_csv_import_instruction() { ?>
 

@@ -9,7 +9,7 @@ $search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $choosed_issue = !empty($_GET['issue']) ? $_GET['issue'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
 // $post_per_page = get_option('posts_per_page');
-$post_per_page = 9;
+$post_per_page = 1000;
 
 $args = array(
     'post_type'        => $my_service,
@@ -52,9 +52,10 @@ $issuesArr = get_practice_area();
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers firm
-                </h2>
+                    Find Top Law Firms Near You
+                </h2>                
             </div>
+            <p>Reach the top law firms near you: Browse our directory of top-rated firms, read reviews, and compare expertise to find the best fit for your legal needs and budget.</p>
         </div>
     </div>
 </section>
@@ -62,7 +63,7 @@ $issuesArr = get_practice_area();
 <section class="best-lawyers-in-us">
     <div class="container mx-auto">
         <div class="lawyers-filter-search-wrapper">
-            <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" class="lawyers-filter-search-from">
+            <form action="" class="lawyers-filter-search-from">
                 <input class="lawyers-filter-search-from-input" type="text" placeholder="Search.." name="find">
                 <button class="lawyers-filter-search-from-button" type="submit">
                     <span class="icon-search"></span>
@@ -121,44 +122,49 @@ $issuesArr = get_practice_area();
 
         </div>
 
-        <div class="lawyers-firm-card-grid-wrapper">
-            <div class="lawyers-firm-card-grid">
-                <?php if ($lawyers_posts->have_posts()) :
-                    while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
-                        get_template_part('template-parts/lawyersfirm', 'card');
-                    endwhile; ?>
-                <?php else : ?>
-                    <p>No data available</p>
-                <?php endif; ?>                
+
+        <div id="result-container">
+
+            <div class="lawyers-firm-card-grid-wrapper">
+                <div class="lawyers-firm-card-grid">
+                    <?php if ($lawyers_posts->have_posts()) :
+                        while ($lawyers_posts->have_posts()) : $lawyers_posts->the_post();
+                            get_template_part('template-parts/lawyersfirm', 'card');
+                        endwhile; ?>
+                    <?php else : ?>
+                        <p>No data available</p>
+                    <?php endif; ?>                
+                </div>
             </div>
-        </div>
 
-        <div class="pagination-wrapper">
-            <div class="pagination">
-                <?php 
-                $big = 999999999;
+            <div class="pagination-wrapper">
+                <div class="pagination">
+                    <?php 
+                    $big = 999999999;
 
-                $pagination_args = array(
-                    'base' => add_query_arg('pagination', '%#%'),
-                    'format' => '',
-                    'current' => max(1, $paged),
-                    'total' => $lawyers_posts->max_num_pages,
-                    'prev_text' => __('« Prev'),
-                    'next_text' => __('Next »'),
-                );
+                    $pagination_args = array(
+                        'base' => add_query_arg('pagination', '%#%'),
+                        'format' => '',
+                        'current' => max(1, $paged),
+                        'total' => $lawyers_posts->max_num_pages,
+                        'prev_text' => __('« Prev'),
+                        'next_text' => __('Next »'),
+                    );
 
-                // Add additional query parameters to pagination
-                if ($paged) {
-                    $pagination_args['add_args'] = array('pagination' => $paged);
-                }
-            
-                $pagination = paginate_links($pagination_args);
-            
-                if ($pagination) {
-                    echo '<div>' . $pagination . '</div>';
-                }
-                ?>
+                    // Add additional query parameters to pagination
+                    if ($paged) {
+                        $pagination_args['add_args'] = array('pagination' => $paged);
+                    }
+                
+                    $pagination = paginate_links($pagination_args);
+                
+                    if ($pagination) {
+                        echo '<div>' . $pagination . '</div>';
+                    }
+                    ?>
+                </div>
             </div>
+        
         </div>
 
     </div>

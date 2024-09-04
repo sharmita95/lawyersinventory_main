@@ -412,6 +412,7 @@ function ajax_lyi_practice_func() {
     $choosed_issue = $_POST['issue'];
 
     $gen_full_html = '';    
+    $post_per_page = 1000;
 
     $args = array(
         'post_type'         => $type,
@@ -419,7 +420,7 @@ function ajax_lyi_practice_func() {
         'orderby'           => 'date',
         //'paged'             => $paged,
         'order'             => 'DESC',
-        'posts_per_page'    => 4,
+        'posts_per_page'    => $post_per_page,
     );
     if(!empty($choosed_issue)) {
         $args['tax_query'] = array(
@@ -455,6 +456,99 @@ function ajax_lyi_practice_func() {
 }
 
 
+
+// Services and practice search
+add_action('wp_ajax_service_search', 'service_search_func');
+add_action('wp_ajax_nopriv_service_search', 'service_search_func');
+if(!function_exists('service_search_func'))
+{
+    function service_search_func() {
+
+        $search_param = $_POST['searchPram'];
+        $service = $_POST['service'];
+        $issueSlug = $_POST['issue'];
+        $countrySlug = $_POST['country'];
+        $stateSlug = $_POST['state'];
+        $citySlug = $_POST['city'];
+
+        $post_per_page = 1000;
+
+        $search_args = array(
+            's' => $search_param,
+            'post_type' => $service,
+            'posts_per_page' => $post_per_page,
+            'order'      =>'DESC',
+            'post_status' => 'publish',
+        );
+
+        
+        if(!empty($issueSlug) || !empty($countrySlug) || !empty($stateSlug) || !empty($citySlug)) {
+
+            if($service === 'lawyers') { $locationTax = "lawyers-location"; } else { $locationTax = "lawfirms-location"; }
+
+            if(!empty($issueSlug)) { //if issus exists
+                $tax_query[0] = array(
+                    'taxonomy' => 'lawyers-category',
+                    'field' => 'slug',
+                    'terms' => array($issueSlug)
+                );
+            }
+
+            if(!empty($countrySlug) && empty($stateSlug) && empty($citySlug)) { // if only country is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($countrySlug)
+                );
+            }
+
+            if(!empty($countrySlug) && !empty($stateSlug) && empty($citySlug)) { // if only country & state is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($stateSlug)
+                );
+            }
+
+            if(!empty($countrySlug) && !empty($stateSlug) && !empty($citySlug)) { // if only country, state & city is available
+                $tax_query[2] = array(
+                    'taxonomy' => $locationTax,
+                    'field' => 'slug',
+                    'terms' => array($citySlug)
+                );
+            }            
+        
+            $search_args['tax_query'] = array(
+                'relation' => 'AND',
+                $tax_query
+            );
+        }
+
+        // echo '<pre>';
+        // print_r($_POST);
+        // print_r($search_args);
+        // echo '</pre>';
+        // die('LYI');
+
+        if($service == 'lawyers') {
+            echo '<div class="lawyers-card-grid-wrapper">
+                <div class="lawyers-card-grid">';            
+                    display_custom_card_posts($search_args,'lawyers');                
+            echo '</div>
+            </div>';            
+        } else {
+            echo '<div class="lawyers-firm-card-grid-wrapper">
+                <div class="lawyers-firm-card-grid">';           
+                    display_custom_card_posts($search_args,'lawyersfirm');    
+            echo'</div>
+            </div>';            
+        }        
+       
+        die();
+    }
+}
+
+
 //////////////////// Search
 add_action('wp_ajax_ajax_search', 'ajax_search');
 add_action('wp_ajax_nopriv_ajax_search', 'ajax_search');
@@ -482,12 +576,12 @@ if(!function_exists('display_custom_card_posts')) {
 
         if(!empty($before_card)) echo $before_card;
         if ($custom_query->have_posts()) :            
-            while ($custom_query->have_posts()) : $custom_query->the_post();                
+            while ($custom_query->have_posts()) : $custom_query->the_post();  
                 get_template_part('/template-parts/'.$card_type, 'card');                
             endwhile;            
             wp_reset_postdata();            
         else :
-            echo '<p>No posts found.</p>';
+            echo '<p>No data found.</p>';
         endif;
 
         if(!empty($after_card)) echo $after_card;

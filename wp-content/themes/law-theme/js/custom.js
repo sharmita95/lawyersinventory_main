@@ -1,5 +1,9 @@
 jQuery(document).ready(function ($) {
 
+    var originalURL = $(location).attr("origin");
+    if(originalURL == 'https://viaconprojects.com' || originalURL == 'http://localhost') originalURL = originalURL+'/lawyersinventory_main';
+    console.log(originalURL);
+
     //Get country on registration form
     $(document).on('change', 'input[name="user_type"]', function(e) {
         e.preventDefault();
@@ -111,8 +115,50 @@ jQuery(document).ready(function ($) {
     
 
 
+    // Practice page starts //
+    //Practice/issue page filter form
+    $('#find-by-issue').submit(function(e) {
+        e.preventDefault();
+        $('button[type="submit"]').addClass('disabled');  
+        $('.lawyers-filter-search-from input').val('');      
+        var _data = $(this).serialize();
 
-    ////////////////// Lawyers Listing Form /////////////////////////
+        $.post(Front.ajaxurl, _data, function (resp) {
+            $('button[type="submit"]').removeClass('disabled');            
+            $('#result-container').html(resp);            
+        });
+    });
+
+    //Practice Page Search
+    $('.lawyers-filter-search-from input').keyup(function (e) {
+        e.preventDefault();
+        $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
+        serviceType = $('#type option:selected').val();
+        searchKeyword = $(this).val();
+        issueSlug = $('#issue option:selected').attr('slug');
+        
+        setTimeout(function () {            
+
+            var _data = {
+                action: 'service_search',
+                searchPram: searchKeyword,
+                service: serviceType,
+                issue: issueSlug,
+            }            
+            $.post(Front.ajaxurl, _data, function (resp) {                
+                $('#result-container').html(resp);
+            });
+
+        }, 2000);
+    });
+    // Practice page ends //
+
+
+
+
+    //////// Services Form submit and Search Starts ////////
+
+    // Lawyers Filter Form
     $("#find-lawyers-by-location").submit(function(e) {
         e.preventDefault();
 
@@ -145,37 +191,11 @@ jQuery(document).ready(function ($) {
             issue_slug = '?issue='+issue_slug;  
         }
 
-        window.location = 'http://localhost/lawyersinventory_main/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
+        window.location = originalURL+'/find-lawyers'+co_slug+s_slug+ct_slug+issue_slug;
         
     });
 
-
-
-    //Practice/issue page filter form
-    $('#find-by-issue').submit(function(e) {
-        e.preventDefault();
-        $('button[type="submit"]').addClass('disabled');        
-        var _data = $(this).serialize();
-
-        $.post(Front.ajaxurl, _data, function (resp) {
-            $('button[type="submit"]').removeClass('disabled');
-            $('#result-container').html(resp);
-            
-        });
-    });
-
-    //Practice Page Search
-    $('.lawyers-filter-search-from input').keyup(function (e) {
-        console.log('Time elapsed!');
-
-        clearTimeout(keyupTimer);
-        keyupTimer = setTimeout(function () {
-            console.log('Time expired!');
-        }, 800);
-    });
-
-
-    ////////////////// Firms Listing Form /////////////////////////
+    // Firms Filter Form
     $("#find-firms-by-location").submit(function(e) {
         e.preventDefault();
 
@@ -208,9 +228,44 @@ jQuery(document).ready(function ($) {
             issue_slug = '?issue='+issue_slug;  
         }
 
-        window.location = 'http://localhost/lawyersinventory_main/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
+        window.location = originalURL+'/find-lawfirms'+co_slug+s_slug+ct_slug+issue_slug;
         
     });
+
+    //Lawyers and Lawfirm serach
+    $('.lawyers-filter-search-from input').keyup(function (e) {
+        e.preventDefault();
+        
+        $('#result-container').html('<div class="lawyers-card-grid-wrapper"><div class="lawyers-card-grid"><p></p><img class="loading-gif" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"/></p></div></div>');
+        
+        searchKeyword = $(this).val();
+        issueSlug = $('#issue option:selected').attr('slug');
+        serviceType = $('#type').val();
+        countrySlug = $('#country option:selected').attr('slug');
+        stateSlug = $('#state option:selected').attr('slug');
+        citySlug = $('#city option:selected').attr('slug');
+        
+        setTimeout(function () {            
+
+            var _data = {
+                action: 'service_search',
+                searchPram: searchKeyword,
+                service: serviceType,
+                issue: issueSlug,
+                country: countrySlug,
+                state: stateSlug,
+                city: citySlug
+            }         
+            console.log(_data);   
+            $.post(Front.ajaxurl, _data, function (resp) {     
+                console.log(resp);              
+                $('#result-container').html(resp);
+            });
+
+        }, 2000);
+    });
+
+    //////// Services Form submit and Search Ends ////////
 
 
     ///////////////////////////////////////////
@@ -346,15 +401,37 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+
+
+
+
+
+
+    //Front page Form
+    $('#home-page-form input[type="radio"], #issue, #country').change(function(){
+        
+        var selectedService = $('input[name="type"]:checked').val();
+        var selectedIssue = $('#issue option:selected').val();
+        var selectedCountry = $('#country option:selected').val();
+
+        if(selectedService == 'lawyers') {
+            link = originalURL+'/find-lawyers/';
+            if(selectedCountry) link = link+selectedCountry;
+            if(selectedIssue) link = link+'?issue='+selectedIssue;
+        } else {
+            link = originalURL+'/find-lawfirms/'+selectedCountry+'?issue='+selectedIssue;
+        }
+        console.log(link);
+        $('#service-redirect').attr('href', link );
+    });
+
+
+
+    //Blogs page Pagination
+    $('.pagination .nav-links a.page-numbers').addClass('pagination-btn');
+    $('.pagination .nav-links a.next').addClass('pagination-btn-next pagination-btn');
+    $('.pagination .nav-links span.current').addClass('pagination-btn p-b-active');
+    $('.pagination .nav-links').addClass('pagination');
+    
 	
 });
-
-
-
-
-
-
-
-
-
-

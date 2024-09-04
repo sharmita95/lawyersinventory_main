@@ -57,7 +57,7 @@
                                 <?php } ?>
                             </div>
 
-                            <div class="footer-subscribe-sec">
+                            <!-- <div class="footer-subscribe-sec">
                                 <h2 class="footer-subscribe-title">
                                     Subscribe to our newsletter
                                 </h2>
@@ -67,7 +67,8 @@
                                         <span class="icon-envelope"></span>
                                     </button>
                                 </form>
-                            </div>
+                            </div> -->
+
                         </div>
 
                         <div class="footer-link-sec order-3">

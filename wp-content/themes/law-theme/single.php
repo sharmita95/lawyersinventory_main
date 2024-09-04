@@ -1,15 +1,26 @@
 <?php get_header(); 
 
 $id = get_the_ID();
-$category_detalis = get_the_category($id)[0];
-$category_id = $category_detalis->term_id;
-$relatable_posts = array(
-    'posts_per_page' => 6, // Adjust number of posts as needed
-    'post_status'    => 'publish',
-    'post__not_in' => array($id),
-    'cat'            =>$category_id,
-);
+// $category_detalis = get_the_category($id)[0];
+// $category_id = $category_detalis->term_id;
+
+
 while (have_posts()) : the_post();
+
+    $category_detalis = get_the_category();
+    $category_id = $category_detalis[0]->term_id;
+    $cat_name = $category_detalis[0]->cat_name;
+
+    $published_date = get_the_date('d F Y');
+    $modified_date = get_the_modified_time('d F Y');
+
+
+    $relatable_posts = array(
+        'posts_per_page' => 6, // Adjust number of posts as needed
+        'post_status'    => 'publish',
+        'post__not_in' => array($id),
+        'cat'            =>$category_id,
+    );
 
 ?>
 <!--  featured image -->
@@ -26,10 +37,33 @@ while (have_posts()) : the_post();
     <div class="container mx-auto">
         <div class="content-sec-wrapper">
             <div class="left-content-sec">
+
+                <!-- start breadcrumb  -->
+                <div class="breadcrumb-whapper">
+                    <ul class="breadcrumb">
+                        <li class="bread-list"><a href="<?php echo home_url(); ?>">Home</a></li>
+                        <?php if(!empty($cat_name)) { ?>
+                            <li class="bread-list">
+                                <a href="<?php echo get_category_link($category_id); ?>"><?php echo $cat_name; ?></a>
+                            </li>
+                        <?php } ?>
+                        
+                    </ul>
+                </div>
+
+                <p class="single-page-post-date">
+                    <span class=" flex gap-[10px] flex-wrap ">
+                        <span> <?php echo $published_date; ?></span>
+                        <?php if(!empty($modified_date)  && ($published_date != $modified_date)) { ?>
+                        <span> ● </span>
+                        <span> Last Modified Date: <?php echo $modified_date; ?></span>
+                        <?php } ?>
+                    </span>
+                </p>
+                
                 <div class="single-post-content">
                     <h1><?php the_title(); ?></h1>
-                    <?php the_content(); 
-                    endwhile; ?>
+                    <?php the_content(); ?>
 
                     <!--------Tags ------>
                     <?php
@@ -42,14 +76,14 @@ while (have_posts()) : the_post();
                                 </span>
                             </div>
                             <div class="tags-wrapper">
-                                    <?php
-                                        $counter = 0;
-                                        foreach ($post_tags as $tag) {
-                                            if ($counter < 8) { // Limit to 8 tags
-                                                echo '<a class="tag-chip" href="' . esc_url(get_tag_link($tag->term_id)) . '">' . esc_html($tag->name) . '</a>';
-                                                $counter++;
-                                            }
-                                        }?>
+                                <?php
+                                $counter = 0;
+                                foreach ($post_tags as $tag) {
+                                    if ($counter < 8) { // Limit to 8 tags
+                                        echo '<a class="tag-chip" href="' . esc_url(get_tag_link($tag->term_id)) . '">' . esc_html($tag->name) . '</a>';
+                                        $counter++;
+                                    }
+                                }?>
                             </div>
                         </div>
                     <?php endif;?>
@@ -82,6 +116,8 @@ while (have_posts()) : the_post();
 
                 </div>
             </div>
+
+            <?php endwhile; ?>
 
             <!---------- Side Bar  --------------->
             <?php echo  get_template_part('template-parts/side', 'bar'); ?>

@@ -310,3 +310,75 @@ function instagram_url_callback() {
     $instagram_url = get_option('instagram_url');
     echo '<input type="text" name="instagram_url" value="' . esc_attr($instagram_url) . '" />';
 }
+
+
+
+/////
+// Create the contact settings page
+function contact_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>Custom Settings</h1>
+        <form method="post" action="options.php">
+            <?php
+                settings_fields('contact_options_group'); // Only one settings group is needed here
+                do_settings_sections('contact-options');
+                submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+// Add the menu item for the contact settings page
+function add_contact_menu_item() {
+    add_menu_page('Contact Info', 'Contact Info', 'manage_options', 'contact-settings', 'contact_settings_page', null, 100);
+}
+add_action('admin_menu', 'add_contact_menu_item');
+
+// Display contact mail_id field
+function display_contact_mail_id_element() {
+    ?>
+    <input type="text" name="contact_mail_id" id="contact_mail_id" value="<?php echo esc_attr(get_option('contact_mail_id')); ?>" />
+    <?php
+}
+
+// Display contact primary_phone field
+function display_contact_primary_phone_element() {
+    ?>
+    <input type="text" name="contact_primary_phone" id="contact_primary_phone" value="<?php echo esc_attr(get_option('contact_primary_phone')); ?>" />
+    <?php
+}
+
+// Display contact secondary_phone field
+function display_contact_secondary_phone_element() {
+    ?>
+    <input type="text" name="contact_secondary_phone" id="contact_secondary_phone" value="<?php echo esc_attr(get_option('contact_secondary_phone')); ?>" />
+    <?php
+}
+
+// Display contact address field
+function display_contact_address_element() {
+    ?>
+    <input type="text" name="contact_address" id="contact_address" value="<?php echo esc_attr(get_option('contact_address')); ?>" />
+    <?php
+}
+
+// Register and add contact settings fields
+function display_contact_panel_fields() {
+    // Register and add social settings
+    add_settings_section('contact_section', 'Our Contacts info', null, 'contact-options');
+    
+    add_settings_field('contact_mail_id', 'Contact Mail Id', 'display_contact_mail_id_element', 'contact-options', 'contact_section');
+    add_settings_field('contact_primary_phone', 'Contact Primary Phone No', 'display_contact_primary_phone_element', 'contact-options', 'contact_section');
+    add_settings_field('contact_secondary_phone', 'Contact Secondary Phone No', 'display_contact_secondary_phone_element', 'contact-options', 'contact_section');
+    add_settings_field('contact_address', 'Contact Address ', 'display_contact_address_element', 'contact-options', 'contact_section');
+    
+    register_setting('contact_options_group', 'contact_mail_id');
+    register_setting('contact_options_group', 'contact_primary_phone');
+    register_setting('contact_options_group', 'contact_secondary_phone');
+    register_setting('contact_options_group', 'contact_address');
+
+    
+}
+add_action('admin_init', 'display_contact_panel_fields');

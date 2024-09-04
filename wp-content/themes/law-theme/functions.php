@@ -21,7 +21,7 @@ if (file_exists(get_template_directory() . '/setup/theme-functions.php')) {
 add_action('wp_enqueue_scripts', 'lyi_enqueue_files');
 function lyi_enqueue_files()
 {
-    $ver = '6.0.4';
+    $ver = '6.1.'.rand();
     wp_enqueue_script('jquery.min', LYI_URI . '/js/jquery-3.7.1.min.js', array('jquery'), $ver, true);
     wp_enqueue_script('custom-script', LYI_URI . '/js/ThemeScript.js', array('jquery'), $ver, true);
     wp_enqueue_script('swiper-bundle.js.min', LYI_URI . '/js/swiper-bundle.min.js', array('jquery'), $ver, true);
@@ -80,6 +80,9 @@ if(!function_exists('custom_theme_setup'))
 		} else {
 			show_admin_bar(true);
 		}
+
+        add_post_type_support( 'page', 'excerpt' );
+
 	}
 }
 
@@ -87,20 +90,20 @@ if(!function_exists('custom_theme_setup'))
 
 
 ///////////////////////////////////////
-function display_custom_card_posts($query_args, $card_type, $before_card = "", $after_card = "") {
-    $custom_query = new WP_Query($query_args);
+// function display_custom_card_posts($query_args, $card_type, $before_card = "", $after_card = "") {
+//     $custom_query = new WP_Query($query_args);
 
-    if ($custom_query->have_posts()) :
-        while ($custom_query->have_posts()) : $custom_query->the_post();
-            if(!empty($before_card)) echo $before_card;
-            get_template_part('/template-parts/'.$card_type, 'card');
-            if(!empty($after_card)) echo $after_card;
-        endwhile;
-        wp_reset_postdata();
-    else :
-        echo '<p>No posts found.</p>';
-    endif;
-}
+//     if ($custom_query->have_posts()) :
+//         while ($custom_query->have_posts()) : $custom_query->the_post();
+//             if(!empty($before_card)) echo $before_card;
+//             get_template_part('/template-parts/'.$card_type, 'card');
+//             if(!empty($after_card)) echo $after_card;
+//         endwhile;
+//         wp_reset_postdata();
+//     else :
+//         echo '<p>No data found.</p>';
+//     endif;
+// }
 
 
 add_action('wp_ajax_filter_posts', 'filter_posts');
@@ -331,4 +334,28 @@ function display_comments_recursive($comments, $parent_id = 0) {
             }
         }
     }
+}
+
+
+//Rating
+if(!function_exists('get_rating_star_func'))
+{
+	function get_rating_star_func($rating) {
+        
+        $r = 1;
+        for($r = 1; $r<=round($rating); $r++) {
+            if($rating > $r-1 && $rating <$r ) {
+                echo '<div class="lawyers-d-c-rating-card">
+                        <span class="icon-half-star"></span>
+                    </div>';    
+            } else {
+
+            echo '<div class="lawyers-d-c-rating-card">
+                    <span class="icon-star"></span>
+                </div>';
+            }
+        } 
+
+    }
+
 }

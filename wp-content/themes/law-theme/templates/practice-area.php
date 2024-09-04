@@ -5,7 +5,7 @@ $tax = "lawyers-category";
 
 $search_param = !empty($_GET['find']) ? $_GET['find'] : '';
 $paged = (isset($_GET['pagination'])) ? $_GET['pagination'] : 1;
-$post_per_page = 12;
+$post_per_page = 1000;
 
 $args = array(
     'post_type'         => 'lawyers',
@@ -39,9 +39,10 @@ $taxonomies = get_terms( array(
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Best Lawyers
-                </h2>
+                    Search by Practice Area
+                </h2>                
             </div>
+            <p>Find the right lawyer for your case by practice area: Browse our directory of expert attorneys specializing in various fields, from personal injury to business law and more.</p>
         </div>
     </div>
 </section>
@@ -52,7 +53,7 @@ $taxonomies = get_terms( array(
             <form action="" class="lawyers-filter-search-from" method="post">
                 <input class="lawyers-filter-search-from-input" type="text" 
                     placeholder="Search.." name="find">
-                <button class="lawyers-filter-search-from-button" type="submit">
+                <button class="lawyers-filter-search-from-button" type="button">
                     <span class="icon-search"></span>
                 </button>
             </form>
@@ -67,7 +68,6 @@ $taxonomies = get_terms( array(
 
                     <div class="lawyers-filter-select-option-wrapper">
                         <select x class="lawyers-filter-select-option" name="type" id="type">
-                            <option value="">Choose</option>
                             <option value="lawyers" slug="lawyers" selected>Lawyers</option>
                             <option value="law-firms" slug="law-firms">Law Firms</option>
                         </select>

@@ -1,17 +1,106 @@
 <?php /* Template Name: Front Page Temp */
-get_header(); ?>
+get_header(); 
 
+$practice_terms = get_terms( 'lawyers-category', array( 'hide_empty' => true, 'parent' => 0 ) ); 
+$country_terms = get_terms( 'lawyers-location', array( 'hide_empty' => true, 'parent' => 0 ) );
 
+?>
 
 <!-- when  developer start working need to remove this sec  -->
 
 <!-- banner complicate  sec -->
 <section class="front-banner-sec">
-    <div class="container mx-auto">
-        <div class="front-page-banner">
 
+    <div class="container mx-auto">
+        <div class="front-banner-inner">
+            <div class="front-page-banner-from-card-sec order-2 md:order-1 ">
+                <div class="front-page-banner-from-card-wrapper">
+                    <div class="front-page-banner-from-card">
+                        <div class="front-page-banner-from-card-inner">
+                            <div class="front-page-banner-from-card-inner-inner">
+
+                                <div class="flex w-full justify-center">
+                                    <figure class="banner-from-img-ctrl">
+                                        <img src="<?php echo get_template_directory_uri() . '/images/log-type-icon.png'; ?>" 
+                                        alt="banner from logo image">
+                                    </figure>
+                                </div>
+
+                                <div class="flex w-full justify-center">
+                                    <h2 class="banner-from-title">
+                                        Lawyers Directory
+                                    </h2>
+                                </div>
+
+                                <div class="banner-subtitles-wrapper">
+                                    <h3 class="banner-from-subtitles">
+                                        Search For Law Firm & Lawyers on World Wide Basis
+                                    </h3>
+                                </div>
+
+                                <div class="banner-form-sec" id="home-page-form">
+                                    <div class="banner-form-check-box-sec">
+                                        <div class="banner-form-check-box-card border-r border-white">
+                                            <label class="front-form-label-1" for="lawyers">
+                                                Lawyers
+                                                <input class="front-input-check" type="radio" id="lawyers" name="type" value="lawyers" required="" checked="checked">
+                                            </label>
+                                        </div>
+
+                                        <div class="banner-form-check-box-card">
+                                            <label class="front-form-label-2" for="lawyersfirm">
+                                                Lawyers Firm
+                                                <input class="front-input-check" type="radio" id="lawyersfirm" name="type" value="law-firms" required="">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="front-from-select-sec">
+
+                                        <div class="front-from-select-wrapper">
+                                            <select class="front-from-select" name="issue" id="issue">
+                                                <option value="" selected="">Any issue</option>
+                                                <?php foreach($practice_terms as $term) { ?>
+                                                    <option slug="<?php echo $term->slug; ?>" value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="front-from-select-wrapper">
+                                            <select class="front-from-select" name="country" id="country">
+                                                <option value="" selected="">choose a Country</option>                                                
+                                                <?php foreach($country_terms as $country) { ?>
+                                                    <option slug="<?php echo $country->slug; ?>" value="<?php echo $country->slug; ?>"><?php echo $country->name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <a href="<?php echo home_url('find-lawyers'); ?>" id="service-redirect">
+                                        <button class="front-from-button">
+                                            FIND
+                                            <span class="icon-left-mid-arrow"></span>
+                                        </button>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="front-page-banner-left-img-sec order-1 md:order-2">
+                <figure class="front-page-banner-img-ctrl">
+                    <img class="w-full h-fit mb-[-1px] " src="<?php echo get_template_directory_uri(); ?>/images/banner-image.png" alt=" banner image file ">
+                </figure>
+            </div>
         </div>
     </div>
+
+    <!-- <img src="<?php // echo get_template_directory_uri() . '/images/log-type-icon.png'; 
+                    ?>" alt="banner from logo image"> -->
 </section>
 
 <!-- Top Legal Issues -->
@@ -25,51 +114,18 @@ get_header(); ?>
 
         <div class="swiper issueSwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
+
+                <?php                
+                foreach( $practice_terms as $term ) { ?>
+
+                    <div class="swiper-slide">
+                        <?php get_template_part('template-parts/issue', 'card', $term); ?>
+                    </div>                    
+                
                     <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
-                <div class="swiper-slide">
-                    <?php
-                    echo  get_template_part('template-parts/issue', 'card');
-                    ?>
-                </div>
+                } 
+                ?>
+
             </div>
             <div class="swiper-button-next" style="right: 0px !important;"></div>
             <div class="swiper-button-prev" style="left: 0px !important;"></div>
@@ -77,7 +133,7 @@ get_header(); ?>
         </div>
 
         <div class="view-all-btn-wrapper">
-            <a class="view-all-btn" href="">
+            <a class="view-all-btn" href="<?php echo home_url('/practice'); ?>">
                 View all
                 <span class="icon-left-mid-arrow"></span>
             </a>
@@ -97,7 +153,6 @@ get_header(); ?>
 </section>
 
 
-
 <!-- About Us -->
 <section class="front-Lawyers-sec">
     <div class="container mx-auto">
@@ -109,51 +164,29 @@ get_header(); ?>
         <div class="">
             <div class="swiper LawfirmSwiper ">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
+                   
+                <?php
+                $args_lawyer = array(
+                'post_type'=> 'lawyers',
+                'orderby'    => 'date',
+                'post_status' => 'publish',
+                'order'    => 'DESC',
+                'posts_per_page' => 4 // this will retrive all the post that is published 
+                );
+                $result_lawyer = new WP_Query( $args_lawyer );
+                
+                if ( $result_lawyer-> have_posts() ) : 
+                    while ( $result_lawyer->have_posts() ) : $result_lawyer->the_post(); ?>
+
+                        <div class="swiper-slide">
+                            <?php get_template_part('template-parts/lawyers', 'card'); ?>
+                        </div>                    
+                    
                         <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyers', 'card');
-                        ?>
-                    </div>
+                    endwhile; 
+                endif; 
+                wp_reset_postdata(); ?>
+
                 </div>
                 <div class="swiper-button-next" style="right: 0px !important;"></div>
                 <div class="swiper-button-prev" style="left: 0px !important;"></div>
@@ -161,7 +194,7 @@ get_header(); ?>
             </div>
         </div>
         <div class="view-all-btn-wrapper">
-            <a class="view-all-btn" href="">
+            <a class="view-all-btn" href="<?php echo home_url('/find-lawyers'); ?>">
                 View all
                 <span class="icon-left-mid-arrow"></span>
             </a>
@@ -184,51 +217,37 @@ get_header(); ?>
             <img class="front-Lawfirm-element-left" src="<?php echo get_template_directory_uri(); ?>/images/left-element.png" alt="front Lawfirm element left">
             <div class="swiper LawyersSwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
+
+                <?php
+                $args_firm = array(
+                    'post_type'=> 'law-firms',
+                    'orderby'    => 'date',
+                    'post_status' => 'publish',
+                    'order'    => 'DESC',
+                    'posts_per_page' => 4 // this will retrive all the post that is published 
+                    );
+                    $result_firm = new WP_Query( $args_firm );
+                    if ( $result_firm-> have_posts() ) : 
+                        while ( $result_firm->have_posts() ) : $result_firm->the_post(); ?>
+                            <div class="swiper-slide">
+                                <?php get_template_part('template-parts/lawyersfirm', 'card'); ?>
+                            </div>
+
+                        <?php endwhile; 
+                    endif; 
+                    wp_reset_postdata(); ?>
+
+
+                    <?php
+                    /*$ ?>
+                            <div class="swiper-slide">
+                                <?php get_template_part('template-parts/lawyersfirm', 'card'); ?>
+                            </div>
+                            ?>
+                        </div>
                         <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
-                    <div class="swiper-slide">
-                        <?php
-                        echo  get_template_part('template-parts/lawyersfirm', 'card');
-                        ?>
-                    </div>
+                         */ ?>
+                    
                 </div>
                 <div class="swiper-button-next" style="right: 0px !important;"></div>
                 <div class="swiper-button-prev" style="left: 0px !important;"></div>
@@ -237,7 +256,7 @@ get_header(); ?>
         </div>
 
         <div class="view-all-btn-wrapper">
-            <a class="view-all-btn" href="">
+            <a class="view-all-btn" href="<?php echo home_url('/find-lawfirms'); ?>">
                 View all
                 <span class="icon-left-mid-arrow"></span>
             </a>
@@ -258,28 +277,16 @@ get_header(); ?>
             </div>
 
             <div class="front-about-us-inner">
-                <p class="front-about-us-inner-p">
-                    At Lawyer’s Inventory you get information about lawyers and legal firms.
-                    Our mission is to make the United States law accessible and understandable to everyone.
-                </p>
-
-                <p class="front-about-us-inner-p">
-                    The focus of the Lawyers Inventory is to give the general public (the ones with legal issues) access to the best lawyers and law firms that are willing to help. Whether you are new to the legal world or are well-acquainted with it,
-                    you will benefit from this platform either way.
-                </p>
-
-                <p class="front-about-us-inner-p">
-                    Lawyers Inventory (lawyersinventory.com) contains a wealth of legal information that is easily understandable for everyone.
-                    Apart from that, this platform also strives to keep its readers updated with legal tools and up-to-date information.
-                    Here, our focus is to connect the general public having legal issues with the right legal professionals.
-                </p>
-
-                <p class="front-about-us-inner-p">
-                    Lawyers Inventory is fast becoming one of the leading online legal information providers for not only individuals but also businesses as well. Furthermore, this website is also a great platform for lawyers and legal firms to post their information. This way, they can have access to their
-                </p>
+                <?php 
+                $page_slug = 'about-us'; // Replace with your desired slug
+                $page = get_page_by_path($page_slug);
+                if ($page_slug) {
+                    $about_excerpt = $page->post_excerpt;
+                    echo $about_excerpt;
+                } ?>
 
                 <div class="front-latest-button-wrapper">
-                    <a href="" class="common-load-more-button">
+                    <a href="<?php echo home_url('/about-us'); ?>" class="common-load-more-button">
                         know more <span class="icon-left-mid-arrow"></span>
                     </a>
                 </div>
@@ -296,14 +303,25 @@ get_header(); ?>
 
             <div class="front-latest-grid-sec">
                 <?php
-                for ($latest_card = 0; $latest_card <= 2; $latest_card++) {
-                    echo  get_template_part('template-parts/Blog', 'card');
-                }
-                ?>
+                $args2 = array(
+                'post_type'=> 'post',
+                'orderby'    => 'date',
+                'post_status' => 'publish',
+                'order'    => 'DESC',
+                'posts_per_page' => 3 // this will retrive all the post that is published 
+                );
+                $result2 = new WP_Query( $args2 );
+                if ( $result2-> have_posts() ) : 
+                    while ( $result2->have_posts() ) : $result2->the_post();
+                            get_template_part('template-parts/blog', 'card');
+                    endwhile; 
+                endif; 
+                wp_reset_postdata(); ?>
+
             </div>
 
             <div class="front-latest-button-wrapper">
-                <a class="common-load-more-button" href="">
+                <a class="common-load-more-button" href="<?php echo home_url('/blogs'); ?>">
                     View all <span class="icon-left-mid-arrow"></span>
                 </a>
             </div>
@@ -312,89 +330,5 @@ get_header(); ?>
     </div>
 </section>
 
-<section class="my-[50px]">
-    <div class="container mx-auto ">
-        <ul class="local-ul">
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/lawyers-in-us/">
-                    Lawyers In US
-                </a>
-            </li>
 
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/lawyers-firm-in-us/">
-                    Lawyers frim In US
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/lawyers-details/">
-                    lawyer details page
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/featured-lawfirm-details/">
-                    Featured Lawfirm Details
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/lawyers-practice/">
-                    Lawyers Practice Page
-                </a>
-            </li>
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/blog-listing/">
-                    blog listing page
-                </a>
-            </li>
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/2024/07/31/hello-world/">
-                    single page
-                </a>
-            </li>
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/author/lawyersinventory/">
-                    Author page
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/login/">
-                    log in
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/register/">
-                    register
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/about-us/">
-                    about us
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/write-for-us/">
-                    write for us
-                </a>
-            </li>
-
-            <li class="local-li">
-                <a href="http://localhost/projects/lawyersinventory/package/">
-                    package
-                </a>
-            </li>
-
-
-
-        </ul>
-    </div>
-</section>
-
-<?php
-get_footer();
+<?php get_footer() ?>

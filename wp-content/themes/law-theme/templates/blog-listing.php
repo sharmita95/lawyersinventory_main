@@ -25,9 +25,10 @@ $post_count = $blog_query->found_posts; ?>
         <div class="lawyers-c-b-inner">
             <div class="l-c-b-title-wrapper">
                 <h2 class="l-c-b-title">
-                    Our Blogs
+                    Read Best Legal Blogs and Resources
                 </h2>
             </div>
+            <p>Stay informed with our expert legal blogs: Get insights on the latest laws, trends, and case studies from top attorneys, and stay up-to-date on legal matters that affect you.</p>
         </div>
     </div>
 </section>
@@ -36,7 +37,8 @@ $post_count = $blog_query->found_posts; ?>
     <div class="container mx-auto">
         <div class="blog-listing-search-and-select-sec">
             <div class="blog-listing-select-sec">
-<!-- ----------------------------------------- Category list up  --------------------------------------------------------->
+
+                <!-- Category list up -->
                 <div class="lawyers-filter-select-option-wrapper">
                     <?php
                     $categories = get_categories();
@@ -48,11 +50,10 @@ $post_count = $blog_query->found_posts; ?>
                                 <?php echo esc_html($category->name); ?>
                             </option>
                         <?php endforeach; ?>
-                    </select>
-
-                    
+                    </select>                    
                 </div>
-<!-- ----------------------------------------- Date sorting option --------------------------------------------------------->
+
+                <!-- Date sorting option -->
                 <div class="lawyers-filter-select-option-wrapper">
                     <select class="lawyers-filter-select-option" name="date_sort" id="date_sort">
                         <option value="">Sort by Date</option>
@@ -62,20 +63,22 @@ $post_count = $blog_query->found_posts; ?>
                 </div>
                 
             </div>
-<!-- ----------------------------------------- Search query --------------------------------------------------------->
+
+            <!-- Search query -->
             <div class="blog-listing-search-sec">
                 <div class="lawyers-filter-search-wrapper">
                     <form action="<?php echo esc_url(home_url('/')); ?>" method="get" class="lawyers-filter-search-from">
-                        <input class="lawyers-filter-search-from-input" type="text" placeholder="Search.." value="<?php echo $filter_search; ?>">
+                        <input class="lawyers-filter-search-from-input" type="text" name="s" placeholder="Search.." value="<?php echo $filter_search; ?>">
                         <button class="lawyers-filter-search-from-button" type="submit">
                             <span class="icon-search"></span>
                         </button>
                     </form>
                 </div>
             </div>
+
         </div>
         
-<!-- ------------------------------------ all Posts -------------------------------------------------- -->
+        <!-- all Posts -->
         <div class="lawyers-card-grid-wrapper">
             <div id = "posts-container" class="lawyers-card-grid">
                 
@@ -85,19 +88,20 @@ $post_count = $blog_query->found_posts; ?>
                 ?>
             </div>
         </div>
-<!------------------------------------------ Pagination --------------------------------------------------------------->
-      
-            <div id="pagination-container">
-                    <?php echo custom_pagination(array(
-                        'base'    => get_permalink(),
-                        'current' => $paged,
-                        'total'   => $page_count,
-                        'mid_size' => 2,
-                        'end_size' => 1,
-                        'prev_text' => '&laquo; prev',
-                        'next_text' => 'Next &raquo;'
-                    )); ?>
-            </div>
+
+
+        <!---- Pagination ---->      
+        <div id="pagination-container">
+                <?php echo custom_pagination(array(
+                    'base'    => get_permalink(),
+                    'current' => $paged,
+                    'total'   => $page_count,
+                    'mid_size' => 2,
+                    'end_size' => 1,
+                    'prev_text' => '&laquo; prev',
+                    'next_text' => 'Next &raquo;'
+                )); ?>
+        </div>
 
     </div>
 </section>
